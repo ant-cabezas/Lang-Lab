@@ -1,0 +1,9 @@
+node_modules/
+*.log
+result-*.json
+.DS_Store
+
+
+# Python bytecode (never commit)
+__pycache__/
+*.pyc
