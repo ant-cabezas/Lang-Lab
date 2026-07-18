@@ -1,0 +1,278 @@
+{
+  "benchmark": "gemm",
+  "date": "2026-07-18",
+  "isa": "x86_64",
+  "track": "scaling",
+  "backend": "wallclock-compute",
+  "cores": [
+    1,
+    2,
+    4
+  ],
+  "results": [
+    {
+      "language": "c",
+      "benchmark": "gemm",
+      "version": "14",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "native",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.447344,
+        "2": 0.245102,
+        "4": 0.204855
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.825,
+        "4": 2.184
+      },
+      "correct": true
+    },
+    {
+      "language": "csharp",
+      "benchmark": "gemm",
+      "version": "9.0",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "vm",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 1.144434,
+        "2": 0.574034,
+        "4": 0.523257
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.994,
+        "4": 2.187
+      },
+      "correct": true
+    },
+    {
+      "language": "elixir",
+      "benchmark": "gemm",
+      "version": "1.18",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "vm",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 56.568207,
+        "2": 27.845357,
+        "4": 19.555736
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 2.032,
+        "4": 2.893
+      },
+      "correct": true
+    },
+    {
+      "language": "go",
+      "benchmark": "gemm",
+      "version": "1.24.4",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "native",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 1.027696,
+        "2": 0.515612,
+        "4": 0.516058
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.993,
+        "4": 1.991
+      },
+      "correct": true
+    },
+    {
+      "language": "kotlin",
+      "benchmark": "gemm",
+      "version": "2.1.0",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "vm",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.538448,
+        "2": 0.270530,
+        "4": 0.271377
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.990,
+        "4": 1.984
+      },
+      "correct": true
+    },
+    {
+      "language": "perl",
+      "benchmark": "gemm",
+      "version": "5.40.2",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "interp",
+      "size": 256,
+      "reps": 5,
+      "min_seconds": {
+        "1": 1.402722,
+        "2": 0.980404,
+        "4": 0.781623
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.431,
+        "4": 1.795
+      },
+      "correct": true
+    },
+    {
+      "language": "php",
+      "benchmark": "gemm",
+      "version": "8.4.8",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "interp",
+      "size": 256,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.318097,
+        "2": 0.165883,
+        "4": 0.154822
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.918,
+        "4": 2.055
+      },
+      "correct": true
+    },
+    {
+      "language": "python",
+      "benchmark": "gemm",
+      "version": "3.13.4",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "interp",
+      "size": 256,
+      "reps": 5,
+      "min_seconds": {
+        "1": 2.354629,
+        "2": 1.209674,
+        "4": 0.936099
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.946,
+        "4": 2.515
+      },
+      "correct": true
+    },
+    {
+      "language": "ruby",
+      "benchmark": "gemm",
+      "version": "3.3",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "interp",
+      "size": 256,
+      "reps": 5,
+      "min_seconds": {
+        "1": 1.128755,
+        "2": 0.573371,
+        "4": 0.406001
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.969,
+        "4": 2.780
+      },
+      "correct": true
+    },
+    {
+      "language": "rust",
+      "benchmark": "gemm",
+      "version": "1.88.0",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "native",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.442439,
+        "2": 0.221766,
+        "4": 0.218109
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.995,
+        "4": 2.029
+      },
+      "correct": true
+    },
+    {
+      "language": "scala",
+      "benchmark": "gemm",
+      "version": "3.6.2",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "vm",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.504124,
+        "2": 0.252733,
+        "4": 0.270818
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.995,
+        "4": 1.861
+      },
+      "correct": true
+    },
+    {
+      "language": "swift",
+      "benchmark": "gemm",
+      "version": "6.1",
+      "track": "scaling",
+      "metric": "wallclock-speedup",
+      "timing": "compute",
+      "primitive": "native",
+      "size": 1024,
+      "reps": 5,
+      "min_seconds": {
+        "1": 0.937094,
+        "2": 0.470286,
+        "4": 0.466582
+      },
+      "speedup": {
+        "1": 1.000,
+        "2": 1.993,
+        "4": 2.008
+      },
+      "correct": true
+    }
+  ]
+}
