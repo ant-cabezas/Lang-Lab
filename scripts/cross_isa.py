@@ -100,6 +100,8 @@ def main():
         g1, g2 = (f"**{fmt(ga[L])}**", f"**{fmt(gx[L])}**") if L in ISA_SPECIFIC else (fmt(ga[L]), fmt(gx[L]))
         print(f"| {name} | {g1} | {g2} | x{s:.2f} | {verdict} |")
 
+    print("\nJVM rows are 'no' by membership in make_matrix.ISA_SPECIFIC, not by the shift alone: their"
+          " cells also move between CI runs on the same ISA (metric-validity Study 2, run-to-run block).")
     nonjvm = [L for L in gx if L not in ISA_SPECIFIC]
     bound = max(abs(gx[L] / ga[L] - 1) for L in nonjvm)
     print(f"\nnon-JVM geomeans move at most {bound:.0%} between ISAs")

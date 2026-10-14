@@ -624,5 +624,5 @@
 <text x="972.7" y="624" text-anchor="middle" font-size="10" fill="#9aa7b4">100k×</text>
 <text x="1112" y="608" font-size="10.5" fill="#9aa7b4" text-anchor="end">← beats C · slower →</text>
 <text x="86" y="654" font-size="10" fill="#9aa7b4">† shown but excluded from the geomean: instruction counts are syscall-blind, misleading for context-switch primitives (see the concurrency study)</text>
-<text x="86" y="668" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA-specific (1.5-2× higher on x86_64 than on arm64, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
+<text x="86" y="668" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA- and run-specific (geomeans up to 1.9× higher on x86_64 than on arm64, single cells up to 7×, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
 </svg>

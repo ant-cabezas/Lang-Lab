@@ -51,9 +51,11 @@ BENCH_ORDER = ["fannkuch", "binary-trees", "mandelbrot", "k-nucleotide", "revers
 # swapcontext traps into the kernel ~2x per hop at near-zero guest-instruction cost). See
 # docs/metric-validity.md and benchmarks/message-ring/README.md.
 NOT_RANKED = {"message-ring"}
-# Languages whose ratio is NOT ISA-robust (metric-validity Study 2: the JVM geomean is 1.5-1.9x
-# higher on x86_64 than on arm64, single cells up to 7x). Marked ‡ in the leaderboard + matrix so
-# the single number is never read as ISA-independent.
+# Languages whose ratio is neither ISA-robust nor run-to-run robust (metric-validity Study 2: the
+# JVM geomeans sit up to ~2x apart between arm64 and x86_64, single cells up to 7x, and JVM cells
+# move between CI runs on the same ISA). Marked ‡ in the leaderboard + matrix so the single number
+# is never read as a constant; the ‡ footnotes take their figures from jvm_isa_span(), never from
+# a hand-typed literal.
 ISA_SPECIFIC = {"kotlin", "scala", "java"}
 # Axis families for the per-family geomean: the honest answer to "the 18 axes are not
 # independent". Empirically (arm64, 18x18 pairwise Pearson on log ratios) 13 of the 18 axes sit
@@ -163,15 +165,49 @@ def load_matrix(isa=None):
     return langs, benches, ratio, geomean, arch, prov
 
 
+_OTHER = {}
+
+
+def other_matrix():
+    """The other ISA's matrix from its own envelopes (cached), or None when it has none."""
+    other = "x86_64" if ISA == "arm64" else "arm64"
+    if other not in _OTHER:
+        try:
+            _OTHER[other] = load_matrix(other)
+        except Exception:
+            _OTHER[other] = None
+    return other, _OTHER[other]
+
+
+def jvm_isa_span(ratio, geomean):
+    """(hi, cell): the largest JVM geomean shift and the largest single JVM-cell shift, always
+    expressed as x86_64 over arm64, computed from both ISAs' envelopes so the ‡ footnotes carry
+    no hand-typed number. None when the other ISA has no envelopes."""
+    other, om = other_matrix()
+    if not om:
+        return None
+    _, _, o_ratio, o_geo, _, _ = om
+    jvm = [L for L in geomean if L in ISA_SPECIFIC and L in o_geo]
+    if not jvm:
+        return None
+
+    def x_over_a(here, there):
+        return there / here if ISA == "arm64" else here / there
+
+    geo = [x_over_a(geomean[L], o_geo[L]) for L in jvm]
+    cells = [x_over_a(ratio[L][b], o_ratio[L][b]) for L in jvm
+             for b in ratio[L] if b in o_ratio.get(L, {}) and b not in NOT_RANKED]
+    return max(geo), max(cells)
+
+
 def cross_isa_note(geomean):
     """One sentence, computed not asserted: how far the OTHER ISA's envelopes move the non-JVM
     geomeans (and the JVM ones), so the first screen says what a reader who reproduces on the
     other ISA will see. Empty when the other ISA has no envelopes."""
-    other = "x86_64" if ISA == "arm64" else "arm64"
-    try:
-        _, _, _, o_geo, _, o_prov = load_matrix(other)
-    except Exception:
+    other, om = other_matrix()
+    if not om:
         return ""
+    _, _, _, o_geo, _, o_prov = om
     common = [L for L in geomean if L in o_geo and L not in ISA_SPECIFIC and L != "c"]
     if not common:
         return ""
@@ -288,9 +324,12 @@ def render_svg(langs, benches, ratio, geomean, arch):
                  f'† shown but excluded from the geomean: instruction counts are syscall-blind, '
                  f'misleading for context-switch primitives (see the concurrency study)</text>')
     if any(L in ISA_SPECIFIC for L in langs):
+        span = jvm_isa_span(ratio, geomean)
+        num = (f'geomeans up to {span[0]:.1f}× higher on x86_64 than on arm64, single cells up to '
+               f'{span[1]:.0f}×, ' if span else '')
         s.append(f'<text x="{lx}" y="{ly + 70}" font-size="10" fill="{MUTED}">'
-                 f'‡ JVM ratios are ISA-specific (1.5-2× higher on x86_64 than on arm64, see '
-                 f'docs/metric-validity.md); non-JVM rankings are ISA-robust</text>')
+                 f'‡ JVM ratios are ISA- and run-specific ({num}see docs/metric-validity.md); '
+                 f'non-JVM rankings are ISA-robust</text>')
     s.append('</svg>')
 
     os.makedirs(OUT, exist_ok=True)
@@ -399,10 +438,13 @@ def main():
                 "and misleading for context-switch primitives (wall-clock inverts it; see "
                 "[the concurrency study](docs/concurrency-study.md)).")
     if any(L in ISA_SPECIFIC for L in langs):
-        foot += ("\n\n_‡ JVM ratios are ISA-specific: metric-validity Study 2 measured their "
-                 "geomeans 1.5-1.9× higher on x86_64 than on arm64 (single cells up to 7×), so "
-                 f"their number here holds for {ISA} only. Non-JVM rankings are ISA-robust "
-                 "([details](docs/metric-validity.md))._")
+        span = jvm_isa_span(ratio, geomean)
+        num = (f"their geomeans up to {span[0]:.1f}× higher on x86_64 than on arm64 (single cells "
+               f"up to {span[1]:.0f}×) and " if span else "")
+        foot += ("\n\n_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured "
+                 f"{num}JVM cells moving between CI runs on the same ISA, so their number here is "
+                 f"one {ISA} measurement, not a constant. Non-JVM rankings are ISA-robust and "
+                 "reproduce run to run within 1% ([details](docs/metric-validity.md))._")
     fam = family_md(langs, benches, ratio)
     famnote = ("\n\n**Per-family geomean** (same scale: vs C, lower is better). The flat geomean "
                "above weights every axis equally, but the axes are not independent: 13 of the 18 "

@@ -75,12 +75,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The README matrix states its provenance on the first screen**: a line derived from the
   envelopes themselves names the ISA and host, the measurement dates, the toolchain version each
   row was measured on, and how far the other ISA's CI data moves the result (currently: the
-  non-JVM ranking reproduces within 16%, the JVM geomeans are 1.5-1.9× higher on x86_64).
-- **Metric-validity Study 2 re-derived from the first green x86_64 CI run** (2026-10-14): Java and
-  JavaScript gain their x86_64 column (Java is ISA-specific like the rest of the JVM, at x1.5; V8
-  turns out ISA-stable like the interpreters), the Go, Swift and Ruby x86_64 cells now post-date
-  their fixes, and the JVM gemm cells (6-7× between ISAs) are called out as the reason "roughly 2×"
-  describes the JVM geomean, not any single JVM cell.
+  non-JVM ranking reproduces within 16%, the JVM geomeans are 1.1-1.9× higher on x86_64).
+- **Metric-validity Study 2 re-derived from the green x86_64 CI runs of 2026-10-14**: Java and
+  JavaScript gain their x86_64 column (V8 turns out ISA-stable like the interpreters; Kotlin and
+  Scala are x1.9), the Go, Swift and Ruby x86_64 cells now post-date their fixes, and the JVM gemm
+  cells (up to 7× between ISAs) are called out as the reason "up to 2×" describes the JVM geomean,
+  not any single JVM cell. The day's three green runs also measured **JVM run-to-run variance on
+  one ISA**: every non-JVM cell reproduces within 1% (C, PHP, Rust and Swift bit-identical), while
+  JVM cells move up to 1.5× (Kotlin), 1.7× (Scala) and 3.3× (Java, whose x86_64 geomean came out
+  as 4.47, 3.56 and 3.26, partly across a base-image change). The README, the matrix legends and
+  the "not valid for" list now mark JVM ratios as ISA- **and run-**specific.
 - **Go now runs with its garbage collector on** (default `GOGC=100`; previously the whole suite
   ran `GOGC=off`). Disabling the GC in a suite whose allocation axis (binary-trees) exists to
   measure collection work was an inconsistency: Go's numbers now include real GC work, like every
