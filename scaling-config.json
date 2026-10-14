@@ -1,5 +1,5 @@
 {
-  "_doc": "Drives the WALL-CLOCK SCALING track (.github/workflows/scaling.yml + scripts/bench-scaling.sh). Each -par benchmark is run NATIVELY (no qemu) at several core counts; speedup = T1/TP of the compute region (COMPUTE_NS). parRun is the run command WITHOUT cores/size ({b}=benchmark); the driver appends `<cores> <size>`. size is per runtime-class (native/vm/interp) so each language gets a workload with enough warmed compute to amortize its barriers. warmup sets LL_WARMUP for JIT runtimes (JVM/CLR).",
+  "_doc": "Drives the WALL-CLOCK SCALING track (.github/workflows/scaling.yml + scripts/measure-scaling.sh). Each -par benchmark is run NATIVELY (no qemu) at several core counts; speedup = T1/TP of the compute region (COMPUTE_NS). parRun is the run command WITHOUT cores/size ({b}=benchmark); the driver appends `<cores> <size>`. size is per runtime-class (native/vm/interp) so each language gets a workload with enough warmed compute to amortize its barriers. warmup sets LL_WARMUP for JIT runtimes (JVM/CLR).",
   "cores": [1, 2, 4],
   "langs": {
     "c":      {"parRun": "/app/{b}-par",             "class": "native"},

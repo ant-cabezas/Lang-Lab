@@ -4,6 +4,10 @@ result-*.json
 .DS_Store
 
 
+# .NET build output (the Dockerfile publishes from source; never commit bin/ or obj/)
+languages/csharp/**/bin/
+languages/csharp/**/obj/
+
 # Python bytecode (never commit)
 __pycache__/
 *.pyc
