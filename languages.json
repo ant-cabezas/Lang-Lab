@@ -59,6 +59,7 @@
   },
   "csharp": {
     "eol": "dotnet",
+    "pinPrecision": "minor",
     "dockerfile": "languages/csharp/Dockerfile",
     "buildArg": "DOTNET_VERSION",
     "runtimeKind": "inproc-vm",
