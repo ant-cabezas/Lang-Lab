@@ -49,7 +49,8 @@ instruction count **invert** the wall-clock ranking (Go is 2.3x faster than C in
 
 **Method.** For each cell, compare the vs-C instruction ratio on arm64 (local, the headline
 matrix, envelopes of 2026-06-16 to 2026-07-17) and on x86_64 (the last of the three green CI runs
-of 2026-10-14, data commit `7d6f3de`; the other two runs serve as the run-to-run check below),
+of 2026-10-14, whose data commit landed at 17:24 UTC; the other two runs serve as the run-to-run
+check below),
 across the 18 compute axes: 233 cells with both ISAs present (csharp/k-nucleotide is unmeasured on
 x86_64, see below). Both ISAs run the same pinned toolchain versions. Every number in this section
 is printed by `python3 scripts/cross_isa.py` from the envelopes; regenerate it from there instead of
@@ -96,9 +97,9 @@ is that "up to 2x" describes the JVM *geomean*, not any single JVM cell: read JV
 never as one number.
 
 **Run-to-run on the same ISA (JVM only).** The benchmark workflow went green three times on
-2026-10-14 (runs 38548098942 on `fb23319`, 38554023088 on `df1c257` and 38583744715 on `1f6c629`;
-the first and the last are the data commits `afd3036` and `7d6f3de`, the middle one survives only
-as workflow artifacts). Every non-JVM runtime reproduces across the three: C and PHP are bit-identical on
+2026-10-14 (dispatched at 10:13, 11:04 and 14:48 UTC; the first and the last produced that day's
+two `data: benchmark run` commits, the middle one's collect job hit a since-fixed checkout race, so
+its results exist only as a downloaded copy, not in `results/`). Every non-JVM runtime reproduces across the three: C and PHP are bit-identical on
 all 19 cells, Rust and Swift on 35 of their 38 (the other three within 0.4%), JavaScript, Ruby and
 Perl stay within 1%, Elixir and Python within 2%, C# within 5.5% (binary-trees) and Go within 9%
 (one k-nucleotide cell). The JVM cells do not. Across the three runs the vs-C ratio of a Kotlin cell moves x1.08 at the median and
