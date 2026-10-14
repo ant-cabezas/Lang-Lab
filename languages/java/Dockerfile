@@ -19,7 +19,9 @@ RUN mkdir -p /app/classes && \
       ( cd "$outdir" && jar --create --file "/app/$b.jar" --main-class "$cls" *.class ); \
     done
 
-FROM eclipse-temurin:${JAVA_VERSION}-jre-noble
+# Distro-agnostic JRE tag: Temurin drops the per-Ubuntu suffixes (-noble, -jammy) for new
+# majors (27 ships -jre and -jre-resolute only), so a version bump must not depend on one.
+FROM eclipse-temurin:${JAVA_VERSION}-jre
 ARG JAVA_VERSION
 ENV LANG_VERSION=${JAVA_VERSION}
 COPY --from=lang-lab-qemu-insn /plugin/qemu-aarch64 /opt/qi/qemu-aarch64

@@ -26,14 +26,19 @@ for (const [lang, cfg] of Object.entries(registry)) {
   const cycles = await res.json();
   // The newest cycle is first. Require a concrete `latest` patch - never pin a bare
   // cycle label (e.g. "3.14"), which is not a precise reproducible version.
-  const latest = cycles[0]?.latest;
+  let latest = cycles[0]?.latest;
   if (!latest) {
     failures.push(`${lang}: endoflife feed has no 'latest' release`);
     continue;
   }
-  if (lock[lang] !== String(latest)) {
-    updates.push({ lang, from: lock[lang], to: String(latest) });
-    lock[lang] = String(latest);
+  latest = String(latest);
+  // pinPrecision:"minor" keeps MAJOR.MINOR of the latest release. Needed where the image tag
+  // is a channel, not a patch: endoflife's dotnet `latest` is the runtime (10.0.12) while the
+  // sdk image only publishes `10.0` and SDK-numbered tags (10.0.4xx), never the runtime patch.
+  if (cfg.pinPrecision === "minor") latest = latest.split(".").slice(0, 2).join(".");
+  if (lock[lang] !== latest) {
+    updates.push({ lang, from: lock[lang], to: latest });
+    lock[lang] = latest;
   }
 }
 
