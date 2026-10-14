@@ -124,7 +124,11 @@ jobs:
     needs: matrix
     runs-on: ubuntu-latest
     steps:
+      # main's HEAD, not the triggering SHA (see benchmark.yml: same-day runs must stack their
+      # data commits instead of conflicting on the same-date envelopes).
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/download-artifact@v4
         with:
           path: artifacts

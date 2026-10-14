@@ -11,8 +11,13 @@ leaderboard), and renders:
 and prints a Markdown leaderboard. With --write it splices both (the image ref + the leaderboard)
 into README.md between the <!-- MATRIX:START --> / <!-- MATRIX:END --> markers.
 
-    python3 scripts/make_matrix.py             # write the SVG + print the leaderboard
-    python3 scripts/make_matrix.py --write     # also splice the block into README.md
+    python3 scripts/make_matrix.py                 # write the SVG + print the leaderboard
+    python3 scripts/make_matrix.py --write         # also splice the block into README.md
+    python3 scripts/make_matrix.py --isa x86_64    # the CI data, as docs/charts/matrix-x86_64.svg
+
+The README block carries a provenance line derived from the envelopes themselves (ISA, measurement
+dates, the toolchain version each row was measured on) and, when the other ISA's envelopes exist,
+how far they move the non-JVM geomeans, so the first screen never has to be hand-maintained.
 """
 import glob
 import json
@@ -24,10 +29,14 @@ from xml.sax.saxutils import escape as _xesc
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "charts")
-ISA = "arm64"
+ISA = "arm64"            # overridden by --isa; only the headline ISA splices README.md
+HEADLINE_ISA = "arm64"
 
 BG, FG, MUTED, GRID = "#0d1117", "#e6edf3", "#9aa7b4", "#0d1117"
 from _langnames import NAMES
+# How the per-row `version` field reads in the provenance line: the registry pins a toolchain
+# version, not a language version, for these three.
+TOOLCHAIN = {"c": "gcc", "csharp": ".NET", "javascript": "Node"}
 # Archetype colour for the row label (matches make_charts.py palette).
 PALETTE = {"native": "#3fb950", "interpreter": "#f0883e", "vm": "#a371f7"}
 KIND_ARCH = {"native": "native", "interp": "interpreter", "inproc-vm": "vm", "launcher": "vm"}
@@ -42,9 +51,9 @@ BENCH_ORDER = ["fannkuch", "binary-trees", "mandelbrot", "k-nucleotide", "revers
 # swapcontext traps into the kernel ~2x per hop at near-zero guest-instruction cost). See
 # docs/metric-validity.md and benchmarks/message-ring/README.md.
 NOT_RANKED = {"message-ring"}
-# Languages whose ratio is NOT ISA-robust (metric-validity Study 2: JVM codegen roughly doubles
-# its ratio from arm64 to x86_64). Marked ‡ in the leaderboard + matrix so the single number is
-# never read as ISA-independent.
+# Languages whose ratio is NOT ISA-robust (metric-validity Study 2: the JVM geomean is 1.5-1.9x
+# higher on x86_64 than on arm64, single cells up to 7x). Marked ‡ in the leaderboard + matrix so
+# the single number is never read as ISA-independent.
 ISA_SPECIFIC = {"kotlin", "scala", "java"}
 # Axis families for the per-family geomean: the honest answer to "the 18 axes are not
 # independent". Empirically (arm64, 18x18 pairwise Pearson on log ratios) 13 of the 18 axes sit
@@ -116,22 +125,31 @@ def fmt(r):
     return f"{r / 1000:.0f}k"
 
 
-def latest(b):
-    fs = sorted(glob.glob(os.path.join(ROOT, "results", f"*-{ISA}-{b}.json")))
+def latest(b, isa=None):
+    fs = sorted(glob.glob(os.path.join(ROOT, "results", f"*-{isa or ISA}-{b}.json")))
     return fs[-1] if fs else None
 
 
-def load_matrix():
-    """Return (langs_by_geomean, benches_present, ratio[lang][bench], geomean[lang], arch[lang])."""
-    benches = [b for b in BENCH_ORDER if latest(b)]
-    ratio, arch = {}, {}
+def load_matrix(isa=None):
+    """Return (langs_by_geomean, benches_present, ratio[lang][bench], geomean[lang], arch[lang],
+    provenance) where provenance = {"versions": {lang: version}, "from": date, "to": date} comes
+    from the envelopes themselves (per-row measuredDate when a row was patched in later)."""
+    isa = isa or ISA
+    benches = [b for b in BENCH_ORDER if latest(b, isa)]
+    ratio, arch, versions, dates = {}, {}, {}, set()
     for b in benches:
-        env = json.load(open(latest(b)))
+        env = json.load(open(latest(b, isa)))
+        dates.add(env["date"])
         rs = {r["language"]: r for r in env["results"] if r.get("i_n1") and r.get("i_n2")}
         cdiff = rs["c"]["differential"]
         for L, r in rs.items():
             ratio.setdefault(L, {})[b] = r["differential"] / cdiff
             arch[L] = LANG_ARCH.get(L) or KIND_ARCH.get(r.get("kind", "native"), "native")
+            versions[L] = r.get("version", "?")
+            if r.get("measuredDate"):
+                dates.add(r["measuredDate"])
+    prov = {"versions": versions, "from": min(dates) if dates else "?",
+            "to": max(dates) if dates else "?"}
     geomean = {}
     for L, row in ratio.items():
         vals = [row[b] for b in benches if b in row and b not in NOT_RANKED]
@@ -142,7 +160,48 @@ def load_matrix():
             continue
         geomean[L] = math.exp(sum(math.log(v) for v in vals) / len(vals))
     langs = sorted(geomean, key=geomean.get)
-    return langs, benches, ratio, geomean, arch
+    return langs, benches, ratio, geomean, arch, prov
+
+
+def cross_isa_note(geomean):
+    """One sentence, computed not asserted: how far the OTHER ISA's envelopes move the non-JVM
+    geomeans (and the JVM ones), so the first screen says what a reader who reproduces on the
+    other ISA will see. Empty when the other ISA has no envelopes."""
+    other = "x86_64" if ISA == "arm64" else "arm64"
+    try:
+        _, _, _, o_geo, _, o_prov = load_matrix(other)
+    except Exception:
+        return ""
+    common = [L for L in geomean if L in o_geo and L not in ISA_SPECIFIC and L != "c"]
+    if not common:
+        return ""
+    bound = max(abs(o_geo[L] / geomean[L] - 1) for L in common)
+    same_order = ([L for L in sorted(geomean, key=geomean.get) if L in common]
+                  == [L for L in sorted(o_geo, key=o_geo.get) if L in common])
+    what = "ranking" if same_order else "geomeans"
+    jvm = [o_geo[L] / geomean[L] for L in geomean if L in o_geo and L in ISA_SPECIFIC]
+    jvm_note = ""
+    if jvm:
+        lo, hi = min(jvm), max(jvm)
+        jvm_note = (f", with the JVM geomeans {lo:.1f}-{hi:.1f}× {'higher' if lo > 1 else 'lower'}"
+                    if other == "x86_64" or lo < 1 else
+                    f", with the JVM geomeans {1 / hi:.1f}-{1 / lo:.1f}× lower")
+    return (f" The {other} CI run of {o_prov['to']} reproduces the non-JVM {what} within "
+            f"±{bound:.0%}{jvm_note} ([Study 2](docs/metric-validity.md"
+            f"#study-2-cross-isa-stability-arm64-vs-x86_64)); its matrix is "
+            f"[docs/charts/matrix-{other}.svg](docs/charts/matrix-{other}.svg).")
+
+
+def provenance_md(prov, langs, geomean):
+    host = (" (local Docker on an Apple Silicon host)" if ISA == "arm64"
+            else " (GitHub-hosted CI runner)")
+    tools = ", ".join(" ".join(t for t in (NAMES.get(L, L), TOOLCHAIN.get(L, ""),
+                                           prov["versions"].get(L, "?")) if t)
+                      for L in langs)
+    when = (f"on {prov['from']}" if prov["from"] == prov["to"]
+            else f"between {prov['from']} and {prov['to']}")
+    return (f"_Measured on **{ISA}**{host} {when}, on the toolchains pinned in "
+            f"`versions.lock.json`: {tools}.{cross_isa_note(geomean)}_")
 
 
 def render_svg(langs, benches, ratio, geomean, arch):
@@ -222,20 +281,20 @@ def render_svg(langs, benches, ratio, geomean, arch):
                  f'stroke="{BG}" stroke-width="1"/>')
         s.append(f'<text x="{tx:.1f}" y="{ly + 26}" text-anchor="middle" font-size="10" '
                  f'fill="{MUTED}">{txt}</text>')
-    s.append(f'<text x="{lx + lw + gap}" y="{ly + 10}" font-size="10.5" fill="{MUTED}">'
-             f'← beats C · slower →</text>')
+    s.append(f'<text x="{W - 18}" y="{ly + 10}" font-size="10.5" fill="{MUTED}" '
+             f'text-anchor="end">← beats C · slower →</text>')
     if any(b in NOT_RANKED for b in benches):
         s.append(f'<text x="{lx}" y="{ly + 56}" font-size="10" fill="{MUTED}">'
                  f'† shown but excluded from the geomean: instruction counts are syscall-blind, '
                  f'misleading for context-switch primitives (see the concurrency study)</text>')
     if any(L in ISA_SPECIFIC for L in langs):
         s.append(f'<text x="{lx}" y="{ly + 70}" font-size="10" fill="{MUTED}">'
-                 f'‡ JVM ratios are ISA-specific (roughly 2× higher on x86_64, see '
+                 f'‡ JVM ratios are ISA-specific (1.5-2× higher on x86_64 than on arm64, see '
                  f'docs/metric-validity.md); non-JVM rankings are ISA-robust</text>')
     s.append('</svg>')
 
     os.makedirs(OUT, exist_ok=True)
-    path = os.path.join(OUT, "matrix.svg")
+    path = os.path.join(OUT, "matrix.svg" if ISA == HEADLINE_ISA else f"matrix-{ISA}.svg")
     with open(path, "w") as f:
         f.write("\n".join(s))
     print("wrote", os.path.relpath(path, ROOT))
@@ -292,18 +351,22 @@ def check_metric_validity_sync(geomean):
     if not os.path.exists(path):
         return
     rev = {v: k for k, v in NAMES.items()}
-    row_re = re.compile(r"^\|\s*\**([A-Za-z#+ ]+?)\**\s*\|\s*\**([0-9]+\.?[0-9]*)")
+    # Study 2's table: | Language | geomean arm64 | geomean x86_64 | ... (bold markers optional)
+    row_re = re.compile(r"^\|\s*\**([A-Za-z#+ ]+?)\**\s*\|\s*\**([0-9]+\.?[0-9]*)\**\s*\|"
+                        r"\s*\**([0-9]+\.?[0-9]*)?")
+    col = 2 if ISA == "arm64" else 3
     for line in open(path, encoding="utf-8"):
         m = row_re.match(line)
-        if not m:
+        if not m or not m.group(col):
             continue
         L = rev.get(m.group(1).strip())
         if L and L in geomean:
-            doc = float(m.group(2))
+            doc = float(m.group(col))
             if doc and abs(geomean[L] - doc) / doc > 0.01:
                 print(f"make_matrix: WARNING docs/metric-validity.md lists "
-                      f"{m.group(1).strip()} arm64 geomean {doc} but the current envelopes "
-                      f"give {geomean[L]:.2f}; the doc table is stale", file=sys.stderr)
+                      f"{m.group(1).strip()} {ISA} geomean {doc} but the current envelopes "
+                      f"give {geomean[L]:.2f}; the doc table is stale (run scripts/cross_isa.py)",
+                      file=sys.stderr)
 
 
 def splice(block):
@@ -319,7 +382,12 @@ def splice(block):
 
 
 def main():
-    langs, benches, ratio, geomean, arch = load_matrix()
+    global ISA
+    if "--isa" in sys.argv:
+        ISA = sys.argv[sys.argv.index("--isa") + 1]
+    if "--write" in sys.argv and ISA != HEADLINE_ISA:
+        sys.exit(f"make_matrix: only the {HEADLINE_ISA} matrix is spliced into README.md")
+    langs, benches, ratio, geomean, arch, prov = load_matrix()
     ranked = [b for b in benches if b not in NOT_RANKED]
     render_svg(langs, benches, ratio, geomean, arch)
     lb = leaderboard_md(langs, benches, ratio, geomean)
@@ -331,14 +399,14 @@ def main():
                 "and misleading for context-switch primitives (wall-clock inverts it; see "
                 "[the concurrency study](docs/concurrency-study.md)).")
     if any(L in ISA_SPECIFIC for L in langs):
-        foot += ("\n\n_‡ JVM ratios are ISA-specific: metric-validity Study 2 measured them "
-                 "roughly doubling from arm64 to x86_64, so their single number holds for this "
-                 "ISA only. Non-JVM rankings are ISA-robust "
+        foot += ("\n\n_‡ JVM ratios are ISA-specific: metric-validity Study 2 measured their "
+                 "geomeans 1.5-1.9× higher on x86_64 than on arm64 (single cells up to 7×), so "
+                 f"their number here holds for {ISA} only. Non-JVM rankings are ISA-robust "
                  "([details](docs/metric-validity.md))._")
     fam = family_md(langs, benches, ratio)
     famnote = ("\n\n**Per-family geomean** (same scale: vs C, lower is better). The flat geomean "
                "above weights every axis equally, but the axes are not independent: 13 of the 18 "
-               "sit in three families whose members correlate at r ≈ 0.94–1.00, so it "
+               "sit in three families whose members correlate at r ≈ 0.94-1.00, so it "
                "over-weights tight-loop execution. This view casts one vote per runtime "
                "capability instead:\n\n" + fam)
     block = ("\n![Lang Lab — the matrix: every language × every benchmark]"
@@ -347,6 +415,7 @@ def main():
              f"`I(n₂)−I(n₁)` that cancels startup + JIT. **Lower is better** (less work than C). "
              f"Geomean across the {len(ranked)} compute axes; green cells beat or tie C.{excl} "
              "Full method below._\n\n"
+             + provenance_md(prov, langs, geomean) + "\n\n"
              "<details><summary><b>Leaderboard</b> (sorted by overall geomean)</summary>\n\n"
              + lb + foot + famnote + "\n\n</details>\n")
     if "--write" in sys.argv:

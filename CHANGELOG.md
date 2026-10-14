@@ -35,11 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   decoding) and gbdt (gradient-boosted tree ensemble inference).
 - **message-ring benchmark (concurrency overhead)**: an axis measuring the per-handoff instruction
   cost of each language's cooperative message-passing primitive (a 32-worker ring driven for N
-  laps), implemented in 11 languages with their idiomatic cooperative primitive (C `ucontext`, Go
+  laps), implemented in 13 languages with their idiomatic cooperative primitive (C `ucontext`, Go
   channels, a hand-rolled std `Future` executor in Rust, Swift continuations, Python `asyncio`,
   PHP/Ruby fibers, Kotlin/Scala JVM virtual threads, a single-thread C# synchronization context,
   Elixir BEAM processes). Perl is N/A (no cooperative primitive in core). Measured under
-  qemu+insn across all 11 and shown in the master comparison matrix, but **excluded from the
+  qemu+insn across all 13 and shown in the master comparison matrix, but **excluded from the
   ranking geomean**: instruction counts are syscall-blind for context-switch primitives, and the
   concurrency study shows wall-clock inverts the ordering (the leaderboard ranks the 18 compute
   axes only).
@@ -63,9 +63,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ratio, not bit-reproducible. Ships with a
   fairness rulebook (`docs/scaling-track.md`), per-language speedup charts, and a dedicated CI
   workflow that refreshes `results/scaling/`.
+- **An x86_64 matrix and the script behind Study 2.** `docs/charts/matrix-x86_64.svg` renders
+  the CI data as a second master matrix (`make_matrix.py --isa x86_64`), so a reader who reproduces
+  on Linux x86_64 has a chart to compare against. `scripts/cross_isa.py` prints the cell-level
+  arm64 vs x86_64 comparison that metric-validity Study 2 is made of, so that table is generated
+  from the envelopes instead of maintained by hand (and `make_matrix.py` now warns when either ISA
+  column drifts from them).
 
 ### Changed
 
+- **The README matrix states its provenance on the first screen**: a line derived from the
+  envelopes themselves names the ISA and host, the measurement dates, the toolchain version each
+  row was measured on, and how far the other ISA's CI data moves the result (currently: the
+  non-JVM ranking reproduces within 16%, the JVM geomeans are 1.5-1.9× higher on x86_64).
+- **Metric-validity Study 2 re-derived from the first green x86_64 CI run** (2026-10-14): Java and
+  JavaScript gain their x86_64 column (Java is ISA-specific like the rest of the JVM, at x1.5; V8
+  turns out ISA-stable like the interpreters), the Go, Swift and Ruby x86_64 cells now post-date
+  their fixes, and the JVM gemm cells (6-7× between ISAs) are called out as the reason "roughly 2×"
+  describes the JVM geomean, not any single JVM cell.
 - **Go now runs with its garbage collector on** (default `GOGC=100`; previously the whole suite
   ran `GOGC=off`). Disabling the GC in a suite whose allocation axis (binary-trees) exists to
   measure collection work was an inconsistency: Go's numbers now include real GC work, like every
@@ -86,6 +101,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **A second CI run on the same day no longer loses its measurements.** The collect jobs of the
+  `benchmark` and `scaling` workflows checked out the triggering commit rather than `main`, so a
+  run queued behind another same-day run rebased its data commit onto the first run's and hit an
+  add/add conflict on the same-date envelopes (the 2026-10-14 second run failed exactly there, with
+  all 14 measurement jobs green). They now check out `main`'s HEAD and overwrite the same-date
+  envelopes in place.
+- **The three x86_64 cells that cannot be measured are now explained in one place** (Study 2 of
+  metric-validity, linked from the README status), and the CI allow-list no longer describes
+  csharp/k-nucleotide as an out-of-memory: all three (csharp/k-nucleotide, kotlin/message-ring,
+  scala/message-ring) measure fine on arm64 and end under qemu-x86_64 without the plugin's
+  instruction summary, cause undiagnosed. They are recorded as `measured: false` and skipped by
+  the x86_64 geomeans rather than silently missing.
 - **C#'s recorded arm64 geomean (1.38) was an arithmetic slip**, not a data problem: it had been
   computed over 17 of the 18 compute axes, omitting k-nucleotide, C#'s single worst cell (9.73×
   vs C). The envelopes were never wrong and never changed; the correct 18-axis figure is **1.54**,

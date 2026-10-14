@@ -82,7 +82,9 @@ allocation in ways `malloc`/`free` cannot; that is the axis working as designed,
 
 ## Standing corrections
 
-- The arm64 leaderboard reflects all fixes above. x86_64 cells refresh on the next green CI run.
+- The arm64 leaderboard reflects all fixes above. The x86_64 cells were refreshed by the green CI
+  run of 2026-10-14 and reproduce the non-JVM order within 16%
+  ([Study 2](metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)).
 - Superseded numbers are never silently edited: fixes land as commits with the old and new values
   stated (see `0cb2c0f`, `2132918`, and the [CHANGELOG](../CHANGELOG.md)).
 
