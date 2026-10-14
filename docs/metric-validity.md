@@ -14,7 +14,7 @@ wall-clock speed.
 |---|---|
 | Does it predict wall-clock *order*? | Yes. Spearman rank 0.87 across 55 cells; near-perfect for non-JIT. |
 | Does it predict wall-clock *magnitude*? | Approximately. R² 0.91 (log-log, compute-bound); typical error ~1.3x, p90 ~3x. |
-| Is it ISA-robust (arm64 vs x86_64)? | For native, interpreter and V8 runtimes, yes (geomeans within 16%, same order, and they reproduce run to run within 1%). For the JVM, no: Kotlin and Scala geomeans 1.9x higher on x86_64, single cells up to 7x, and Java's x86_64 geomean moved 4.47 -> 3.26 between two same-day CI runs, so its cross-ISA factor (1.1-1.5x) is not even stable within one ISA. |
+| Is it ISA-robust (arm64 vs x86_64)? | For native, interpreter and V8 runtimes, yes (geomeans within 16%, same order, and they reproduce run to run: within 2%, except C# at 5.5% and Go at 9%). For the JVM, no: Kotlin and Scala geomeans 1.9x higher on x86_64, single cells up to 7x, and Java's x86_64 geomean moved 4.47 -> 3.26 between two same-day CI runs, so its cross-ISA factor (1.1-1.5x) is not even stable within one ISA. |
 | When does it actively mislead? | Syscall on the critical path (concurrency primitives) and JVM magnitude across ISAs or across runs. |
 
 ## Study 1: instruction count vs wall-clock (calibration)
@@ -98,9 +98,10 @@ never as one number.
 **Run-to-run on the same ISA (JVM only).** The benchmark workflow went green three times on
 2026-10-14 (runs 38548098942 on `fb23319`, 38554023088 on `df1c257` and 38583744715 on `1f6c629`;
 the first and the last are the data commits `afd3036` and `7d6f3de`, the middle one survives only
-as workflow artifacts). Every non-JVM cell reproduces across the three: C, PHP, Rust and Swift are
-bit-identical, C# moves at most 5.5%, Go 9% on one cell, every other runtime within 2%. The JVM
-cells do not. Across the three runs the vs-C ratio of a Kotlin cell moves x1.08 at the median and
+as workflow artifacts). Every non-JVM runtime reproduces across the three: C and PHP are bit-identical on
+all 19 cells, Rust and Swift on 35 of their 38 (the other three within 0.4%), JavaScript, Ruby and
+Perl stay within 1%, Elixir and Python within 2%, C# within 5.5% (binary-trees) and Go within 9%
+(one k-nucleotide cell). The JVM cells do not. Across the three runs the vs-C ratio of a Kotlin cell moves x1.08 at the median and
 up to x1.47 (vm), a Scala cell x1.13 and up to x1.70 (sort-search: 11.1, 18.8, 18.9), a Java cell
 x1.53 and up to x3.3 (vm: 6.18, 1.85, 1.91; gemm: 7.48, 2.30, 2.36). The geomeans: Kotlin 4.70 /
 4.74 / 4.91 and Scala 4.61 / 4.56 / 4.52, so their x1.9 above holds at geomean level; Java 4.47 /

@@ -34,7 +34,7 @@ _Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-1
 | 13 | Python | **104×** | binary-trees 11.2× | sha256 601× |
 | 14 | Perl | **146×** | binary-trees 19.0× | sha256 701× |
 
-_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured their geomeans up to 1.9× higher on x86_64 than on arm64 (single cells up to 7×) and JVM cells moving between CI runs on the same ISA, so their number here is one arm64 measurement, not a constant. Non-JVM rankings are ISA-robust and reproduce run to run within 1% ([details](docs/metric-validity.md))._
+_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured their geomeans up to 1.9× higher on x86_64 than on arm64 (single cells up to 7×) and JVM cells moving between CI runs on the same ISA, so their number here is one arm64 measurement, not a constant. Non-JVM rankings are ISA-robust and reproduce run to run ([details](docs/metric-validity.md))._
 
 **Per-family geomean** (same scale: vs C, lower is better). The flat geomean above weights every axis equally, but the axes are not independent: 13 of the 18 sit in three families whose members correlate at r ≈ 0.94-1.00, so it over-weights tight-loop execution. This view casts one vote per runtime capability instead:
 

@@ -444,7 +444,7 @@ def main():
         foot += ("\n\n_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured "
                  f"{num}JVM cells moving between CI runs on the same ISA, so their number here is "
                  f"one {ISA} measurement, not a constant. Non-JVM rankings are ISA-robust and "
-                 "reproduce run to run within 1% ([details](docs/metric-validity.md))._")
+                 "reproduce run to run ([details](docs/metric-validity.md))._")
     fam = family_md(langs, benches, ratio)
     famnote = ("\n\n**Per-family geomean** (same scale: vs C, lower is better). The flat geomean "
                "above weights every axis equally, but the axes are not independent: 13 of the 18 "

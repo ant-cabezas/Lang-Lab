@@ -83,8 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Scala are x1.9), the Go, Swift and Ruby x86_64 cells now post-date their fixes, and the JVM gemm
   cells (up to 7× between ISAs) are called out as the reason "up to 2×" describes the JVM geomean,
   not any single JVM cell. The day's three green runs also measured **JVM run-to-run variance on
-  one ISA**: every non-JVM cell reproduces within 1% (C, PHP, Rust and Swift bit-identical), while
-  JVM cells move up to 1.5× (Kotlin), 1.7× (Scala) and 3.3× (Java, whose x86_64 geomean came out
+  one ISA**: every non-JVM runtime reproduces within 2% (C and PHP bit-identical) except C# (5.5%)
+  and Go (9%), while JVM cells move up to 1.5× (Kotlin), 1.7× (Scala) and 3.3× (Java, whose x86_64 geomean came out
   as 4.47, 3.56 and 3.26, partly across a base-image change). The README, the matrix legends and
   the "not valid for" list now mark JVM ratios as ISA- **and run-**specific.
 - **Go now runs with its garbage collector on** (default `GOGC=100`; previously the whole suite
