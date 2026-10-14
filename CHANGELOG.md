@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-14
+
 ### Added
 
 - **Measurement backend** — QEMU user-mode + the TCG `insn` plugin, counting *guest*
@@ -135,4 +137,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fannkuch from 4.75× to **3.42× C**). Both checksums are unchanged; the study tables, master matrix
   and leaderboard were updated to match.
 
-[Unreleased]: https://github.com/ant-cabezas/Lang-Lab/commits/main
+[Unreleased]: https://github.com/ant-cabezas/Lang-Lab/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/ant-cabezas/Lang-Lab/releases/tag/v0.1.0
