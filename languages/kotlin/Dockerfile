@@ -24,6 +24,6 @@ COPY --from=build /app/*.jar /app/
 COPY scripts/measure.sh /usr/local/bin/measure.sh
 RUN chmod +x /usr/local/bin/measure.sh
 
-# JVM is a JIT+GC runtime (hard to measure - like the CLR/Go). Constrain and
-# characterize with /backend-doctor (e.g. -XX:+UseSerialGC, single GC thread).
+# JVM is a JIT+GC runtime (hard to measure - like the CLR/Go). Constrained via runtimeEnv
+# (JAVA_TOOL_OPTIONS=-XX:+UseSerialGC, single GC thread); see "Runtime configuration" in the README.
 CMD ["/usr/local/bin/measure.sh", "kotlin", "fannkuch", "--", "java", "-jar", "/app/fannkuch.jar"]

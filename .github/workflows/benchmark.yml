@@ -22,9 +22,10 @@ env:
   # under qemu-user for csharp/k-nucleotide at n2 — measures fine on arm64). A failure here is
   # RECORDED as an unmeasured cell ({"measured": false}) and the run stays green; a failure for any
   # cell NOT listed here still fails the job, so real regressions are not masked. Format "lang:bench".
-  # scala/message-ring: measures fine on arm64 but emits no instruction count under qemu-x86_64
-  # (run exits 0, no plugin summary — cause undiagnosed; run /backend-doctor on an x86_64 host).
-  ALLOW_NOMEASURE: "csharp:k-nucleotide scala:message-ring"
+  # scala/message-ring and kotlin/message-ring (both JVM virtual-thread ports): measure fine on
+  # arm64 but emit no instruction count under qemu-x86_64 (run exits 0, no plugin summary; the
+  # plugin logs "detected repeat execution" — cause undiagnosed, reproduce on an x86_64 host).
+  ALLOW_NOMEASURE: "csharp:k-nucleotide scala:message-ring kotlin:message-ring"
 
 # Serialize runs so the collect job's commit/push to main can't race.
 concurrency:

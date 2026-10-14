@@ -348,8 +348,9 @@ and is shown in the matrix but excluded from the geomean/leaderboard because ins
 syscall-blind for context-switch primitives),
 the measurement engine characterized empirically, CI pipelines defined. A complementary wall-clock
 **scaling track** adds multicore speedup (`T1/TP`) for the five parallelizable axes, and a
-cross-track **concurrency study** (`docs/concurrency-study.md`) ties the two together. Local, in
-development.
+cross-track **concurrency study** (`docs/concurrency-study.md`) ties the two together. Pre-1.0:
+the suite and both tracks are complete; the headline matrix is the arm64 measurement, and the
+x86_64 CI data under `results/` refreshes on every green `benchmark` run.
 
 ## License
 

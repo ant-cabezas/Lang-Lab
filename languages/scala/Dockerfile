@@ -27,5 +27,5 @@ COPY --from=build /app/*.jar /app/
 COPY scripts/measure.sh /usr/local/bin/measure.sh
 RUN chmod +x /usr/local/bin/measure.sh
 
-# JVM runtime - same measurement caveat as Kotlin. Characterize with /backend-doctor.
+# JVM runtime - same measurement caveat and SerialGC pinning as Kotlin (see the README).
 CMD ["/usr/local/bin/measure.sh", "scala", "fannkuch", "--", "java", "-jar", "/app/fannkuch.jar"]

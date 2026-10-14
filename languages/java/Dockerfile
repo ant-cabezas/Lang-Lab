@@ -31,7 +31,7 @@ COPY scripts/measure.sh /usr/local/bin/measure.sh
 RUN chmod +x /usr/local/bin/measure.sh
 
 # JVM is a JIT+GC runtime (like Kotlin/Scala/C#) - constrained via runtimeEnv
-# (JAVA_TOOL_OPTIONS=-XX:+UseSerialGC) and characterized with /backend-doctor.
+# (JAVA_TOOL_OPTIONS=-XX:+UseSerialGC); see "Runtime configuration" in the README.
 # message-ring additionally pins the virtual-thread carrier pool to 1 OS thread
 # via System.setProperty at startup (before spawning any virtual thread).
 CMD ["/usr/local/bin/measure.sh", "java", "fannkuch", "--", "java", "-jar", "/app/fannkuch.jar"]
