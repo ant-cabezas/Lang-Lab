@@ -10,25 +10,25 @@
 <text x="162.0" y="138" font-size="13" fill="#e6edf3">42.16M</text>
 <text x="120" y="177" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="161" width="34.8" height="24" rx="5" fill="#3fb950"/>
-<text x="175.8" y="178" font-size="13" fill="#e6edf3">49.96M</text>
+<text x="175.8" y="178" font-size="13" fill="#e6edf3">49.97M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="201" width="82.2" height="24" rx="5" fill="#3fb950"/>
 <text x="223.2" y="218" font-size="13" fill="#e6edf3">89.70M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="241" width="171.8" height="24" rx="5" fill="#a371f7"/>
-<text x="312.8" y="258" font-size="13" fill="#e6edf3">271.27M</text>
+<text x="312.8" y="258" font-size="13" fill="#e6edf3">271.29M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="281" width="177.7" height="24" rx="5" fill="#a371f7"/>
 <text x="318.7" y="298" font-size="13" fill="#e6edf3">291.63M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="321" width="185.8" height="24" rx="5" fill="#a371f7"/>
-<text x="326.8" y="338" font-size="13" fill="#e6edf3">322.46M</text>
+<rect x="132" y="321" width="180.5" height="24" rx="5" fill="#a371f7"/>
+<text x="321.5" y="338" font-size="13" fill="#e6edf3">301.90M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="202.1" height="24" rx="5" fill="#a371f7"/>
-<text x="343.1" y="378" font-size="13" fill="#e6edf3">394.12M</text>
+<rect x="132" y="361" width="206.5" height="24" rx="5" fill="#a371f7"/>
+<text x="347.5" y="378" font-size="13" fill="#e6edf3">416.17M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="401" width="270.7" height="24" rx="5" fill="#a371f7"/>
-<text x="411.7" y="418" font-size="13" fill="#e6edf3">919.52M</text>
+<rect x="132" y="401" width="270.1" height="24" rx="5" fill="#a371f7"/>
+<text x="411.1" y="418" font-size="13" fill="#e6edf3">912.95M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="441" width="363.8" height="24" rx="5" fill="#f0883e"/>
 <text x="504.8" y="458" font-size="13" fill="#e6edf3">2.90B</text>

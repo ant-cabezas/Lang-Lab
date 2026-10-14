@@ -15,8 +15,8 @@
 <rect x="132" y="201" width="121.5" height="24" rx="5" fill="#3fb950"/>
 <text x="262.5" y="218" font-size="13" fill="#e6edf3">20.94M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="241" width="291.5" height="24" rx="5" fill="#a371f7"/>
-<text x="432.5" y="258" font-size="13" fill="#e6edf3">139.07M</text>
+<rect x="132" y="241" width="284.7" height="24" rx="5" fill="#a371f7"/>
+<text x="425.7" y="258" font-size="13" fill="#e6edf3">128.89M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="281" width="307.7" height="24" rx="5" fill="#a371f7"/>
 <text x="448.7" y="298" font-size="13" fill="#e6edf3">166.61M</text>
@@ -24,17 +24,17 @@
 <rect x="132" y="321" width="315.2" height="24" rx="5" fill="#f0883e"/>
 <text x="456.2" y="338" font-size="13" fill="#e6edf3">181.01M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="319.5" height="24" rx="5" fill="#a371f7"/>
-<text x="460.5" y="378" font-size="13" fill="#e6edf3">189.87M</text>
+<rect x="132" y="361" width="321.5" height="24" rx="5" fill="#a371f7"/>
+<text x="462.5" y="378" font-size="13" fill="#e6edf3">194.21M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="401" width="332.6" height="24" rx="5" fill="#a371f7"/>
 <text x="473.6" y="418" font-size="13" fill="#e6edf3">219.84M</text>
-<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="441" width="438.0" height="24" rx="5" fill="#a371f7"/>
-<text x="579.0" y="458" font-size="13" fill="#e6edf3">710.77M</text>
-<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
-<rect x="132" y="481" width="438.4" height="24" rx="5" fill="#f0883e"/>
-<text x="579.4" y="498" font-size="13" fill="#e6edf3">714.18M</text>
+<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
+<rect x="132" y="441" width="438.4" height="24" rx="5" fill="#f0883e"/>
+<text x="579.4" y="458" font-size="13" fill="#e6edf3">714.22M</text>
+<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
+<rect x="132" y="481" width="438.8" height="24" rx="5" fill="#a371f7"/>
+<text x="579.8" y="498" font-size="13" fill="#e6edf3">717.00M</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="521" width="445.0" height="24" rx="5" fill="#f0883e"/>
 <text x="586.0" y="538" font-size="13" fill="#e6edf3">768.42M</text>

@@ -2,21 +2,21 @@
 <rect width="760" height="662" rx="10" fill="#0d1117"/>
 <text x="22" y="34" font-size="19" font-weight="700" fill="#e6edf3">binary-trees:relative real work (I(14)−I(10), C = 1.0×)</text>
 <text x="22" y="56" font-size="13" fill="#9aa7b4">differential cancels startup + JIT · qemu+insn · x86_64 · the fair metric · lower is better</text>
-<text x="120" y="97" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
-<rect x="132" y="81" width="10.0" height="24" rx="5" fill="#a371f7"/>
-<text x="151.0" y="98" font-size="13" fill="#e6edf3">0.39×</text>
-<text x="120" y="137" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="121" width="10.5" height="24" rx="5" fill="#a371f7"/>
-<text x="151.5" y="138" font-size="13" fill="#e6edf3">0.40×</text>
+<text x="120" y="97" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="81" width="9.4" height="24" rx="5" fill="#a371f7"/>
+<text x="150.4" y="98" font-size="13" fill="#e6edf3">0.36×</text>
+<text x="120" y="137" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
+<rect x="132" y="121" width="10.0" height="24" rx="5" fill="#a371f7"/>
+<text x="151.0" y="138" font-size="13" fill="#e6edf3">0.39×</text>
 <text x="120" y="177" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="161" width="12.6" height="24" rx="5" fill="#a371f7"/>
-<text x="153.6" y="178" font-size="13" fill="#e6edf3">0.49×</text>
-<text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="201" width="13.9" height="24" rx="5" fill="#a371f7"/>
-<text x="154.9" y="218" font-size="13" fill="#e6edf3">0.54×</text>
-<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
-<rect x="132" y="241" width="14.4" height="24" rx="5" fill="#a371f7"/>
-<text x="155.4" y="258" font-size="13" fill="#e6edf3">0.55×</text>
+<rect x="132" y="161" width="10.5" height="24" rx="5" fill="#a371f7"/>
+<text x="151.5" y="178" font-size="13" fill="#e6edf3">0.41×</text>
+<text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
+<rect x="132" y="201" width="13.6" height="24" rx="5" fill="#a371f7"/>
+<text x="154.6" y="218" font-size="13" fill="#e6edf3">0.52×</text>
+<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
+<rect x="132" y="241" width="14.3" height="24" rx="5" fill="#a371f7"/>
+<text x="155.3" y="258" font-size="13" fill="#e6edf3">0.55×</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="281" width="17.5" height="24" rx="5" fill="#a371f7"/>
 <text x="158.5" y="298" font-size="13" fill="#e6edf3">0.67×</text>
@@ -30,8 +30,8 @@
 <rect x="132" y="401" width="48.9" height="24" rx="5" fill="#3fb950"/>
 <text x="189.9" y="418" font-size="13" fill="#e6edf3">1.88×</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
-<rect x="132" y="441" width="53.9" height="24" rx="5" fill="#3fb950"/>
-<text x="194.9" y="458" font-size="13" fill="#e6edf3">2.07×</text>
+<rect x="132" y="441" width="53.8" height="24" rx="5" fill="#3fb950"/>
+<text x="194.8" y="458" font-size="13" fill="#e6edf3">2.07×</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="481" width="159.3" height="24" rx="5" fill="#f0883e"/>
 <text x="300.3" y="498" font-size="13" fill="#e6edf3">6.13×</text>

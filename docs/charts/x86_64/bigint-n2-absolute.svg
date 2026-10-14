@@ -14,21 +14,21 @@
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="201" width="67.5" height="24" rx="5" fill="#3fb950"/>
 <text x="208.5" y="218" font-size="13" fill="#e6edf3">78.35M</text>
-<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
-<rect x="132" y="241" width="180.7" height="24" rx="5" fill="#a371f7"/>
-<text x="321.7" y="258" font-size="13" fill="#e6edf3">268.68M</text>
-<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
-<rect x="132" y="281" width="198.0" height="24" rx="5" fill="#a371f7"/>
-<text x="339.0" y="298" font-size="13" fill="#e6edf3">324.39M</text>
-<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="321" width="204.8" height="24" rx="5" fill="#a371f7"/>
-<text x="345.8" y="338" font-size="13" fill="#e6edf3">349.24M</text>
+<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="241" width="177.7" height="24" rx="5" fill="#a371f7"/>
+<text x="318.7" y="258" font-size="13" fill="#e6edf3">259.93M</text>
+<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
+<rect x="132" y="281" width="180.7" height="24" rx="5" fill="#a371f7"/>
+<text x="321.7" y="298" font-size="13" fill="#e6edf3">268.66M</text>
+<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
+<rect x="132" y="321" width="198.0" height="24" rx="5" fill="#a371f7"/>
+<text x="339.0" y="338" font-size="13" fill="#e6edf3">324.40M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="219.7" height="24" rx="5" fill="#a371f7"/>
-<text x="360.7" y="378" font-size="13" fill="#e6edf3">410.66M</text>
+<rect x="132" y="361" width="220.7" height="24" rx="5" fill="#a371f7"/>
+<text x="361.7" y="378" font-size="13" fill="#e6edf3">415.19M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="401" width="294.5" height="24" rx="5" fill="#a371f7"/>
-<text x="435.5" y="418" font-size="13" fill="#e6edf3">926.67M</text>
+<rect x="132" y="401" width="294.8" height="24" rx="5" fill="#a371f7"/>
+<text x="435.8" y="418" font-size="13" fill="#e6edf3">929.98M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="441" width="345.0" height="24" rx="5" fill="#f0883e"/>
 <text x="486.0" y="458" font-size="13" fill="#e6edf3">1.61B</text>

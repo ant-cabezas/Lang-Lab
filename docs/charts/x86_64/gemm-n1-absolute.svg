@@ -15,23 +15,23 @@
 <rect x="132" y="201" width="137.9" height="24" rx="5" fill="#3fb950"/>
 <text x="278.9" y="218" font-size="13" fill="#e6edf3">46.59M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="241" width="288.6" height="24" rx="5" fill="#a371f7"/>
-<text x="429.6" y="258" font-size="13" fill="#e6edf3">229.20M</text>
+<rect x="132" y="241" width="281.9" height="24" rx="5" fill="#a371f7"/>
+<text x="422.9" y="258" font-size="13" fill="#e6edf3">213.46M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="281" width="296.6" height="24" rx="5" fill="#a371f7"/>
 <text x="437.6" y="298" font-size="13" fill="#e6edf3">249.46M</text>
-<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="321" width="306.7" height="24" rx="5" fill="#a371f7"/>
-<text x="447.7" y="338" font-size="13" fill="#e6edf3">277.59M</text>
-<text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
-<rect x="132" y="361" width="308.4" height="24" rx="5" fill="#a371f7"/>
-<text x="449.4" y="378" font-size="13" fill="#e6edf3">282.57M</text>
+<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
+<rect x="132" y="321" width="308.4" height="24" rx="5" fill="#a371f7"/>
+<text x="449.4" y="338" font-size="13" fill="#e6edf3">282.58M</text>
+<text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
+<rect x="132" y="361" width="309.7" height="24" rx="5" fill="#a371f7"/>
+<text x="450.7" y="378" font-size="13" fill="#e6edf3">286.53M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="401" width="368.9" height="24" rx="5" fill="#f0883e"/>
 <text x="509.9" y="418" font-size="13" fill="#e6edf3">535.88M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="441" width="406.0" height="24" rx="5" fill="#a371f7"/>
-<text x="547.0" y="458" font-size="13" fill="#e6edf3">793.34M</text>
+<rect x="132" y="441" width="405.2" height="24" rx="5" fill="#a371f7"/>
+<text x="546.2" y="458" font-size="13" fill="#e6edf3">786.52M</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="481" width="465.9" height="24" rx="5" fill="#f0883e"/>
 <text x="606.9" y="498" font-size="13" fill="#e6edf3">1.49B</text>

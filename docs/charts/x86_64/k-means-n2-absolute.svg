@@ -10,7 +10,7 @@
 <text x="185.3" y="138" font-size="13" fill="#e6edf3">56.70M</text>
 <text x="120" y="177" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="161" width="92.4" height="24" rx="5" fill="#3fb950"/>
-<text x="233.4" y="178" font-size="13" fill="#e6edf3">95.46M</text>
+<text x="233.4" y="178" font-size="13" fill="#e6edf3">95.47M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="201" width="133.8" height="24" rx="5" fill="#3fb950"/>
 <text x="274.8" y="218" font-size="13" fill="#e6edf3">149.52M</text>
@@ -18,17 +18,17 @@
 <rect x="132" y="241" width="198.8" height="24" rx="5" fill="#a371f7"/>
 <text x="339.8" y="258" font-size="13" fill="#e6edf3">302.63M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="281" width="249.9" height="24" rx="5" fill="#a371f7"/>
-<text x="390.9" y="298" font-size="13" fill="#e6edf3">526.61M</text>
+<rect x="132" y="281" width="241.6" height="24" rx="5" fill="#a371f7"/>
+<text x="382.6" y="298" font-size="13" fill="#e6edf3">480.94M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="321" width="254.1" height="24" rx="5" fill="#a371f7"/>
-<text x="395.1" y="338" font-size="13" fill="#e6edf3">550.78M</text>
+<rect x="132" y="321" width="259.3" height="24" rx="5" fill="#a371f7"/>
+<text x="400.3" y="338" font-size="13" fill="#e6edf3">582.91M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="361" width="289.8" height="24" rx="5" fill="#a371f7"/>
 <text x="430.8" y="378" font-size="13" fill="#e6edf3">811.39M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="401" width="318.3" height="24" rx="5" fill="#a371f7"/>
-<text x="459.3" y="418" font-size="13" fill="#e6edf3">1.10B</text>
+<rect x="132" y="401" width="321.5" height="24" rx="5" fill="#a371f7"/>
+<text x="462.5" y="418" font-size="13" fill="#e6edf3">1.14B</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="441" width="395.5" height="24" rx="5" fill="#f0883e"/>
 <text x="536.5" y="458" font-size="13" fill="#e6edf3">2.55B</text>

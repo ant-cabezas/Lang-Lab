@@ -15,8 +15,8 @@
 <rect x="132" y="201" width="113.1" height="24" rx="5" fill="#3fb950"/>
 <text x="254.1" y="218" font-size="13" fill="#e6edf3">24.62M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="241" width="295.9" height="24" rx="5" fill="#a371f7"/>
-<text x="436.9" y="258" font-size="13" fill="#e6edf3">199.52M</text>
+<rect x="132" y="241" width="287.6" height="24" rx="5" fill="#a371f7"/>
+<text x="428.6" y="258" font-size="13" fill="#e6edf3">181.50M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="281" width="309.2" height="24" rx="5" fill="#a371f7"/>
 <text x="450.2" y="298" font-size="13" fill="#e6edf3">232.32M</text>
@@ -24,14 +24,14 @@
 <rect x="132" y="321" width="311.7" height="24" rx="5" fill="#a371f7"/>
 <text x="452.7" y="338" font-size="13" fill="#e6edf3">239.14M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="319.7" height="24" rx="5" fill="#a371f7"/>
-<text x="460.7" y="378" font-size="13" fill="#e6edf3">261.83M</text>
+<rect x="132" y="361" width="321.7" height="24" rx="5" fill="#a371f7"/>
+<text x="462.7" y="378" font-size="13" fill="#e6edf3">268.09M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="401" width="375.9" height="24" rx="5" fill="#f0883e"/>
 <text x="516.9" y="418" font-size="13" fill="#e6edf3">498.17M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="441" width="414.4" height="24" rx="5" fill="#a371f7"/>
-<text x="555.4" y="458" font-size="13" fill="#e6edf3">774.49M</text>
+<rect x="132" y="441" width="414.0" height="24" rx="5" fill="#a371f7"/>
+<text x="555.0" y="458" font-size="13" fill="#e6edf3">770.49M</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="481" width="477.4" height="24" rx="5" fill="#f0883e"/>
 <text x="618.4" y="498" font-size="13" fill="#e6edf3">1.59B</text>

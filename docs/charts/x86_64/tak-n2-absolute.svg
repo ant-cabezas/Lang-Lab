@@ -12,14 +12,14 @@
 <rect x="132" y="161" width="28.5" height="24" rx="5" fill="#3fb950"/>
 <text x="169.5" y="178" font-size="13" fill="#e6edf3">44.79M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
-<rect x="132" y="201" width="93.4" height="24" rx="5" fill="#3fb950"/>
-<text x="234.4" y="218" font-size="13" fill="#e6edf3">83.09M</text>
+<rect x="132" y="201" width="93.3" height="24" rx="5" fill="#3fb950"/>
+<text x="234.3" y="218" font-size="13" fill="#e6edf3">83.09M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="241" width="179.8" height="24" rx="5" fill="#a371f7"/>
-<text x="320.8" y="258" font-size="13" fill="#e6edf3">189.35M</text>
+<rect x="132" y="241" width="172.1" height="24" rx="5" fill="#a371f7"/>
+<text x="313.1" y="258" font-size="13" fill="#e6edf3">175.91M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="281" width="203.6" height="24" rx="5" fill="#a371f7"/>
-<text x="344.6" y="298" font-size="13" fill="#e6edf3">237.46M</text>
+<rect x="132" y="281" width="208.4" height="24" rx="5" fill="#a371f7"/>
+<text x="349.4" y="298" font-size="13" fill="#e6edf3">248.56M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="321" width="218.3" height="24" rx="5" fill="#a371f7"/>
 <text x="359.3" y="338" font-size="13" fill="#e6edf3">273.27M</text>
@@ -27,8 +27,8 @@
 <rect x="132" y="361" width="220.4" height="24" rx="5" fill="#a371f7"/>
 <text x="361.4" y="378" font-size="13" fill="#e6edf3">278.87M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="401" width="335.8" height="24" rx="5" fill="#a371f7"/>
-<text x="476.8" y="418" font-size="13" fill="#e6edf3">836.86M</text>
+<rect x="132" y="401" width="335.6" height="24" rx="5" fill="#a371f7"/>
+<text x="476.6" y="418" font-size="13" fill="#e6edf3">835.04M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="441" width="358.0" height="24" rx="5" fill="#f0883e"/>
 <text x="499.0" y="458" font-size="13" fill="#e6edf3">1.03B</text>

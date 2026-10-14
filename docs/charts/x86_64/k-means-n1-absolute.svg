@@ -15,14 +15,14 @@
 <rect x="132" y="201" width="155.1" height="24" rx="5" fill="#3fb950"/>
 <text x="296.1" y="218" font-size="13" fill="#e6edf3">47.83M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="241" width="306.9" height="24" rx="5" fill="#a371f7"/>
-<text x="447.9" y="258" font-size="13" fill="#e6edf3">246.74M</text>
+<rect x="132" y="241" width="292.9" height="24" rx="5" fill="#a371f7"/>
+<text x="433.9" y="258" font-size="13" fill="#e6edf3">212.06M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="281" width="308.2" height="24" rx="5" fill="#a371f7"/>
 <text x="449.2" y="298" font-size="13" fill="#e6edf3">250.41M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="321" width="320.6" height="24" rx="5" fill="#a371f7"/>
-<text x="461.6" y="338" font-size="13" fill="#e6edf3">286.13M</text>
+<rect x="132" y="321" width="327.5" height="24" rx="5" fill="#a371f7"/>
+<text x="468.5" y="338" font-size="13" fill="#e6edf3">308.25M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="361" width="346.5" height="24" rx="5" fill="#a371f7"/>
 <text x="487.5" y="378" font-size="13" fill="#e6edf3">378.77M</text>
@@ -30,8 +30,8 @@
 <rect x="132" y="401" width="398.8" height="24" rx="5" fill="#f0883e"/>
 <text x="539.8" y="418" font-size="13" fill="#e6edf3">666.33M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="441" width="418.1" height="24" rx="5" fill="#a371f7"/>
-<text x="559.1" y="458" font-size="13" fill="#e6edf3">821.11M</text>
+<rect x="132" y="441" width="417.3" height="24" rx="5" fill="#a371f7"/>
+<text x="558.3" y="458" font-size="13" fill="#e6edf3">814.58M</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="481" width="466.6" height="24" rx="5" fill="#f0883e"/>
 <text x="607.6" y="498" font-size="13" fill="#e6edf3">1.39B</text>

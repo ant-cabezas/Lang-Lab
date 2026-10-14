@@ -17,18 +17,18 @@
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Rust</text>
 <rect x="132" y="241" width="6.6" height="24" rx="5" fill="#3fb950"/>
 <text x="147.6" y="258" font-size="13" fill="#e6edf3">1.80×</text>
-<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
-<rect x="132" y="281" width="15.8" height="24" rx="5" fill="#a371f7"/>
-<text x="156.8" y="298" font-size="13" fill="#e6edf3">4.30×</text>
-<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="321" width="17.0" height="24" rx="5" fill="#a371f7"/>
-<text x="158.0" y="338" font-size="13" fill="#e6edf3">4.64×</text>
+<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="281" width="14.3" height="24" rx="5" fill="#a371f7"/>
+<text x="155.3" y="298" font-size="13" fill="#e6edf3">3.89×</text>
+<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
+<rect x="132" y="321" width="15.8" height="24" rx="5" fill="#a371f7"/>
+<text x="156.8" y="338" font-size="13" fill="#e6edf3">4.30×</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="17.5" height="24" rx="5" fill="#a371f7"/>
-<text x="158.5" y="378" font-size="13" fill="#e6edf3">4.77×</text>
+<rect x="132" y="361" width="17.4" height="24" rx="5" fill="#a371f7"/>
+<text x="158.4" y="378" font-size="13" fill="#e6edf3">4.74×</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="401" width="17.8" height="24" rx="5" fill="#a371f7"/>
-<text x="158.8" y="418" font-size="13" fill="#e6edf3">4.85×</text>
+<rect x="132" y="401" width="17.5" height="24" rx="5" fill="#a371f7"/>
+<text x="158.5" y="418" font-size="13" fill="#e6edf3">4.77×</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="441" width="97.0" height="24" rx="5" fill="#f0883e"/>
 <text x="238.0" y="458" font-size="13" fill="#e6edf3">26.44×</text>
@@ -43,5 +43,5 @@
 <text x="623.0" y="578" font-size="13" fill="#e6edf3">131.36×</text>
 <text x="120" y="617" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
 <rect x="132" y="601" width="532.0" height="24" rx="5" fill="#f0883e"/>
-<text x="673.0" y="618" font-size="13" fill="#e6edf3">144.97×</text>
+<text x="673.0" y="618" font-size="13" fill="#e6edf3">144.98×</text>
 </svg>

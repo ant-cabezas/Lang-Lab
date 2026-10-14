@@ -10,22 +10,22 @@
 <text x="170.1" y="138" font-size="13" fill="#e6edf3">395.65M</text>
 <text x="120" y="177" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="161" width="96.8" height="24" rx="5" fill="#3fb950"/>
-<text x="237.8" y="178" font-size="13" fill="#e6edf3">764.27M</text>
+<text x="237.8" y="178" font-size="13" fill="#e6edf3">764.30M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="201" width="100.6" height="24" rx="5" fill="#a371f7"/>
 <text x="241.6" y="218" font-size="13" fill="#e6edf3">793.54M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="241" width="109.4" height="24" rx="5" fill="#3fb950"/>
 <text x="250.4" y="258" font-size="13" fill="#e6edf3">864.08M</text>
-<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="281" width="145.7" height="24" rx="5" fill="#a371f7"/>
-<text x="286.7" y="298" font-size="13" fill="#e6edf3">1.23B</text>
-<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="321" width="158.4" height="24" rx="5" fill="#a371f7"/>
-<text x="299.4" y="338" font-size="13" fill="#e6edf3">1.39B</text>
+<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="281" width="137.2" height="24" rx="5" fill="#a371f7"/>
+<text x="278.2" y="298" font-size="13" fill="#e6edf3">1.13B</text>
+<text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
+<rect x="132" y="321" width="153.1" height="24" rx="5" fill="#a371f7"/>
+<text x="294.1" y="338" font-size="13" fill="#e6edf3">1.32B</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="361" width="186.6" height="24" rx="5" fill="#a371f7"/>
-<text x="327.6" y="378" font-size="13" fill="#e6edf3">1.83B</text>
+<rect x="132" y="361" width="182.3" height="24" rx="5" fill="#a371f7"/>
+<text x="323.3" y="378" font-size="13" fill="#e6edf3">1.76B</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="401" width="203.2" height="24" rx="5" fill="#a371f7"/>
 <text x="344.2" y="418" font-size="13" fill="#e6edf3">2.15B</text>

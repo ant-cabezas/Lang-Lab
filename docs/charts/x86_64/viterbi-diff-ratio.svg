@@ -18,14 +18,14 @@
 <rect x="132" y="241" width="6.9" height="24" rx="5" fill="#3fb950"/>
 <text x="147.9" y="258" font-size="13" fill="#e6edf3">1.95×</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="281" width="14.2" height="24" rx="5" fill="#a371f7"/>
-<text x="155.2" y="298" font-size="13" fill="#e6edf3">4.00×</text>
+<rect x="132" y="281" width="12.3" height="24" rx="5" fill="#a371f7"/>
+<text x="153.3" y="298" font-size="13" fill="#e6edf3">3.46×</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="321" width="15.0" height="24" rx="5" fill="#a371f7"/>
-<text x="156.0" y="338" font-size="13" fill="#e6edf3">4.21×</text>
+<rect x="132" y="321" width="14.1" height="24" rx="5" fill="#a371f7"/>
+<text x="155.1" y="338" font-size="13" fill="#e6edf3">3.97×</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="361" width="16.0" height="24" rx="5" fill="#a371f7"/>
-<text x="157.0" y="378" font-size="13" fill="#e6edf3">4.50×</text>
+<rect x="132" y="361" width="17.0" height="24" rx="5" fill="#a371f7"/>
+<text x="158.0" y="378" font-size="13" fill="#e6edf3">4.79×</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="401" width="20.4" height="24" rx="5" fill="#a371f7"/>
 <text x="161.4" y="418" font-size="13" fill="#e6edf3">5.73×</text>
@@ -34,7 +34,7 @@
 <text x="246.4" y="458" font-size="13" fill="#e6edf3">29.65×</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
 <rect x="132" y="481" width="124.8" height="24" rx="5" fill="#a371f7"/>
-<text x="265.8" y="498" font-size="13" fill="#e6edf3">35.11×</text>
+<text x="265.8" y="498" font-size="13" fill="#e6edf3">35.10×</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="521" width="213.0" height="24" rx="5" fill="#f0883e"/>
 <text x="354.0" y="538" font-size="13" fill="#e6edf3">59.89×</text>
