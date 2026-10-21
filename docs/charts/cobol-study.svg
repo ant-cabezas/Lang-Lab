@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="732" height="678" viewBox="0 0 732 678" font-family="ui-sans-serif,system-ui,Segoe UI,Helvetica,Arial">
+<rect width="732" height="678" rx="10" fill="#0d1117"/>
+<text x="22" y="34" font-size="19" font-weight="700" fill="#e6edf3">Lang Lab · COBOL side study</text>
+<text x="22" y="54" font-size="12.5" fill="#9aa7b4">instructions vs C (= 1.00×, lower is better), differential I(n₂)−I(n₁), full spec sizes · qemu+insn · arm64 · 2026-10-21</text>
+<text x="22" y="72" font-size="12" fill="#9aa7b4">not ranked, not in the matrix: 3 axes (sha256, k-nucleotide, bigint) need hand-rolled machinery and are excluded</text>
+<text x="246.0" y="88" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GnuCOBOL 3.2</text>
+<text x="246.0" y="104" text-anchor="middle" font-size="11" fill="#9aa7b4">natural code</text>
+<text x="378.0" y="88" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GnuCOBOL 3.2</text>
+<text x="378.0" y="104" text-anchor="middle" font-size="11" fill="#9aa7b4">best variant</text>
+<text x="510.0" y="88" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">gcobol 15.2</text>
+<text x="510.0" y="104" text-anchor="middle" font-size="11" fill="#9aa7b4">natural code</text>
+<text x="642.0" y="88" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">gcobol 15.2</text>
+<text x="642.0" y="104" text-anchor="middle" font-size="11" fill="#9aa7b4">restricted subset</text>
+<text x="170" y="136.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">binary-trees</text>
+<rect x="180" y="118" width="132" height="28" fill="#f54026" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="136.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">182×</text>
+<rect x="312" y="118" width="132" height="28" fill="#f54026" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="136.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">182×</text>
+<rect x="444" y="118" width="132" height="28" fill="#fd9d43" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="136.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">25.4×</text>
+<rect x="576" y="118" width="132" height="28" fill="#fea446" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="136.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">18.1×</text>
+<text x="170" y="164.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">blur</text>
+<rect x="180" y="146" width="132" height="28" fill="#f84528" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="164.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">148×</text>
+<rect x="312" y="146" width="132" height="28" fill="#f84628" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="164.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">144×</text>
+<rect x="444" y="146" width="132" height="28" fill="#e7221e" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="164.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">708×</text>
+<rect x="576" y="146" width="132" height="28" fill="#fed471" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="164.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.46×</text>
+<text x="170" y="192.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">dijkstra</text>
+<rect x="180" y="174" width="132" height="28" fill="#ee3022" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="192.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">380×</text>
+<rect x="312" y="174" width="132" height="28" fill="#ee3022" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="192.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">379×</text>
+<rect x="444" y="174" width="132" height="28" fill="#e9271f" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="192.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">570×</text>
+<rect x="576" y="174" width="132" height="28" fill="#fec45f" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="192.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">7.31×</text>
+<text x="170" y="220.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">fannkuch</text>
+<rect x="180" y="202" width="132" height="28" fill="#fd9c42" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="220.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">26.3×</text>
+<rect x="312" y="202" width="132" height="28" fill="#fdf1a7" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="220.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">1.63× bin</text>
+<rect x="444" y="202" width="132" height="28" fill="#f33c25" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="220.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">219×</text>
+<rect x="576" y="202" width="132" height="28" fill="#fed36f" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="220.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.60×</text>
+<text x="170" y="248.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">gbdt</text>
+<rect x="180" y="230" width="132" height="28" fill="#f84528" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="248.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">151×</text>
+<rect x="312" y="230" width="132" height="28" fill="#ffe48d" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="248.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">3.04× bin</text>
+<rect x="444" y="230" width="132" height="28" fill="#e7211e" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="248.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">718×</text>
+<rect x="576" y="230" width="132" height="28" fill="#fed470" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="248.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.52×</text>
+<text x="170" y="276.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">gemm</text>
+<rect x="180" y="258" width="132" height="28" fill="#e7221e" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="276.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">698×</text>
+<rect x="312" y="258" width="132" height="28" fill="#e7221e" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="276.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">698×</text>
+<rect x="444" y="258" width="132" height="28" fill="#df181d" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="276.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">1,209×</text>
+<rect x="576" y="258" width="132" height="28" fill="#fec762" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="276.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">6.95×</text>
+<text x="170" y="304.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">k-means</text>
+<rect x="180" y="286" width="132" height="28" fill="#ed2f22" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="304.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">400×</text>
+<rect x="312" y="286" width="132" height="28" fill="#ed2f22" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="304.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">393×</text>
+<rect x="444" y="286" width="132" height="28" fill="#e51e1d" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="304.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">850×</text>
+<rect x="576" y="286" width="132" height="28" fill="#fec762" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="304.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">6.93×</text>
+<text x="170" y="332.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">lz77</text>
+<rect x="180" y="314" width="132" height="28" fill="#f43d26" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="332.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">209×</text>
+<rect x="312" y="314" width="132" height="28" fill="#fed976" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="332.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.02× bin</text>
+<rect x="444" y="314" width="132" height="28" fill="#ee3022" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="332.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">371×</text>
+<rect x="576" y="314" width="132" height="28" fill="#fed774" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="332.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.21×</text>
+<text x="170" y="360.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">mandelbrot</text>
+<rect x="180" y="342" width="132" height="28" fill="#b90424" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">6,937×</text>
+<rect x="312" y="342" width="132" height="28" fill="#b90424" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">6,936×</text>
+<rect x="444" y="342" width="132" height="28" fill="#161b22" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="360.0" text-anchor="middle" font-size="10.5" fill="#9aa7b4">wrong answer</text>
+<rect x="576" y="342" width="132" height="28" fill="#ea2820" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="360.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">529×</text>
+<text x="170" y="388.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">polymorphism</text>
+<rect x="180" y="370" width="132" height="28" fill="#f53f26" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">193×</text>
+<rect x="312" y="370" width="132" height="28" fill="#f53f26" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">193×</text>
+<rect x="444" y="370" width="132" height="28" fill="#ef3323" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">324×</text>
+<rect x="576" y="370" width="132" height="28" fill="#fd9d43" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="388.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">24.5×</text>
+<text x="170" y="416.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">reverse-complement</text>
+<rect x="180" y="398" width="132" height="28" fill="#f43d25" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="416.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">210×</text>
+<rect x="312" y="398" width="132" height="28" fill="#f43d25" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="416.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">210×</text>
+<rect x="444" y="398" width="132" height="28" fill="#f13624" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="416.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">288×</text>
+<rect x="576" y="398" width="132" height="28" fill="#fecc68" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="416.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">6.34×</text>
+<text x="170" y="444.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">sort-search</text>
+<rect x="180" y="426" width="132" height="28" fill="#f03623" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="444.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">294×</text>
+<rect x="312" y="426" width="132" height="28" fill="#f03623" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="444.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">293×</text>
+<rect x="444" y="426" width="132" height="28" fill="#e8251f" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="444.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">626×</text>
+<rect x="576" y="426" width="132" height="28" fill="#fecd69" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="444.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">6.25×</text>
+<text x="170" y="472.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">tak</text>
+<rect x="180" y="454" width="132" height="28" fill="#f33c25" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="472.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">219×</text>
+<rect x="312" y="454" width="132" height="28" fill="#f74327" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="472.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">159× bin</text>
+<rect x="444" y="454" width="132" height="28" fill="#f64127" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="472.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">177×</text>
+<rect x="576" y="454" width="132" height="28" fill="#fd7736" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="472.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">63.9×</text>
+<text x="170" y="500.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">viterbi</text>
+<rect x="180" y="482" width="132" height="28" fill="#f94828" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">133×</text>
+<rect x="312" y="482" width="132" height="28" fill="#feb14c" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">10.3× bin</text>
+<rect x="444" y="482" width="132" height="28" fill="#e8241f" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">634×</text>
+<rect x="576" y="482" width="132" height="28" fill="#fed370" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="500.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">5.53×</text>
+<text x="170" y="528.0" text-anchor="end" font-size="12.5" font-weight="600" fill="#e6edf3">vm</text>
+<rect x="180" y="510" width="132" height="28" fill="#fd8d3c" stroke="#0d1117" stroke-width="1"/>
+<text x="246.0" y="528.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">49.3×</text>
+<rect x="312" y="510" width="132" height="28" fill="#fd8d3c" stroke="#0d1117" stroke-width="1"/>
+<text x="378.0" y="528.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">49.3×</text>
+<rect x="444" y="510" width="132" height="28" fill="#f03523" stroke="#0d1117" stroke-width="1"/>
+<text x="510.0" y="528.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#ffffff">298×</text>
+<rect x="576" y="510" width="132" height="28" fill="#feda77" stroke="#0d1117" stroke-width="1"/>
+<text x="642.0" y="528.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0d1117">4.88×</text>
+<text x="170" y="562.0" text-anchor="end" font-size="12" font-weight="700" fill="#e6edf3">geomean (14 common)</text>
+<rect x="180" y="544" width="132" height="28" fill="#f64126" stroke="#0d1117" stroke-width="1.5"/>
+<text x="246.0" y="562.0" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">181×</text>
+<rect x="312" y="544" width="132" height="28" fill="#fd6f33" stroke="#0d1117" stroke-width="1.5"/>
+<text x="378.0" y="562.0" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">69.8×</text>
+<rect x="444" y="544" width="132" height="28" fill="#ee3022" stroke="#0d1117" stroke-width="1.5"/>
+<text x="510.0" y="562.0" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">378×</text>
+<rect x="576" y="544" width="132" height="28" fill="#febc56" stroke="#0d1117" stroke-width="1.5"/>
+<text x="642.0" y="562.0" text-anchor="middle" font-size="12" font-weight="700" fill="#0d1117">8.45×</text>
+<defs><linearGradient id="ramp" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0.000" stop-color="#238443"/>
+<stop offset="0.050" stop-color="#41ab5d"/>
+<stop offset="0.075" stop-color="#addd8e"/>
+<stop offset="0.100" stop-color="#f7fcb9"/>
+<stop offset="0.150" stop-color="#ffeda0"/>
+<stop offset="0.217" stop-color="#fed976"/>
+<stop offset="0.267" stop-color="#feb24c"/>
+<stop offset="0.383" stop-color="#fd8d3c"/>
+<stop offset="0.433" stop-color="#fc4e2a"/>
+<stop offset="0.600" stop-color="#e31a1c"/>
+<stop offset="0.767" stop-color="#b10026"/>
+<stop offset="1.000" stop-color="#800026"/>
+</linearGradient></defs>
+<rect x="180" y="596" width="528" height="12" rx="3" fill="url(#ramp)"/>
+<line x1="232.8" y1="596" x2="232.8" y2="608" stroke="#0d1117" stroke-width="1"/>
+<text x="232.8" y="622" text-anchor="middle" font-size="10" fill="#9aa7b4">1× (C)</text>
+<line x1="320.8" y1="596" x2="320.8" y2="608" stroke="#0d1117" stroke-width="1"/>
+<text x="320.8" y="622" text-anchor="middle" font-size="10" fill="#9aa7b4">10×</text>
+<line x1="408.8" y1="596" x2="408.8" y2="608" stroke="#0d1117" stroke-width="1"/>
+<text x="408.8" y="622" text-anchor="middle" font-size="10" fill="#9aa7b4">100×</text>
+<line x1="496.8" y1="596" x2="496.8" y2="608" stroke="#0d1117" stroke-width="1"/>
+<text x="496.8" y="622" text-anchor="middle" font-size="10" fill="#9aa7b4">1k×</text>
+<line x1="584.8" y1="596" x2="584.8" y2="608" stroke="#0d1117" stroke-width="1"/>
+<text x="584.8" y="622" text-anchor="middle" font-size="10" fill="#9aa7b4">10k×</text>
+<text x="180" y="642" font-size="10" fill="#9aa7b4">restricted subset = sources rewritten to avoid slow paths (not idiomatic COBOL).</text>
+<text x="180" y="656" font-size="10" fill="#9aa7b4">best variant = -fnotrunc, lower of original and -bin. geomean: only benchmarks correct in all four columns.</text>
+</svg>

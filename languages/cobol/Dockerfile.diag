@@ -1,0 +1,8 @@
+# Diagnostic layer (COBOL side study only): adds valgrind/callgrind on top of a study image so the instruction
+# attribution (libcob decimal/GMP helpers vs libgcobol vs libc vs inline code) can be measured NATIVELY inside
+# the container. Diagnostic only: callgrind never produces a metric of the study.
+#   docker build -f languages/cobol/Dockerfile.diag --build-arg BASE=lang-lab-cobol:gnucobol32 -t lang-lab-cobol-diag:gnucobol32 .
+ARG BASE
+FROM ${BASE}
+RUN apt-get update && apt-get install -y --no-install-recommends valgrind \
+    && rm -rf /var/lib/apt/lists/*

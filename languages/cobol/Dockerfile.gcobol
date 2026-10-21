@@ -1,0 +1,49 @@
+# EXPERIMENTAL (COBOL side study only; never in languages.json / matrix / CI).
+# GCC's own COBOL front end (gcobol, in GCC since 15) instead of GnuCOBOL 3.2.
+# Build context = repo root:
+#   docker build -f languages/cobol/Dockerfile.gcobol -t lang-lab-cobol:gcobol .
+# gcobol is NOT packaged in Debian bookworm/trixie; Ubuntu 26.04 (glibc 2.43) ships it for arm64
+# and amd64. Pin = the apt package version below (recorded via `gcobol-${GCOBOL_VER} --version`).
+# Default: GCC 15.2 on Ubuntu 26.04. GCC 16.2 variant (Debian forky, arm64+amd64):
+#   --build-arg BASE_IMAGE=debian:forky-slim --build-arg GCOBOL_VER=16 --build-arg GCOBOL_PKG=16.2.0-3
+ARG BASE_IMAGE=ubuntu:26.04
+FROM ${BASE_IMAGE}
+ARG GCOBOL_VER=15
+ARG GCOBOL_PKG=15.2.0-16ubuntu1
+# Flags: -ffree-form (source format); -fno-strict-aliasing because gcobol 15.2 and 16.2 miscompile tight inline-arithmetic
+# loops at plain -O2 (the sort-search-gc partition loop spins forever; minimal reproducer in
+# languages/cobol/repro/repro-strict-aliasing.cob; correct at -O0/-O1 and at -O2 -fno-strict-aliasing);
+# -Wl,--export-dynamic because libgcobol resolves CALL targets (a FUNCTION-POINTER set with SET ... TO ENTRY, and
+# any dynamic CALL) with dlsym against the executable's own symbols, and otherwise fails with "CALL xxx not found".
+ARG GCOBOL_FLAGS="-O2 -fno-strict-aliasing -ffree-form -Wl,--export-dynamic"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      gcobol-${GCOBOL_VER}=${GCOBOL_PKG} libgcobol-${GCOBOL_VER}-dev=${GCOBOL_PKG} gcc valgrind binutils \
+    && rm -rf /var/lib/apt/lists/*
+ENV LANG_VERSION=gcobol-${GCOBOL_PKG}
+COPY --from=lang-lab-qemu-insn /plugin/qemu-aarch64 /opt/qi/qemu-aarch64
+COPY --from=lang-lab-qemu-insn /plugin/libinsn.so   /opt/qi/libinsn.so
+COPY --from=lang-lab-qemu-insn /plugin/lib          /opt/qi/lib
+WORKDIR /app
+COPY languages/cobol/*.cob /app/
+# gcobol-tuned variants (hand-written for gcobol's inline-arithmetic rules; already use COMMAND-LINE)
+COPY languages/cobol/gcobol/*.cob /app/
+# gcobol porting patches (sources under languages/cobol/ are untouched; patched copies are built):
+#  1. argv: gcobol's ACCEPT FROM ARGUMENT-VALUE returns argv[0] and ignores DISPLAY..UPON ARGUMENT-NUMBER,
+#     so read the size with ACCEPT FROM COMMAND-LINE (the benchmark passes exactly one argument).
+#     (verified with a probe program: argc=3 for two args, ARGUMENT-VALUE=argv[0], COMMAND-LINE="77 88").
+#  2. gcobol rejects `MOVE NULL TO ptr` ("unexpected NULLS") and `MOVE ptr TO ptr` ("not ISO syntax,
+#     requires -dialect mf"): use `SET ptr TO NULL` / `SET a TO b` (three MOVE-pointer sites, binary-trees only).
+#  3. Needed by GCC 16 (applied to both builds): dijkstra's `PIC S9(18) COMP-5 VALUE 4611686018427387904` (19 digits) is rejected
+#     ("VALUE has too many integer digits"; GCC 15 accepted it): widen the PICTURE to S9(19).
+RUN sed -i -e '/DISPLAY 1 UPON ARGUMENT-NUMBER/d' \
+           -e 's/ACCEPT WS-ARG FROM ARGUMENT-VALUE/ACCEPT WS-ARG FROM COMMAND-LINE/' \
+           -e 's/MOVE WS-PTR TO WS-LONG-LIVED/SET WS-LONG-LIVED TO WS-PTR/' \
+           -e 's/MOVE LK-PTR TO LS-SELF/SET LS-SELF TO LK-PTR/' \
+           -e 's/MOVE NULL TO \([A-Z-]*\)/SET \1 TO NULL/' \
+           -e 's/K-INF           PIC S9(18) COMP-5/K-INF           PIC S9(19) COMP-5/' /app/*.cob
+RUN gcobol-${GCOBOL_VER} --version | head -1 | tee /app/COBC_VERSION \
+    && echo "gcobol-${GCOBOL_VER} ${GCOBOL_FLAGS}" | tee /app/COBC_FLAGS
+# per-file: failures are tolerated here (recorded) so the study can see which sources gcobol rejects
+RUN for f in /app/*.cob; do b=$(basename "$f" .cob); gcobol-${GCOBOL_VER} ${GCOBOL_FLAGS} "$f" -o "/app/$b" 2> "/app/$b.err" && echo "OK $b" || echo "FAIL $b" ; done | tee /app/BUILD_STATUS
+COPY scripts/measure.sh /usr/local/bin/measure.sh
+RUN chmod +x /usr/local/bin/measure.sh

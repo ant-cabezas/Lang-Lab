@@ -149,6 +149,11 @@ methodology meets the hard runtimes early.
 | Speculative JIT with deopts | **JavaScript** (Node.js / V8) |
 | Actor VM (BEAM) | **Elixir** |
 
+COBOL is not in the matrix (it was removed in v0.1.0). It has its own side study, outside the
+ranking: two compilers on the 15 benchmarks that need no hand-rolled machinery, with C measured at the
+same sizes (instructions vs C, lower is better). Natural COBOL costs 25x to about 7,000x C; a restricted subset on GCC's gcobol reaches about
+5x to 7x C on integer loops. See [docs/cobol-study.md](docs/cobol-study.md).
+
 ## The measurement engine
 
 Measuring instructions **uniformly and comparably** across all those runtimes was the core
@@ -347,6 +352,8 @@ docs/charts/matrix-x86_64.svg    the master matrix rendered from the x86_64 CI d
 docs/scaling-track.md            scaling track: fairness rulebook
 docs/concurrency-study.md        cross-track concurrency study (per language)
 docs/metric-validity.md          empirical validity of the instruction metric (calibration + cross-ISA)
+docs/cobol-study.md              COBOL side study (two compilers, outside the ranking)
+results/cobol/                   COBOL side-study results
 ```
 
 ## Status

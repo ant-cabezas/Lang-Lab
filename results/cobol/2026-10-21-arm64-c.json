@@ -1,0 +1,177 @@
+{
+ "study": "cobol-side-study",
+ "kind": "c-baseline",
+ "date": "2026-10-21",
+ "isa": "arm64",
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "compiler": "gcc 14",
+ "compilerVersion": "gcc (GCC) 14.4.0",
+ "flags": "gcc -O2",
+ "results": [
+  {
+   "benchmark": "binary-trees",
+   "status": "ok",
+   "n1": 10,
+   "n2": 14,
+   "i_n1": 33702168,
+   "i_n2": 800415744,
+   "differential": 766713576,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "blur",
+   "status": "ok",
+   "n1": 128,
+   "n2": 256,
+   "i_n1": 12232563,
+   "i_n2": 48656488,
+   "differential": 36423925,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "dijkstra",
+   "status": "ok",
+   "n1": 5000,
+   "n2": 20000,
+   "i_n1": 5168760,
+   "i_n2": 21737239,
+   "differential": 16568479,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "fannkuch",
+   "status": "ok",
+   "n1": 7,
+   "n2": 9,
+   "i_n1": 979774,
+   "i_n2": 83824916,
+   "differential": 82845142,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "gbdt",
+   "status": "ok",
+   "n1": 5000,
+   "n2": 20000,
+   "i_n1": 113465521,
+   "i_n2": 450515566,
+   "differential": 337050045,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "gemm",
+   "status": "ok",
+   "n1": 128,
+   "n2": 256,
+   "i_n1": 15330864,
+   "i_n2": 119763506,
+   "differential": 104432642,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "k-means",
+   "status": "ok",
+   "n1": 2000,
+   "n2": 8000,
+   "i_n1": 14796242,
+   "i_n2": 58890473,
+   "differential": 44094231,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "lz77",
+   "status": "ok",
+   "n1": 6000,
+   "n2": 24000,
+   "i_n1": 11075195,
+   "i_n2": 45250367,
+   "differential": 34175172,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "mandelbrot",
+   "status": "ok",
+   "n1": 128,
+   "n2": 256,
+   "i_n1": 4729310,
+   "i_n2": 18649760,
+   "differential": 13920450,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "polymorphism",
+   "status": "ok",
+   "n1": 50,
+   "n2": 200,
+   "i_n1": 12327673,
+   "i_n2": 47839460,
+   "differential": 35511787,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "reverse-complement",
+   "status": "ok",
+   "n1": 100000,
+   "n2": 400000,
+   "i_n1": 3840365,
+   "i_n2": 15090544,
+   "differential": 11250179,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "sort-search",
+   "status": "ok",
+   "n1": 50000,
+   "n2": 200000,
+   "i_n1": 15547139,
+   "i_n2": 68245878,
+   "differential": 52698739,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "tak",
+   "status": "ok",
+   "n1": 6,
+   "n2": 8,
+   "i_n1": 1371939,
+   "i_n2": 50389416,
+   "differential": 49017477,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "viterbi",
+   "status": "ok",
+   "n1": 20000,
+   "n2": 80000,
+   "i_n1": 16632472,
+   "i_n2": 66252406,
+   "differential": 49619934,
+   "runs": 2,
+   "determinism": "exact"
+  },
+  {
+   "benchmark": "vm",
+   "status": "ok",
+   "n1": 200000,
+   "n2": 800000,
+   "i_n1": 54888917,
+   "i_n2": 219288917,
+   "differential": 164400000,
+   "runs": 2,
+   "determinism": "exact"
+  }
+ ]
+}

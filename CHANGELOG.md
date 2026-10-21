@@ -21,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **VB.NET** (.NET 9, same CLR and runtime pinning as C#): all 19 benchmarks with bit-exact
   reference checksums. Measured with Visual Basic's default integer overflow checks on, so the
   gap to C# on the same runtime (1.0x to 2.2x per axis) is the cost of that language default.
+- **COBOL side study** (`docs/cobol-study.md`, `results/cobol/`, `scripts/cobol-study.sh`), outside
+  the matrix; COBOL remains removed from the ranking since 0.1.0. GnuCOBOL 3.2 and GCC's gcobol 15.2
+  on the 15 benchmarks that need no hand-rolled machinery, measured at full size with C at the same
+  sizes (lower is better): natural COBOL costs 25x to about 7,000x C on both compilers; a restricted
+  single-verb subset on gcobol reaches about 5x to 7x C on integer loops, while calls and floats stay
+  far from C. Also documents two gcobol miscompiles, with reproducers.
 - **Language admission memos** in `docs/fairness-audit.md`: the binding fairness rules each new
   language was implemented against, and the closing audit that cleared all three ports.
 

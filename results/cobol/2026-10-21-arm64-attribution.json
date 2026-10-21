@@ -1,0 +1,2075 @@
+{
+ "study": "cobol-side-study",
+ "kind": "attribution",
+ "date": "2026-10-21",
+ "isa": "arm64",
+ "diagnostic": true,
+ "note": "callgrind at reduced sizes, native inside the study image; DIAGNOSTIC ONLY, never the metric",
+ "results": [
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "binary-trees",
+   "source": "binary-trees",
+   "sizes": [
+    10,
+    12
+   ],
+   "dIr": 12964821849,
+   "share": {
+    "dec": 0.04857745022146814,
+    "cobother": 0.489564707631487,
+    "gcobol": 0.0,
+    "libc": 0.45317177107629686,
+    "user": 0.008686071070747961
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_free_alloc",
+     "share": 0.4472027018595094
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_free",
+     "share": 0.11026871419064418
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_malloc",
+     "share": 0.10018807486353452
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "blur",
+   "source": "blur",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 141596274,
+   "share": {
+    "dec": 0.898984679497993,
+    "cobother": 0.06233518545834052,
+    "gcobol": 0.0,
+    "libc": 0.03672799328038816,
+    "user": 0.0019521417632783191
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.1723477412972039
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1547954220885784
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set_si",
+     "share": 0.08424718859480723
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "dijkstra",
+   "source": "dijkstra",
+   "sizes": [
+    1250,
+    1875
+   ],
+   "dIr": 247614462,
+   "share": {
+    "dec": 0.7758212926997777,
+    "cobother": 0.15396332545390665,
+    "gcobol": 0.0,
+    "libc": 0.0692532571057986,
+    "user": 0.0009621247405169736
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.14889791857149282
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1318682145471778
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.057580869408185055
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "fannkuch",
+   "source": "fannkuch",
+   "sizes": [
+    7,
+    8
+   ],
+   "dIr": 203968082,
+   "share": {
+    "dec": 0.6970683383687454,
+    "cobother": 0.20555637229554377,
+    "gcobol": 0.0,
+    "libc": 0.06296077246046762,
+    "user": 0.03441451687524325
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_move",
+     "share": 0.17183977834335865
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1421501085645351
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.0877769934611632
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "gemm",
+   "source": "gemm",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 413764881,
+   "share": {
+    "dec": 0.7406984886182256,
+    "cobother": 0.17084645228747677,
+    "gcobol": 0.0,
+    "libc": 0.08486875182623341,
+    "user": 0.0035863072680641546
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.155663433407728
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.15338976533390228
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.07451095396373188
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "k-means",
+   "source": "k-means",
+   "sizes": [
+    500,
+    750
+   ],
+   "dIr": 743175978,
+   "share": {
+    "dec": 0.7407313897328366,
+    "cobother": 0.17285661781710604,
+    "gcobol": 0.0,
+    "libc": 0.0819906600910074,
+    "user": 0.004421332359049958
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1572987737232809
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.1320184517589453
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.07102180582053205
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "lz77",
+   "source": "lz77",
+   "sizes": [
+    1500,
+    3000
+   ],
+   "dIr": 590169354,
+   "share": {
+    "dec": 0.6876075168077941,
+    "cobother": 0.21711521638922648,
+    "gcobol": 0.0,
+    "libc": 0.08718961540656345,
+    "user": 0.008087651396415952
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.16075680710455867
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.12447099718430991
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.0769388035692548
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "mandelbrot",
+   "source": "mandelbrot",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 2681290840,
+   "share": {
+    "dec": 0.9778916240209138,
+    "cobother": 0.0013465581376468656,
+    "gcobol": 0.0,
+    "libc": 0.020593750284844146,
+    "user": 0.00016806755659524053
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set_str",
+     "share": 0.14074129682999997
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "0x0000000000034030",
+     "share": 0.11684818495855526
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpn_sbpi1_div_q",
+     "share": 0.10236647957220486
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "polymorphism",
+   "source": "polymorphism",
+   "sizes": [
+    10,
+    20
+   ],
+   "dIr": 460064755,
+   "share": {
+    "dec": 0.7748196446824099,
+    "cobother": 0.14367189679635425,
+    "gcobol": 0.0,
+    "libc": 0.0543358271380732,
+    "user": 0.027172631383162574
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.1686729077953385
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.10330171890693952
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.04175699136092266
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "reverse-complement",
+   "source": "reverse-complement",
+   "sizes": [
+    25000,
+    50000
+   ],
+   "dIr": 198515056,
+   "share": {
+    "dec": 0.8489603075748572,
+    "cobother": 0.09314234583799025,
+    "gcobol": 0.0,
+    "libc": 0.05461762053957257,
+    "user": 0.0032797260475799883
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.18113243259493628
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1196382807357443
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.051939355169111204
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "sort-search",
+   "source": "sort-search",
+   "sizes": [
+    12500,
+    25000
+   ],
+   "dIr": 1154464887,
+   "share": {
+    "dec": 0.7919470520890776,
+    "cobother": 0.1447063266117335,
+    "gcobol": 0.0,
+    "libc": 0.05774678446326796,
+    "user": 0.005599836835921022
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.12388354345852011
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.12198835112773768
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.06294592223487867
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "tak",
+   "source": "tak",
+   "sizes": [
+    6,
+    7
+   ],
+   "dIr": 1469536315,
+   "share": {
+    "dec": 0.12451324416572856,
+    "cobother": 0.07294872532632853,
+    "gcobol": 0.0,
+    "libc": 0.7811789217335537,
+    "user": 0.02135910877438915
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libc.so.6",
+     "function": "_int_free",
+     "share": 0.1818527090975632
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_malloc",
+     "share": 0.16579751416350674
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_malloc",
+     "share": 0.11141390132982185
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "viterbi",
+   "source": "viterbi",
+   "sizes": [
+    5000,
+    7500
+   ],
+   "dIr": 277231501,
+   "share": {
+    "dec": 0.8308809863565974,
+    "cobother": 0.10990108948694109,
+    "gcobol": 0.0,
+    "libc": 0.05230132199154381,
+    "user": 0.006916602164917759
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.16487799847824652
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.14970115174609974
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set_si",
+     "share": 0.07736314207670072
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "vm",
+   "source": "vm",
+   "sizes": [
+    50000,
+    100000
+   ],
+   "dIr": 678629352,
+   "share": {
+    "dec": 0.7325963156984109,
+    "cobother": 0.14469570423178513,
+    "gcobol": 0.0,
+    "libc": 0.0685547079018769,
+    "user": 0.0541532721679271
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.11909230386486437
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.09666535466918619
+    },
+    {
+     "object": "libc.so.6",
+     "function": "__GI_memcpy",
+     "share": 0.06030265104124173
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "binary-trees",
+   "source": "binary-trees",
+   "sizes": [
+    10,
+    12
+   ],
+   "dIr": 12964550244,
+   "share": {
+    "dec": 0.04855753845308635,
+    "cobother": 0.489574945952132,
+    "gcobol": 0.0,
+    "libc": 0.4531812625524042,
+    "user": 0.008686253042377426
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_free_alloc",
+     "share": 0.4472120706758241
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_free",
+     "share": 0.11027102430040919
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_malloc",
+     "share": 0.10019017378571547
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "blur",
+   "source": "blur",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 137755634,
+   "share": {
+    "dec": 0.9233520350971635,
+    "cobother": 0.03859725984056667,
+    "gcobol": 0.0,
+    "libc": 0.03477859206832876,
+    "user": 0.0032721129939411405
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.17715281249404288
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1591111329791419
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set_si",
+     "share": 0.08659600811680777
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "dijkstra",
+   "source": "dijkstra",
+   "sizes": [
+    1250,
+    1875
+   ],
+   "dIr": 247381928,
+   "share": {
+    "dec": 0.7764455938753941,
+    "cobother": 0.15344530745188467,
+    "gcobol": 0.0,
+    "libc": 0.0691744669400426,
+    "user": 0.0009346317326785488
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.14903787959806022
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.13199216799700905
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.057635119571062605
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "fannkuch",
+   "source": "fannkuch-bin",
+   "sizes": [
+    7,
+    8
+   ],
+   "dIr": 12063467,
+   "share": {
+    "dec": 4.973694544031165e-07,
+    "cobother": 9.118439997390468e-07,
+    "gcobol": 0.0,
+    "libc": 0.11909693954482571,
+    "user": 0.8809016512417202
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "fannkuch-bin",
+     "function": "0x00000000000013b0",
+     "share": 0.47837259388200754
+    },
+    {
+     "object": "fannkuch-bin",
+     "function": "0x00000000000012c8",
+     "share": 0.22208375088189822
+    },
+    {
+     "object": "fannkuch-bin",
+     "function": "0x00000000000014a8",
+     "share": 0.175428175001432
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "gbdt",
+   "source": "gbdt-bin",
+   "sizes": [
+    1250,
+    2500
+   ],
+   "dIr": 85571909,
+   "share": {
+    "dec": 0.6062677063801393,
+    "cobother": 0.024190309929862614,
+    "gcobol": 0.0,
+    "libc": 0.014562757972362169,
+    "user": 0.3549792257176359
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "gbdt-bin",
+     "function": "0x0000000000001cd4",
+     "share": 0.35379601032390195
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpn_div_q",
+     "share": 0.06599712529493762
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.04998941884070858
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "gemm",
+   "source": "gemm",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 413525873,
+   "share": {
+    "dec": 0.741203977822205,
+    "cobother": 0.17001586258666818,
+    "gcobol": 0.0,
+    "libc": 0.08482122955339241,
+    "user": 0.003958930037734301
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.15575340312503252
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.15347842092579295
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.07455401950145935
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "k-means",
+   "source": "k-means",
+   "sizes": [
+    500,
+    750
+   ],
+   "dIr": 730450728,
+   "share": {
+    "dec": 0.753761347473118,
+    "cobother": 0.16053257462151507,
+    "gcobol": 0.0,
+    "libc": 0.08131998055863393,
+    "user": 0.004386097346733016
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.16003909027523072
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.1343183574731135
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.07225908329849731
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "lz77",
+   "source": "lz77-bin",
+   "sizes": [
+    1500,
+    3000
+   ],
+   "dIr": 14171893,
+   "share": {
+    "dec": 0.6308848084020956,
+    "cobother": 0.025084651711666184,
+    "gcobol": 0.0,
+    "libc": 0.015757739632948117,
+    "user": 0.3282728002532901
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "lz77-bin",
+     "function": "0x0000000000001928",
+     "share": 0.32363051287502664
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpn_div_q",
+     "share": 0.06843574108271916
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_mul",
+     "share": 0.053136938022323485
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "mandelbrot",
+   "source": "mandelbrot",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 2681132728,
+   "share": {
+    "dec": 0.9779493281393415,
+    "cobother": 0.0012953636959967764,
+    "gcobol": 0.0,
+    "libc": 0.020587230696771385,
+    "user": 0.00016807746789028043
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set_str",
+     "share": 0.14074959663839515
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "0x0000000000034030",
+     "share": 0.11685507574021155
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpn_sbpi1_div_q",
+     "share": 0.10237251633743065
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "polymorphism",
+   "source": "polymorphism",
+   "sizes": [
+    10,
+    20
+   ],
+   "dIr": 460063475,
+   "share": {
+    "dec": 0.7748218004048246,
+    "cobother": 0.14366970992426642,
+    "gcobol": 0.0,
+    "libc": 0.05433563053446049,
+    "user": 0.02717285913644851
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.1686733770812821
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.10330200631554157
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.04175710753825872
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "reverse-complement",
+   "source": "reverse-complement",
+   "sizes": [
+    25000,
+    50000
+   ],
+   "dIr": 198515056,
+   "share": {
+    "dec": 0.8489603075748572,
+    "cobother": 0.09314234583799025,
+    "gcobol": 0.0,
+    "libc": 0.05461762053957257,
+    "user": 0.0032797260475799883
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.18113243259493628
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.1196382807357443
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.051939355169111204
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "sort-search",
+   "source": "sort-search",
+   "sizes": [
+    12500,
+    25000
+   ],
+   "dIr": 1151077387,
+   "share": {
+    "dec": 0.7945057164084486,
+    "cobother": 0.14229788096775461,
+    "gcobol": 0.0,
+    "libc": 0.057590945447006686,
+    "user": 0.005605457176790147
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.12424811973132785
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.12234735004832477
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.06337007209403202
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "tak",
+   "source": "tak-bin",
+   "sizes": [
+    6,
+    7
+   ],
+   "dIr": 1063508773,
+   "share": {
+    "dec": 0.034354464135671024,
+    "cobother": 0.08791624326356168,
+    "gcobol": 0.0,
+    "libc": 0.8436871361850063,
+    "user": 0.034042156415760944
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libc.so.6",
+     "function": "_int_free",
+     "share": 0.2016473436275076
+    },
+    {
+     "object": "libc.so.6",
+     "function": "_int_malloc",
+     "share": 0.1693104444188727
+    },
+    {
+     "object": "libc.so.6",
+     "function": "calloc",
+     "share": 0.13437270817887273
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "viterbi",
+   "source": "viterbi-bin",
+   "sizes": [
+    5000,
+    7500
+   ],
+   "dIr": 21267063,
+   "share": {
+    "dec": 0.8333729015614427,
+    "cobother": 0.032445194712593835,
+    "gcobol": 0.0,
+    "libc": 0.019450499582382392,
+    "user": 0.11473140414358109
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "viterbi-bin",
+     "function": "0x0000000000001cf4",
+     "share": 0.10097774196653295
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpn_div_q",
+     "share": 0.08851715913946369
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_mul",
+     "share": 0.07007356869164304
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-best",
+   "benchmark": "vm",
+   "source": "vm",
+   "sizes": [
+    50000,
+    100000
+   ],
+   "dIr": 678529352,
+   "share": {
+    "dec": 0.7327042839555745,
+    "cobother": 0.14471702913155626,
+    "gcobol": 0.0,
+    "libc": 0.06856481132742508,
+    "user": 0.05401387558544409
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_set_field",
+     "share": 0.11910985539797253
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.09667960097325311
+    },
+    {
+     "object": "libc.so.6",
+     "function": "__GI_memcpy",
+     "share": 0.06031153829878829
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "binary-trees",
+   "source": "binary-trees",
+   "sizes": [
+    10,
+    12
+   ],
+   "dIr": 3419286220,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.7997652103543411,
+    "libc": 0.14508095581422253,
+    "user": 0.055153833831436315
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.1655166580351381
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__module_name_push",
+     "share": 0.0486753097843912
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.04488651903495812
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "blur",
+   "source": "blur",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 673505856,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.7989272598098984,
+    "libc": 0.11898271007757949,
+    "user": 0.08209003011252214
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.08878048418928669
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.08793894139503963
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024308",
+     "share": 0.06246155638474508
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "dijkstra",
+   "source": "dijkstra",
+   "sizes": [
+    1250,
+    1875
+   ],
+   "dIr": 364032447,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8713737130141039,
+    "libc": 0.10079268016457885,
+    "user": 0.027833606821317223
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.10451356826442451
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.10107484457285204
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.06907275768195466
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "fannkuch",
+   "source": "fannkuch",
+   "sizes": [
+    7,
+    8
+   ],
+   "dIr": 1592876457,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.883617698544464,
+    "libc": 0.09878050950438524,
+    "user": 0.01760179195115067
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11902585989441866
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024308",
+     "share": 0.09759219889078943
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.09500339924981388
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "gemm",
+   "source": "gemm",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 691727198,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.9003554028245684,
+    "libc": 0.09897844149826245,
+    "user": 0.0006661556771691374
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11585820570843017
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.09842085752424036
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.07731843442709332
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "k-means",
+   "source": "k-means",
+   "sizes": [
+    500,
+    750
+   ],
+   "dIr": 1564526447,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.9024859494752919,
+    "libc": 0.09673342389973674,
+    "user": 0.0007806266249713323
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11388525923716776
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.0949461418724103
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.08159321579049024
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "lz77",
+   "source": "lz77",
+   "sizes": [
+    1500,
+    3000
+   ],
+   "dIr": 1034016698,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8876350998734065,
+    "libc": 0.08974780405335389,
+    "user": 0.022617096073239622
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.10911725528053319
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.09674950916508314
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.08610301765165498
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "polymorphism",
+   "source": "polymorphism",
+   "sizes": [
+    10,
+    20
+   ],
+   "dIr": 772495614,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.5568465454096416,
+    "libc": 0.41350796588470984,
+    "user": 0.029645488705648496
+   },
+   "dlsymShare": 0.1552112372252252,
+   "top": [
+    {
+     "object": "ld-linux-aarch64.so.1",
+     "function": "_dl_exception_create_format",
+     "share": 0.06796155091179586
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.05991691753475768
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.05684632922718445
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "reverse-complement",
+   "source": "reverse-complement",
+   "sizes": [
+    25000,
+    50000
+   ],
+   "dIr": 271155091,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8773053020051909,
+    "libc": 0.09625487725030396,
+    "user": 0.026439820744505217
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.09932367450921288
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.09643927356687543
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024308",
+     "share": 0.07071598740515626
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "sort-search",
+   "source": "sort-search",
+   "sizes": [
+    12500,
+    25000
+   ],
+   "dIr": 2410788645,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8526096284977317,
+    "libc": 0.08133751185807497,
+    "user": 0.06605285964419332
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.10663382231087289
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.0917618275906555
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.07935862291237895
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "tak",
+   "source": "tak",
+   "sizes": [
+    6,
+    7
+   ],
+   "dIr": 1190999653,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8643937766117888,
+    "libc": 0.08645332493644312,
+    "user": 0.04915289845176806
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.1806456168631646
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032c8c",
+     "share": 0.058355994332099106
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.05786794465170176
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "viterbi",
+   "source": "viterbi",
+   "sizes": [
+    5000,
+    7500
+   ],
+   "dIr": 1312999895,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8908739630935004,
+    "libc": 0.0998604497222751,
+    "user": 0.009265587184224412
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11090252219707908
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.0953027494339594
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.0737509579161086
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "binary-trees",
+   "source": "binary-trees-gc",
+   "sizes": [
+    10,
+    12
+   ],
+   "dIr": 2440381701,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.7330121752129956,
+    "libc": 0.18707206164221274,
+    "user": 0.07991576314479175
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.17590827198224432
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__module_name_push",
+     "share": 0.06820032125785884
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__push_local_variable",
+     "share": 0.05151062718938163
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "blur",
+   "source": "blur-gc",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 5185278,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.0,
+    "libc": 0.0,
+    "user": 1.0
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "blur-gc",
+     "function": "blur$gc",
+     "share": 1.0000003857073816
+    },
+    {
+     "object": "blur-gc",
+     "function": "call_weak_fn",
+     "share": 0.0
+    },
+    {
+     "object": "blur-gc",
+     "function": "0x000000000000330c",
+     "share": 0.0
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "dijkstra",
+   "source": "dijkstra-gc",
+   "sizes": [
+    1250,
+    1875
+   ],
+   "dIr": 4777242,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.1840903182212666,
+    "libc": 0.0,
+    "user": 0.8159096817787335
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "dijkstra-gc",
+     "function": "dijkstra$gc",
+     "share": 0.8159096817787335
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.11189803656586791
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.07219228165539866
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "fannkuch",
+   "source": "fannkuch-gc",
+   "sizes": [
+    7,
+    8
+   ],
+   "dIr": 40125734,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": -6.479632247973333e-07,
+    "libc": -1.99373299937641e-07,
+    "user": 1.0000008473365247
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "fannkuch-gc",
+     "function": "fannkuch$gc",
+     "share": 1.0000007974931997
+    },
+    {
+     "object": "libgcc_s.so.1",
+     "function": "__divtf3",
+     "share": 4.984332498441025e-08
+    },
+    {
+     "object": "vgpreload_core-arm64-linux.so",
+     "function": "0x0000000000000670",
+     "share": 0.0
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "gbdt",
+   "source": "gbdt-gc",
+   "sizes": [
+    1250,
+    2500
+   ],
+   "dIr": 155133804,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.003287317056958134,
+    "libc": 0.0,
+    "user": 0.9967126829430418
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "gbdt-gc",
+     "function": "gbdt$gc",
+     "share": 0.9967126829430418
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.0019982749858954017
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.001289209668319614
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "gemm",
+   "source": "gemm-gc",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 4282622,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.030485996662792093,
+    "libc": 0.0,
+    "user": 0.9695140033372079
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "gemm-gc",
+     "function": "gemm$gc",
+     "share": 0.9695144703408333
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.018530703853854018
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.011955292808938076
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "k-means",
+   "source": "k-means-gc",
+   "sizes": [
+    500,
+    750
+   ],
+   "dIr": 12729324,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.0,
+    "libc": 0.0,
+    "user": 1.0
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "k-means-gc",
+     "function": "k$means$gc",
+     "share": 1.0
+    },
+    {
+     "object": "vgpreload_core-arm64-linux.so",
+     "function": "call_weak_fn",
+     "share": 0.0
+    },
+    {
+     "object": "vgpreload_core-arm64-linux.so",
+     "function": "0x00000000000006ac",
+     "share": 0.0
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "lz77",
+   "source": "lz77-gc",
+   "sizes": [
+    1500,
+    3000
+   ],
+   "dIr": 14518444,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.003033245160431793,
+    "libc": 0.0,
+    "user": 0.9969667548395682
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "lz77-gc",
+     "function": "lz77$gc",
+     "share": 0.9969667548395682
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.0018448257953813784
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.0011902101905686311
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "mandelbrot",
+   "source": "mandelbrot-gc",
+   "sizes": [
+    32,
+    48
+   ],
+   "dIr": 192525437,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.47194663944588267,
+    "libc": 0.00013463156039999016,
+    "user": 0.5279187289937173
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcc_s.so.1",
+     "function": "__multf3",
+     "share": 0.07959408501433501
+    },
+    {
+     "object": "libgcc_s.so.1",
+     "function": "__letf2",
+     "share": 0.07084593190664983
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024fa0",
+     "share": 0.06267926040339282
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "polymorphism",
+   "source": "polymorphism-gc",
+   "sizes": [
+    10,
+    20
+   ],
+   "dIr": 59450504,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.5828640914465586,
+    "libc": 0.0891252326473128,
+    "user": 0.3280106759061286
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__module_name_push",
+     "share": 0.23467572285005356
+    },
+    {
+     "object": "polymorphism-gc",
+     "function": "polymorphism$gc",
+     "share": 0.12616209275534485
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__push_local_variable",
+     "share": 0.12110914989047022
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "reverse-complement",
+   "source": "reverse-complement-gc",
+   "sizes": [
+    25000,
+    50000
+   ],
+   "dIr": 5941411,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.21459548918598628,
+    "libc": 0.0,
+    "user": 0.7854045108140137
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "reverse-complement-gc",
+     "function": "reverse$complement$gc",
+     "share": 0.7854045108140137
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.1304403953875603
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.08415509379842599
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "sort-search",
+   "source": "sort-search-gc",
+   "sizes": [
+    12500,
+    25000
+   ],
+   "dIr": 24732926,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.07732607132694287,
+    "libc": 0.0,
+    "user": 0.9226739286730571
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "sort-search-gc",
+     "function": "sort$search$gc",
+     "share": 0.9226739286730571
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.04700212178696528
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.0303239495399776
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "tak",
+   "source": "tak-gc",
+   "sizes": [
+    6,
+    7
+   ],
+   "dIr": 432958793,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.7437593905154849,
+    "libc": 0.13081020160733864,
+    "user": 0.12543040787717644
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.2428050052329114
+    },
+    {
+     "object": "tak-gc",
+     "function": "tak$fn",
+     "share": 0.12543040787717644
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pop_local_variables",
+     "share": 0.084387430376082
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "viterbi",
+   "source": "viterbi-gc",
+   "sizes": [
+    5000,
+    7500
+   ],
+   "dIr": 11439375,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.011145713817406982,
+    "libc": 0.0,
+    "user": 0.988854286182593
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "viterbi-gc",
+     "function": "viterbi$gc",
+     "share": 0.988854286182593
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_push",
+     "share": 0.006774845653717969
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "__gg__pseudo_return_pop",
+     "share": 0.004370868163689013
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-restricted",
+   "benchmark": "vm",
+   "source": "vm-gc",
+   "sizes": [
+    50000,
+    100000
+   ],
+   "dIr": 66800015,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": -1.1976045214959907e-07,
+    "libc": 3.4431129993009733e-07,
+    "user": 0.9999997754491522
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "vm-gc",
+     "function": "vm$gc",
+     "share": 0.9999997754491522
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x000000000001a278",
+     "share": 3.592813564487972e-07
+    },
+    {
+     "object": "libc.so.6",
+     "function": "strncmp",
+     "share": 3.592813564487972e-07
+    }
+   ]
+  },
+  {
+   "column": "gnucobol32-natural",
+   "benchmark": "gbdt",
+   "source": "gbdt",
+   "sizes": [
+    200,
+    400
+   ],
+   "dIr": 680214143,
+   "share": {
+    "dec": 0.9420047092434537,
+    "cobother": 0.016466562942370342,
+    "gcobol": 0.0,
+    "libc": 0.03475982562744215,
+    "user": 0.006768902186733862
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_add",
+     "share": 0.20844922949507094
+    },
+    {
+     "object": "libgmp.so.10.4.1",
+     "function": "__gmpz_set",
+     "share": 0.20534442195507246
+    },
+    {
+     "object": "libcob.so.4.2.0",
+     "function": "cob_decimal_get_field",
+     "share": 0.09854762164214513
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "gbdt",
+   "source": "gbdt",
+   "sizes": [
+    200,
+    400
+   ],
+   "dIr": 3234136447,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8949879590531697,
+    "libc": 0.10065323258143907,
+    "user": 0.004358808365391147
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11660398569448484
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000032b20",
+     "share": 0.09093391878156587
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024308",
+     "share": 0.07516473221947521
+    }
+   ]
+  },
+  {
+   "column": "gcobol15-natural",
+   "benchmark": "vm",
+   "source": "vm",
+   "sizes": [
+    10000,
+    20000
+   ],
+   "dIr": 819640000,
+   "share": {
+    "dec": 0.0,
+    "cobother": 0.0,
+    "gcobol": 0.8673441998926358,
+    "libc": 0.09760382606998194,
+    "user": 0.035051974037382264
+   },
+   "dlsymShare": 0.0,
+   "top": [
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000026420",
+     "share": 0.11448928798008882
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x00000000000158c0",
+     "share": 0.09121077546239813
+    },
+    {
+     "object": "libgcobol.so.1.0.0",
+     "function": "0x0000000000024308",
+     "share": 0.07910790102972036
+    }
+   ]
+  }
+ ]
+}

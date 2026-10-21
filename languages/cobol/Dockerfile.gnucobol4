@@ -1,0 +1,29 @@
+# EXPERIMENTAL (COBOL side study only; never in languages.json / matrix / CI).
+# GnuCOBOL 4.0-early-dev (trunk lineage) as packaged by Debian trixie: unlike 3.2 its cobc keeps the
+# "fast math" code path, so COMPUTE on native BINARY/COMP-5 integer items compiles to plain C.
+# Build context = repo root:
+#   docker build -f languages/cobol/Dockerfile.gnucobol4 -t lang-lab-cobol:gc4 .
+#   docker build -f languages/cobol/Dockerfile.gnucobol4 --build-arg COBC_FLAGS="-O2 -free -fnotrunc" -t lang-lab-cobol:gc4nt .
+# Scope of the fast path (checked with `cobc -C` and callgrind): + - * and MOVE/compare on scalar and table BINARY /
+# COMP-5 items compile to plain C (with -fnotrunc the literal MOVE no longer calls cob_move); DIVIDE, FUNCTION MOD and
+# FLOAT-LONG arithmetic still go through cob_decimal + GMP. -fnotrunc ("allow numeric field overflow") only drops a
+# redundant truncation check for items without a PICTURE (BINARY-LONG/DOUBLE); the checksum gate is the correctness proof.
+# Pin: debian:trixie package gnucobol4=4.0~early~20200606-7 (trixie is stable). The upstream 4.0-early-dev AppVeyor
+# snapshot returns 404 and the 3.3-dev snapshot (2026-10-19) still has `#if 0 /* TODO: merge of fast math */`.
+FROM debian:trixie-slim
+ARG GC4_PKG=4.0~early~20200606-7
+ARG COBC_FLAGS="-O2 -free"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      gnucobol4=${GC4_PKG} build-essential valgrind binutils \
+    && rm -rf /var/lib/apt/lists/*
+ENV LANG_VERSION=gnucobol-${GC4_PKG}
+COPY --from=lang-lab-qemu-insn /plugin/qemu-aarch64 /opt/qi/qemu-aarch64
+COPY --from=lang-lab-qemu-insn /plugin/libinsn.so   /opt/qi/libinsn.so
+COPY --from=lang-lab-qemu-insn /plugin/lib          /opt/qi/lib
+WORKDIR /app
+COPY languages/cobol/*.cob /app/
+RUN cobc --version | head -1 | tee /app/COBC_VERSION \
+    && echo "cobc -x ${COBC_FLAGS}" | tee /app/COBC_FLAGS
+RUN for f in /app/*.cob; do b=$(basename "$f" .cob); cobc -x ${COBC_FLAGS} "$f" -o "/app/$b" 2> "/app/$b.err" && echo "OK $b" || echo "FAIL $b"; done | tee /app/BUILD_STATUS
+COPY scripts/measure.sh /usr/local/bin/measure.sh
+RUN chmod +x /usr/local/bin/measure.sh

@@ -1,0 +1,121 @@
+>>SOURCE FORMAT FREE
+*> gemm, gcobol variant (COBOL side study, GCC 15 front end). Same algorithm as gemm.cob: quantized integer
+*> matmul, loop order i,k,j, LCG fill of A then B (values 0..127), 64-bit C accumulators, poly-hash of C.
+*> Written for gcobol's inline-arithmetic rules: BINARY-LONG/BINARY-DOUBLE items only, every operand of a hot
+*> ADD/MULTIPLY/DIVIDE/MOVE/IF is a variable (named constants K-xxx), no subscript expressions (the flat
+*> indices of A, B and C are carried in running counters IA, IB, IC), no COMPUTE/FUNCTION.
+IDENTIFICATION DIVISION.
+PROGRAM-ID. gemm-gc.
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 WS-N            BINARY-LONG VALUE 256.
+01 WS-ARG          PIC X(16)         VALUE SPACES.
+01 WS-NN           BINARY-LONG.
+01 A-T.
+   05 A-ARR        BINARY-LONG OCCURS 65536 TIMES.
+01 B-T.
+   05 B-ARR        BINARY-LONG OCCURS 65536 TIMES.
+01 C-T.
+   05 C-ARR        BINARY-DOUBLE OCCURS 65536 TIMES.
+01 K-ZERO          BINARY-LONG VALUE 0.
+01 K-ONE           BINARY-LONG VALUE 1.
+01 K-128           BINARY-DOUBLE VALUE 128.
+01 K-LCG-A         BINARY-DOUBLE VALUE 1103515245.
+01 K-LCG-C         BINARY-DOUBLE VALUE 12345.
+01 K-LCG-M         BINARY-DOUBLE VALUE 2147483648.
+01 K-31            BINARY-DOUBLE VALUE 31.
+01 K-P             BINARY-DOUBLE VALUE 1000000007.
+01 WS-S            BINARY-DOUBLE VALUE 42.
+01 WS-T            BINARY-DOUBLE.
+01 WS-Q            BINARY-DOUBLE.
+01 WS-IDX          BINARY-LONG.
+01 WS-I            BINARY-LONG.
+01 WS-K            BINARY-LONG.
+01 WS-J            BINARY-LONG.
+01 WS-A-VAL        BINARY-LONG.
+01 WS-KN           BINARY-LONG.
+01 WS-BASE         BINARY-LONG.
+01 WS-IA           BINARY-LONG.
+01 WS-IB           BINARY-LONG.
+01 WS-IC           BINARY-LONG.
+01 WS-PROD         BINARY-DOUBLE.
+01 WS-H            BINARY-DOUBLE VALUE 0.
+01 WS-CVAL         BINARY-DOUBLE.
+01 WS-SEC          BINARY-DOUBLE.
+01 ED-CK           PIC -(18)9.
+01 ED-N            PIC Z(8)9.
+01 ED-SEC          PIC -(18)9.
+PROCEDURE DIVISION.
+MAIN-PARA.
+    ACCEPT WS-ARG FROM COMMAND-LINE
+    IF WS-ARG NOT = SPACES
+       COMPUTE WS-N = FUNCTION NUMVAL(WS-ARG)
+    END-IF
+
+    MULTIPLY WS-N BY WS-N GIVING WS-NN
+
+    *> Fill A: state = lcg(state); A[i] = state mod 128
+    PERFORM VARYING WS-IDX FROM K-ONE BY K-ONE UNTIL WS-IDX > WS-NN
+       PERFORM LCG-STEP
+       DIVIDE WS-S BY K-128 GIVING WS-Q REMAINDER A-ARR(WS-IDX)
+    END-PERFORM
+
+    *> Fill B
+    PERFORM VARYING WS-IDX FROM K-ONE BY K-ONE UNTIL WS-IDX > WS-NN
+       PERFORM LCG-STEP
+       DIVIDE WS-S BY K-128 GIVING WS-Q REMAINDER B-ARR(WS-IDX)
+    END-PERFORM
+
+    *> Zero C
+    PERFORM VARYING WS-IDX FROM K-ONE BY K-ONE UNTIL WS-IDX > WS-NN
+       MOVE K-ZERO TO C-ARR(WS-IDX)
+    END-PERFORM
+
+    *> Triple loop i, k, j (i, k, j are 0-based counters; IA = i*N + k + 1, IB = k*N + j + 1, IC = i*N + j + 1)
+    MOVE K-ZERO TO WS-BASE
+    MOVE K-ONE  TO WS-IA
+    PERFORM VARYING WS-I FROM K-ZERO BY K-ONE UNTIL WS-I >= WS-N
+       MOVE K-ZERO TO WS-KN
+       PERFORM VARYING WS-K FROM K-ZERO BY K-ONE UNTIL WS-K >= WS-N
+          MOVE A-ARR(WS-IA) TO WS-A-VAL
+          MOVE WS-KN TO WS-IB
+          ADD K-ONE TO WS-IB
+          MOVE WS-BASE TO WS-IC
+          ADD K-ONE TO WS-IC
+          PERFORM VARYING WS-J FROM K-ZERO BY K-ONE UNTIL WS-J >= WS-N
+             MULTIPLY WS-A-VAL BY B-ARR(WS-IB) GIVING WS-PROD
+             ADD WS-PROD TO C-ARR(WS-IC)
+             ADD K-ONE TO WS-IB
+             ADD K-ONE TO WS-IC
+          END-PERFORM
+          ADD K-ONE TO WS-IA
+          ADD WS-N TO WS-KN
+       END-PERFORM
+       ADD WS-N TO WS-BASE
+    END-PERFORM
+
+    *> Checksum: h = (h*31 + C[i] mod P) mod P  row-major
+    MOVE K-ZERO TO WS-H
+    PERFORM VARYING WS-IDX FROM K-ONE BY K-ONE UNTIL WS-IDX > WS-NN
+       DIVIDE C-ARR(WS-IDX) BY K-P GIVING WS-Q REMAINDER WS-CVAL
+       MULTIPLY WS-H BY K-31 GIVING WS-T
+       ADD WS-CVAL TO WS-T
+       DIVIDE WS-T BY K-P GIVING WS-Q REMAINDER WS-H
+    END-PERFORM
+
+    *> Secondary: C[N*N-1] mod P (the bottom-right cell)
+    DIVIDE C-ARR(WS-NN) BY K-P GIVING WS-Q REMAINDER WS-SEC
+
+    MOVE WS-H   TO ED-CK
+    MOVE WS-N   TO ED-N
+    MOVE WS-SEC TO ED-SEC
+    DISPLAY FUNCTION TRIM(ED-CK)
+    DISPLAY "gemm(" FUNCTION TRIM(ED-N) ") = " FUNCTION TRIM(ED-SEC)
+    STOP RUN.
+
+*> state = (state * 1103515245 + 12345) mod 2^31
+LCG-STEP.
+    MULTIPLY WS-S BY K-LCG-A GIVING WS-T
+    ADD K-LCG-C TO WS-T
+    DIVIDE WS-T BY K-LCG-M GIVING WS-Q REMAINDER WS-S
+    .
