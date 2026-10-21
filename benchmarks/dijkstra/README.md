@@ -71,8 +71,8 @@ sequence of operations in every language** (fair instruction counts), while Dijk
    edge-generation order, the exact LCG and `DEG=8 / MAXW=100` parameters.
 3. **Integer (floor) division** for `key / BASE` and **integer modulo** for `mod N`, `mod BASE`,
    `mod P` (Python `//`/`%`, Perl `int()`, Elixir `div`/`rem`).
-4. **64-bit**: the LCG product (~2.4e10), the packed keys (`dist*2^21`, up to ~4e12) and the hash
-   all need 64-bit (or arbitrary-precision) integers.
+4. **64-bit**: the LCG product (~2.37e18), the packed keys (`dist*2^21`, up to ~4e12) and the hash
+   all need at least 63-bit (64-bit, OCaml's 63-bit `int`, or arbitrary-precision) integers.
 5. **All integer**, no floating point.
 
 ### Per-language representation
@@ -104,7 +104,7 @@ pointer-chasing, mutate-in-place graph algorithm on the BEAM.
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(20000) − I(5000)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-dijkstra.json`](../../results/2026-06-17-arm64-dijkstra.json).
-All 14 printed the identical `562612262` / `735570774` checksums: the same heap, the same relaxation
+Every implementation printed the identical `562612262` / `735570774` checksums: the same heap, the same relaxation
 order.
 
 ![relative real work](../../docs/charts/dijkstra-diff-ratio.svg)
@@ -112,10 +112,13 @@ order.
 | Language | I(5k) | I(20k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | **C** | 5.2M | 21.7M | 16.6M | **1.00×** | exact |
+| Fortran | 5.4M | 22.5M | 17.1M | 1.03× | exact |
 | C# | 226.4M | 258.4M | 32.1M | 1.94× | jitter |
 | Rust | 11.8M | 48.5M | 36.8M | 2.22× | exact |
 | Swift | 22.7M | 60.7M | 38.0M | 2.29× | exact |
+| VB.NET | 230.7M | 272.1M | 41.4M | 2.50× | jitter |
 | Go | 14.4M | 70.8M | 56.5M | 3.41× | jitter |
+| OCaml | 18.3M | 76.2M | 57.9M | 3.50× | exact |
 | Kotlin | 269.5M | 351.5M | 82.0M | 4.95× | jitter |
 | Java | 183.2M | 269.5M | 86.3M | 5.21× | jitter |
 | Scala | 733.1M | 826.9M | 93.8M | 5.66× | jitter |
@@ -162,7 +165,7 @@ Differential vs C = 1.0× across the complete suite:
 
 The conclusion the whole suite was built to support:
 
-- **No language is "fast" or "slow," only fast or slow at a kind of work.** The same fourteen
+- **No language is "fast" or "slow," only fast or slow at a kind of work.** The same
   languages reorder across these seven columns; the spread *within a single row* reaches **100×**
   (Elixir: 0.30× → 56.47×).
 - **Rust** is the lone all-rounder: never below 0.99×, never above 2.73×. If you want one language

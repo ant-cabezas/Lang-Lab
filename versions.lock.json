@@ -12,5 +12,8 @@
   "scala": "3.6.2",
   "ruby": "3.3",
   "java": "26",
-  "javascript": "26.5.0"
+  "javascript": "26.5.0",
+  "ocaml": "5.4",
+  "vbnet": "9.0",
+  "fortran": "14"
 }

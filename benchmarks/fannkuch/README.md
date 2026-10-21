@@ -18,7 +18,7 @@ element, and report `Pfannkuchen(n)` (the maximum number of reversals) and a par
 | 7 | `228` | `16` |
 | 9 | `8629` | `30` |
 
-**Correctness: 14/14 ✅.** The 13 language implementations + C (baseline) reproduce the checksums.
+**Correctness: 17/17 ✅.** The 16 language implementations + C (baseline) reproduce the checksums.
 
 ---
 
@@ -44,7 +44,7 @@ qemu 10 from source), it turned out to be a **harness bug, not emulation**:
 > (`python …`, `java …`) → qemu couldn't find them and failed silently. **Fix:** resolve
 > `argv[0]` to an absolute path before handing it to qemu (`scripts/measure.sh`).
 
-With that, **qemu 7.2 emulates all 14 fine.** Lesson: *"produces no output" ≠ "can't emulate"*.
+With that, **qemu 7.2 emulates every language fine.** Lesson: *"produces no output" ≠ "can't emulate"*.
 Verify the cause before concluding.
 
 Four real infrastructure problems were solved along the way, documented in
@@ -64,7 +64,7 @@ set) at build time and run `beam.smp` directly under qemu as a single instrument
 
 ## Results: uniform qemu+insn pass
 
-Single backend (`qemu-insn`, qemu 7.2), same ISA (arm64 local), **all 14 directly comparable**.
+Single backend (`qemu-insn`, qemu 7.2), same ISA (arm64 local), **all directly comparable**.
 Raw data in [`results/2026-06-16-arm64-fannkuch.json`](../../results/2026-06-16-arm64-fannkuch.json).
 
 ### The fair metric: real work `I(9) − I(7)`, normalized to C = 1.0×
@@ -78,9 +78,12 @@ isolating the algorithm's real work. C (gcc `-O2`, no GC) is the reference floor
 | Language | I(7) | I(9) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | **C** | 978.8k | 83.8M | 82.8M | **1.00×** | exact |
+| Fortran | 1.1M | 86.4M | 85.2M | 1.03× | exact |
 | Rust | 1.1M | 95.6M | 94.5M | 1.14× | exact |
 | Go | 1.6M | 124.6M | 123.0M | 1.49× | jitter |
 | C# | 210.9M | 344.7M | 133.8M | 1.61× | jitter |
+| VB.NET | 211.7M | 360.2M | 148.5M | 1.79× | jitter |
+| OCaml | 2.7M | 216.3M | 213.5M | 2.58× | exact |
 | Scala | 683.2M | 909.7M | 226.5M | 2.73× | jitter |
 | Kotlin | 168.7M | 445.0M | 276.3M | 3.34× | jitter |
 | Swift | 15.1M | 298.7M | 283.7M | 3.42× | exact |

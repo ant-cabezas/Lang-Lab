@@ -80,19 +80,22 @@ match-search work while cancelling startup.
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(24000) − I(6000)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-lz77.json`](../../results/2026-06-17-arm64-lz77.json).
-All 14 printed the identical `423979860` / `850992747` hashes.
+Every implementation printed the identical `423979860` / `850992747` hashes.
 
 ![relative real work](../../docs/charts/lz77-diff-ratio.svg)
 
 | Language | I(6k) | I(24k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
+| Fortran | 10.6M | 43.0M | 32.4M | **0.95×** | exact |
 | **C** | 11.1M | 45.3M | 34.2M | **1.00×** | exact |
 | Swift | 24.8M | 66.7M | 41.9M | 1.23× | exact |
 | Rust | 15.5M | 63.2M | 47.7M | 1.40× | exact |
 | C# | 224.4M | 274.1M | 49.7M | 1.45× | jitter |
 | Go | 17.1M | 69.6M | 52.5M | 1.54× | jitter |
+| VB.NET | 226.8M | 283.4M | 56.6M | 1.66× | jitter |
 | Kotlin | 225.5M | 293.1M | 67.6M | 1.98× | jitter |
 | Scala | 697.2M | 768.0M | 70.8M | 2.07× | jitter |
+| OCaml | 29.6M | 120.6M | 90.9M | 2.66× | exact |
 | Java | 177.5M | 274.6M | 97.1M | 2.84× | jitter |
 | JavaScript | 175.4M | 307.6M | 132.2M | 3.87× | jitter |
 | Elixir | 2.30B | 3.18B | 879.3M | 25.73× | jitter |

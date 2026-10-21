@@ -17,7 +17,7 @@ RUN RID="linux-$(uname -m | sed 's/aarch64/arm64/;s/x86_64/x64/')" \
  && for proj in /app/src/*/*.csproj; do \
       b="$(basename "$(dirname "$proj")")"; \
       dotnet publish "$proj" -c Release -r "$RID" --self-contained true \
-        -p:PublishSingleFile=true -o "/app/out/$b"; \
+        -p:PublishSingleFile=true -p:DotnetVersion=${DOTNET_VERSION} -o "/app/out/$b"; \
     done
 COPY scripts/measure.sh /usr/local/bin/measure.sh
 RUN chmod +x /usr/local/bin/measure.sh

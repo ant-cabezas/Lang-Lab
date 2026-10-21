@@ -79,20 +79,23 @@ print "bigint(N)"                             # line 2
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(6000) − I(1500)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-bigint.json`](../../results/2026-06-17-arm64-bigint.json).
-All 14 printed the identical `831439159` / `694604666` hashes.
+Every implementation printed the identical `831439159` / `694604666` hashes.
 
 ![relative real work](../../docs/charts/bigint-diff-ratio.svg)
 
 | Language | I(1.5k) | I(6k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | **C** | 1.9M | 35.2M | 33.4M | **1.00×** | exact |
+| Fortran | 2.3M | 41.2M | 38.9M | 1.17× | exact |
 | Rust | 2.3M | 41.2M | 38.9M | 1.17× | exact |
 | Go | 2.4M | 41.3M | 39.0M | 1.17× | jitter |
 | C# | 210.2M | 254.7M | 44.5M | 1.33× | jitter |
 | Scala | 667.7M | 715.3M | 47.6M | 1.43× | jitter |
 | Kotlin | 185.5M | 239.7M | 54.1M | 1.62× | jitter |
 | Swift | 15.2M | 87.4M | 72.2M | 2.17× | exact |
+| VB.NET | 212.3M | 295.7M | 83.4M | 2.50× | jitter |
 | Java | 131.5M | 232.0M | 100.4M | 3.01× | jitter |
+| OCaml | 6.7M | 123.4M | 116.7M | 3.50× | exact |
 | JavaScript | 153.7M | 299.2M | 145.6M | 4.36× | jitter |
 | PHP | 125.7M | 1.83B | 1.71B | 51.12× | exact |
 | Elixir | 2.09B | 4.13B | 2.03B | 60.95× | jitter |
@@ -128,7 +131,7 @@ Differential vs C = 1.0× across all fourteen benchmarks (`fan`=fannkuch, `btr`=
 | Python | 69.57 | 11.15 | 124.76 | 49.80 | 114.00 | 131.93 | 92.92 | 120.91 | 149.26 | 600.64 | 120.84 | 78.57 | 300.77 | 48.80 |
 | Perl | 189.62 | 18.98 | 216.87 | 36.40 | 181.17 | 189.53 | 155.46 | 264.40 | 203.14 | 701.29 | 133.54 | 135.53 | 276.48 | 116.56 |
 
-Fourteen benchmarks, fourteen orderings of the same fourteen languages: the final word of the project.
+Fourteen benchmarks, fourteen orderings of the same languages: the final word of the project.
 
 - **No language is fast or slow; each is fast or slow at a kind of work.** A single row spans up to
   ~50× (Rust 0.48×–2.73×) for the fast languages and over ~50× for the slow ones (Elixir 0.30×–60.95×;

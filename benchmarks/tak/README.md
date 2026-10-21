@@ -56,21 +56,24 @@ startup and any JIT warm-up.
 ## Results
 
 Uniform qemu+insn pass, arm64, differential `I(8) - I(6)` normalized to **C = 1.0x**. Source:
-[`results/2026-06-19-arm64-tak.json`](../../results/2026-06-19-arm64-tak.json). All 14 printed the
+[`results/2026-06-19-arm64-tak.json`](../../results/2026-06-19-arm64-tak.json). Every implementation printed the
 identical `2493349` call count (line 1) and `9` result (line 2).
 
 ![relative real work](../../docs/charts/tak-diff-ratio.svg)
 
 | Language | I(6) | I(8) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
+| Fortran | 1.5M | 50.5M | 49.0M | **1.00×** | exact |
 | **C** | 1.4M | 50.4M | 49.0M | **1.00×** | exact |
 | Go | 1.7M | 55.1M | 53.5M | 1.09× | jitter |
 | Swift | 12.8M | 69.3M | 56.5M | 1.15× | exact |
 | Rust | 1.8M | 62.9M | 61.2M | 1.25× | exact |
 | C# | 207.6M | 270.1M | 62.6M | 1.28× | jitter |
+| OCaml | 2.1M | 67.7M | 65.6M | 1.34× | exact |
 | Java | 106.6M | 172.7M | 66.1M | 1.35× | jitter |
 | Scala | 634.4M | 701.8M | 67.4M | 1.38× | jitter |
 | Kotlin | 156.3M | 237.7M | 81.4M | 1.66× | jitter |
+| VB.NET | 209.1M | 299.6M | 90.5M | 1.85× | jitter |
 | JavaScript | 118.1M | 259.7M | 141.5M | 2.89× | jitter |
 | Elixir | 1.97B | 2.51B | 539.6M | 11.01× | jitter |
 | PHP | 63.3M | 1.16B | 1.10B | 22.39× | exact |

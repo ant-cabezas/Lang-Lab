@@ -1,0 +1,24 @@
+VB.NET notes (binding memo: docs/fairness-audit.md, "Language admission memos").
+
+k-nucleotide: C# uses the .NET 9 Dictionary.GetAlternateLookup<ReadOnlySpan<char>>() zero-allocation
+probe. VB cannot express it. Verified with the SDK image mcr.microsoft.com/dotnet/sdk:9.0 (VB 17.x
+compiler) on:
+
+    Dim lookup = map.GetAlternateLookup(Of ReadOnlySpan(Of Char))()
+    Dim kmer As ReadOnlySpan(Of Char) = s.AsSpan(0, 4)
+
+Both lines fail with:
+
+    error BC30668: 'ReadOnlySpan(Of Char)' is obsolete: 'Types with embedded references are not
+    supported in this version of your compiler.'
+
+So the VB program allocates one String per probe (s.Substring), like Java, Kotlin and Go.
+
+Allocation lint (GC.GetAllocatedBytesForCurrentThread at exit, n1 vs n2): every allocation-free
+benchmark shows only the size-proportional setup buffers, except sha256, which allocates 712 bytes
+per hash (w, b and h arrays inside the timed loop). These are the same three allocations per hash as the C#
+program (byte sizes differ because the VB words are Long), kept for the like-for-like comparison.
+
+Indexing note: Option Strict On (binding for every VB port) is the reason CInt appears on Long
+indices: it forbids Long array indices, so the loops that C# runs over a long
+counter (blur, dijkstra, k-means, gemm, sort-search, vm) index through CInt(...), a checked narrowing.

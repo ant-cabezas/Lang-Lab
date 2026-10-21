@@ -13,26 +13,29 @@ at Spearman 0.87. [How far it can be trusted, quantified.](docs/metric-validity.
 
 _Real work each language does vs the **C baseline** (= 1.00×), as the differential `I(n₂)−I(n₁)` that cancels startup + JIT. **Lower is better** (less work than C). Geomean across the 18 compute axes; green cells beat or tie C. **message-ring is shown but not ranked**: its instruction count is syscall-blind and misleading for context-switch primitives (wall-clock inverts it; see [the concurrency study](docs/concurrency-study.md)). Full method below._
 
-_Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-16 and 2026-07-17, on the toolchains pinned in `versions.lock.json`: C gcc 14, Rust 1.88.0, C# .NET 9.0, Go 1.24.4, Swift 6.1, Scala 3.6.2, Kotlin 2.1.0, Java 26, JavaScript Node 26.5.0, Elixir 1.18, PHP 8.4.8, Ruby 3.3, Python 3.13.4, Perl 5.40.2. The x86_64 CI run of 2026-10-14 reproduces the non-JVM ranking within ±16%, with the JVM geomeans 1.1-1.9× higher ([Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)); its matrix is [docs/charts/matrix-x86_64.svg](docs/charts/matrix-x86_64.svg)._
+_Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-16 and 2026-10-21, on the toolchains pinned in `versions.lock.json`: C gcc 14, Fortran gfortran 14, Rust 1.88.0, C# .NET 9.0, Go 1.24.4, Swift 6.1, VB.NET .NET 9.0, Scala 3.6.2, Kotlin 2.1.0, OCaml 5.4, Java 26, JavaScript Node 26.5.0, Elixir 1.18, PHP 8.4.8, Ruby 3.3, Python 3.13.4, Perl 5.40.2. The x86_64 CI run of 2026-10-14 reproduces the non-JVM ranking within ±16%, with the JVM geomeans 1.1-1.9× higher ([Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)); its matrix is [docs/charts/matrix-x86_64.svg](docs/charts/matrix-x86_64.svg)._
 
 <details><summary><b>Leaderboard</b> (sorted by overall geomean)</summary>
 
 | # | Language | Overall (vs C) | Fastest axis | Slowest axis |
 |--:|----------|---------------:|--------------|--------------|
 | 1 | **C** _(baseline)_ | **1.00×** | — | — |
-| 2 | Rust | **1.11×** | blur 0.48× | k-nucleotide 2.73× |
-| 3 | C# | **1.54×** | binary-trees 0.45× | k-nucleotide 9.73× |
-| 4 | Go | **1.64×** | tak 1.09× | k-nucleotide 4.82× |
-| 5 | Swift | **2.03×** | blur 0.56× | k-nucleotide 9.67× |
-| 6 | Scala‡ | **2.39×** | binary-trees 0.28× | k-nucleotide 10.5× |
-| 7 | Kotlin‡ | **2.53×** | binary-trees 0.28× | k-nucleotide 9.98× |
-| 8 | Java‡ | **2.92×** | binary-trees 0.33× | k-nucleotide 17.5× |
-| 9 | JavaScript | **5.09×** | binary-trees 0.57× | k-nucleotide 18.6× |
-| 10 | Elixir | **22.3×** | binary-trees 0.30× | polymorphism 136× |
-| 11 | PHP | **32.2×** | binary-trees 5.75× | sha256 98.0× |
-| 12 | Ruby | **75.3×** | binary-trees 10.3× | sha256 278× |
-| 13 | Python | **104×** | binary-trees 11.2× | sha256 601× |
-| 14 | Perl | **146×** | binary-trees 19.0× | sha256 701× |
+| 2 | Fortran | **1.05×** | gbdt 0.93× | k-nucleotide 1.31× |
+| 3 | Rust | **1.11×** | blur 0.48× | k-nucleotide 2.73× |
+| 4 | C# | **1.54×** | binary-trees 0.45× | k-nucleotide 9.73× |
+| 5 | Go | **1.64×** | tak 1.09× | k-nucleotide 4.82× |
+| 6 | Swift | **2.03×** | blur 0.56× | k-nucleotide 9.67× |
+| 7 | VB.NET | **2.11×** | binary-trees 0.46× | k-nucleotide 9.86× |
+| 8 | Scala‡ | **2.39×** | binary-trees 0.28× | k-nucleotide 10.5× |
+| 9 | Kotlin‡ | **2.53×** | binary-trees 0.28× | k-nucleotide 9.98× |
+| 10 | OCaml | **2.68×** | binary-trees 0.19× | k-nucleotide 18.3× |
+| 11 | Java‡ | **2.92×** | binary-trees 0.33× | k-nucleotide 17.5× |
+| 12 | JavaScript | **5.09×** | binary-trees 0.57× | k-nucleotide 18.6× |
+| 13 | Elixir | **22.3×** | binary-trees 0.30× | polymorphism 136× |
+| 14 | PHP | **32.2×** | binary-trees 5.75× | sha256 98.0× |
+| 15 | Ruby | **75.3×** | binary-trees 10.3× | sha256 278× |
+| 16 | Python | **104×** | binary-trees 11.2× | sha256 601× |
+| 17 | Perl | **146×** | binary-trees 19.0× | sha256 701× |
 
 _‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured their geomeans up to 1.9× higher on x86_64 than on arm64 (single cells up to 7×) and JVM cells moving between CI runs on the same ISA, so their number here is one arm64 measurement, not a constant. Non-JVM rankings are ISA-robust and reproduce run to run ([details](docs/metric-validity.md))._
 
@@ -41,12 +44,15 @@ _‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured thei
 | Language | arithmetic | memory loop nests | allocation & GC | stdlib hash map | branchy traversal | calls & dispatch |
 |---|---:|---:|---:|---:|---:|---:|
 | **C** _(baseline)_ | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× | 1.00× |
+| Fortran | 1.08× | 1.00× | 1.07× | 1.31× | 0.99× | 1.06× |
 | Rust | 1.09× | 0.73× | 1.19× | 2.73× | 1.22× | 1.25× |
 | C# | 1.42× | 1.54× | 0.45× | 9.73× | 1.53× | 1.41× |
 | Go | 1.32× | 1.57× | 1.67× | 4.82× | 1.73× | 1.45× |
 | Swift | 2.00× | 1.55× | 1.72× | 9.67× | 1.78× | 2.34× |
+| VB.NET | 1.99× | 2.64× | 0.46× | 9.86× | 2.06× | 1.77× |
 | Scala‡ | 2.15× | 2.85× | 0.28× | 10.5× | 2.87× | 2.00× |
 | Kotlin‡ | 2.48× | 3.14× | 0.28× | 9.98× | 2.87× | 2.09× |
+| OCaml | 2.78× | 3.24× | 0.19× | 18.3× | 2.96× | 2.13× |
 | Java‡ | 3.79× | 3.03× | 0.33× | 17.5× | 3.24× | 1.89× |
 | JavaScript | 3.40× | 6.63× | 0.57× | 18.6× | 5.90× | 6.47× |
 | Elixir | 32.0× | 23.4× | 0.30× | 39.6× | 37.4× | 19.0× |
@@ -128,17 +134,18 @@ The scaling track and the `message-ring` wall-clock companion exist precisely be
 metric cannot see parallelism or syscall cost (its limits are quantified in
 [docs/metric-validity.md](docs/metric-validity.md)).
 
-## Languages (13 + a C baseline)
+## Languages (16 + a C baseline)
 
 Chosen to cover every backend **runtime archetype**, not just the popular ones, so the
 methodology meets the hard runtimes early.
 
 | Archetype | Languages |
 |---|---|
-| Native (no GC) | **Rust**, **Swift**, **C** (1.0× baseline) |
+| Native (no GC) | **Rust**, **Swift**, **Fortran**, **C** (1.0× baseline) |
 | Compiled + concurrent GC | **Go** |
+| Native + GC (no JIT) | **OCaml** |
 | Interpreter | **Python**, **Perl**, **PHP**, **Ruby** |
-| VM with JIT + GC | **Java** (JVM), **Kotlin** (JVM), **Scala** (JVM), **C#** (CLR) |
+| VM with JIT + GC | **Java** (JVM), **Kotlin** (JVM), **Scala** (JVM), **C#** (CLR), **VB.NET** (CLR) |
 | Speculative JIT with deopts | **JavaScript** (Node.js / V8) |
 | Actor VM (BEAM) | **Elixir** |
 
@@ -165,7 +172,7 @@ Rigor rules:
   ISAs aren't comparable.
 - **Metric = differential** `I(n₂) − I(n₁)`, normalized to **C = 1.0×** (**lower is better**: less
   work than C): cancels startup and JIT, isolating the algorithm's real work.
-- **Jittery runtimes** (Go, C#, JVM, BEAM): pinned to a single thread (see the runtime
+- **Jittery runtimes** (Go, C#/VB.NET, JVM, BEAM): pinned to a single thread (see the runtime
   configuration below) and reported as **median of N**; pure natives are bit-exact.
 
 ### Runtime configuration (disclosed, deliberate)
@@ -180,9 +187,10 @@ reproducibility, and it is disclosed rather than hidden:
 | Go | `GOMAXPROCS=1`, `GODEBUG=asyncpreemptoff=1`; **GC on** (default `GOGC=100`) | GC work runs on the measured thread and is counted |
 | Java / Kotlin / Scala (JVM) | `-XX:+UseSerialGC` | the serial collector still collects; its work is counted on the measured thread instead of on concurrent GC threads |
 | JavaScript (Node.js / V8) | `node --predictable --single-threaded --single-threaded-gc`, `UV_THREADPOOL_SIZE=1` | compiler/GC work runs on the measured thread (jitter drops ~600-6000×, from >4% to <0.1%) |
-| C# (CLR) | `DOTNET_gcServer=0`, `DOTNET_TieredCompilation=0` | workstation GC (still collecting) + single-tier JIT, so compilation work is deterministic; the differential cancels it |
+| C# / VB.NET (CLR) | `DOTNET_gcServer=0`, `DOTNET_TieredCompilation=0` | workstation GC (still collecting) + single-tier JIT, so compilation work is deterministic; the differential cancels it |
 | Elixir (BEAM) | `+S 1:1` (single scheduler) | all reductions on one scheduler thread |
 | Interpreters (Python, Perl, PHP, Ruby) | none needed | single-threaded by design |
+| OCaml | none needed | one domain, no OS threads; its GC runs on the measured thread and is counted |
 
 No configuration turns a garbage collector **off**: allocation-heavy axes like
 [binary-trees](benchmarks/binary-trees/README.md) measure real collection work in every managed
@@ -289,7 +297,7 @@ rulebook (decomposition, partition, no-shared-write rules, per-language primitiv
 
 Five embarrassingly-parallel axes are measured across twelve languages, each using its idiomatic
 real-parallel primitive (pthreads, goroutines, fork/processes, BEAM Tasks, JVM/CLR thread pools);
-Java and JavaScript parallel variants are pending:
+Java, JavaScript, OCaml, VB.NET and Fortran parallel variants are pending:
 
 | Benchmark | Speedup charts |
 |---|---|
@@ -343,7 +351,7 @@ docs/metric-validity.md          empirical validity of the instruction metric (c
 
 ## Status
 
-**v0**: 13 languages + a C baseline measured uniformly under qemu+insn across a nineteen-benchmark
+**v0**: 16 languages + a C baseline measured uniformly under qemu+insn across a nineteen-benchmark
 suite (fannkuch, binary-trees, mandelbrot, k-nucleotide, reverse-complement, sort-search, dijkstra,
 blur, k-means, sha256, lz77, vm, bigint, tak, polymorphism, gemm, viterbi, gbdt, message-ring: integer / allocation / floating-point / hash-map / string /
 algorithms / graphs / image / ML / bit-manipulation / compression / interpreter-dispatch /

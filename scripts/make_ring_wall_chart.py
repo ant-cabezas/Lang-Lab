@@ -21,7 +21,8 @@ BG, FG, MUTED, GRID = "#0d1117", "#e6edf3", "#9aa7b4", "#21262d"
 PALETTE = {"native": "#3fb950", "interpreter": "#f0883e", "vm": "#a371f7"}
 LANG_ARCH = {"c": "native", "rust": "native", "go": "native", "swift": "native",
              "python": "interpreter", "perl": "interpreter", "php": "interpreter", "ruby": "interpreter",
-             "kotlin": "vm", "scala": "vm", "csharp": "vm", "elixir": "vm"}
+             "kotlin": "vm", "scala": "vm", "csharp": "vm", "elixir": "vm",
+             "ocaml": "native", "fortran": "native", "vbnet": "vm"}
 from _langnames import NAMES
 
 

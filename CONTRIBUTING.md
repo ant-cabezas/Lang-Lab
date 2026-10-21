@@ -43,10 +43,15 @@ Adding a benchmark is adding source files, not rewiring the harness:
 ## Adding a language
 
 - `languages/<lang>/Dockerfile` that compiles every benchmark from a version build-arg.
-- An entry in `languages.json` (endoflife slug, build-arg, `runtimeKind`, `runtimeEnv`, `run`
-  template) and a pinned version in `versions.lock.json`.
-- All benchmarks implemented and passing the checksum gates. CI derives its matrix from
-  `languages.json`, so nothing else needs editing.
+- An entry in `languages.json` (endoflife slug, or `"versionSource": "manual"` when
+  endoflife.date has none; build-arg, `runtimeKind`, `runtimeEnv`, `run` template) and a pinned
+  version in `versions.lock.json`.
+- All benchmarks implemented and passing the checksum gates (or listed in a benchmark's `na` with
+  a reason, as message-ring does for languages without a cooperative primitive).
+- CI derives its matrix from `languages.json`, but a few lists are hand-maintained: the display
+  name in `scripts/_langnames.py`, the toolchain label in `scripts/make_matrix.py` (`TOOLCHAIN`)
+  when the pin is a toolchain version, the archetype in `scripts/make_ring_wall_chart.py`, and
+  the language counts and tables in the README and study docs.
 
 ## Results and charts
 

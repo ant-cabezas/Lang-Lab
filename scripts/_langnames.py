@@ -8,4 +8,5 @@ language means adding it HERE once, not to five per-script copies.
 NAMES = {"c": "C", "rust": "Rust", "swift": "Swift", "go": "Go", "python": "Python",
          "perl": "Perl", "php": "PHP", "kotlin": "Kotlin", "scala": "Scala",
          "csharp": "C#", "elixir": "Elixir", "ruby": "Ruby", "java": "Java",
-         "javascript": "JavaScript"}
+         "javascript": "JavaScript", "ocaml": "OCaml", "vbnet": "VB.NET",
+         "fortran": "Fortran"}

@@ -80,20 +80,23 @@ print "vm(N)"                                          # line 2
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(800000) − I(200000)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-vm.json`](../../results/2026-06-17-arm64-vm.json).
-All 14 ran the same program and printed the identical `350689618` / `234207083` results.
+Every implementation ran the same program and printed the identical `350689618` / `234207083` results.
 
 ![relative real work](../../docs/charts/vm-diff-ratio.svg)
 
 | Language | I(200k) | I(800k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
+| Fortran | 54.8M | 218.6M | 163.8M | **1.00×** | exact |
 | **C** | 54.9M | 219.3M | 164.4M | **1.00×** | exact |
 | Rust | 83.0M | 331.4M | 248.4M | 1.51× | exact |
 | Swift | 110.1M | 406.5M | 296.4M | 1.80× | exact |
 | C# | 312.4M | 612.4M | 300.0M | 1.82× | jitter |
+| VB.NET | 316.5M | 636.3M | 319.8M | 1.95× | jitter |
 | Java | 286.8M | 608.1M | 321.3M | 1.95× | jitter |
 | Go | 109.3M | 436.3M | 327.0M | 1.99× | jitter |
 | Kotlin | 326.0M | 667.8M | 341.8M | 2.08× | jitter |
 | Scala | 810.0M | 1.16B | 345.5M | 2.10× | jitter |
+| OCaml | 128.8M | 514.0M | 385.2M | 2.34× | exact |
 | Elixir | 2.28B | 3.04B | 754.4M | 4.59× | jitter |
 | JavaScript | 449.4M | 1.40B | 955.4M | 5.81× | jitter |
 | PHP | 2.16B | 8.53B | 6.37B | 38.76× | exact |

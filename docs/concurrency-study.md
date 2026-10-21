@@ -6,10 +6,11 @@ try to be a server benchmark. It decomposes "concurrency" into the facets that c
 **objectively and reproducibly** here, and is explicit about the ones that cannot (see
 [What this does not measure](#what-this-does-not-measure)).
 
-Coverage: 13 languages on the primitive-overhead axis (Axis 1); Perl has no core *cooperative*
-primitive, so it participates in scalability (Axis 2, via `fork`) but is N/A there. Java and
-JavaScript (added 2026-07-17) are measured on Axis 1 only for now: their wall-clock companion
-rows and parallel (`-par`) scaling variants are pending.
+Coverage: 15 languages on the primitive-overhead axis (Axis 1); Perl has no core *cooperative*
+primitive, so it participates in scalability (Axis 2, via `fork`) but is N/A there, and Fortran
+(added in v0.2.0) has none in the standard either, so it is N/A on Axis 1. Java and JavaScript
+(added 2026-07-17) and OCaml and VB.NET (added in v0.2.0) are measured on Axis 1 only for now:
+their wall-clock companion rows and parallel (`-par`) scaling variants are pending.
 
 ## The three axes
 

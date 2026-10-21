@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DotnetVersion Condition="'$(DotnetVersion)' == ''">9.0</DotnetVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net$(DotnetVersion)</TargetFramework>
+    <AssemblyName>k-nucleotide</AssemblyName>
+    <RootNamespace>LangLab</RootNamespace>
+    <MyType>Empty</MyType>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <OptionCompare>Binary</OptionCompare>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <Optimize>true</Optimize>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+</Project>

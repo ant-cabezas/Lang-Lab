@@ -551,6 +551,111 @@
       "correct": true,
       "determinism": "jitter",
       "measuredDate": "2026-07-17"
+    },
+    {
+      "language": "ocaml",
+      "benchmark": "reverse-complement",
+      "version": "5.4",
+      "backend": "qemu-insn",
+      "metric": "instructions",
+      "kind": "native",
+      "n1": 100000,
+      "n2": 400000,
+      "runs": 2,
+      "i_n1": {
+        "median": 13158679,
+        "min": 13158679,
+        "max": 13158679,
+        "runs": [
+          13158679,
+          13158679
+        ]
+      },
+      "i_n2": {
+        "median": 51408815,
+        "min": 51408815,
+        "max": 51408815,
+        "runs": [
+          51408815,
+          51408815
+        ]
+      },
+      "differential": 38250136,
+      "correct": true,
+      "determinism": "exact",
+      "measuredDate": "2026-10-21"
+    },
+    {
+      "language": "vbnet",
+      "benchmark": "reverse-complement",
+      "version": "9.0",
+      "backend": "qemu-insn",
+      "metric": "instructions",
+      "kind": "inproc-vm",
+      "n1": 100000,
+      "n2": 400000,
+      "runs": 5,
+      "i_n1": {
+        "median": 216848923,
+        "min": 216848332,
+        "max": 216850807,
+        "runs": [
+          216848332,
+          216850561,
+          216848573,
+          216850807,
+          216848923
+        ]
+      },
+      "i_n2": {
+        "median": 240009629,
+        "min": 240008363,
+        "max": 240010919,
+        "runs": [
+          240010851,
+          240009629,
+          240008369,
+          240008363,
+          240010919
+        ]
+      },
+      "differential": 23160706,
+      "correct": true,
+      "determinism": "jitter",
+      "measuredDate": "2026-10-21"
+    },
+    {
+      "language": "fortran",
+      "benchmark": "reverse-complement",
+      "version": "14",
+      "backend": "qemu-insn",
+      "metric": "instructions",
+      "kind": "native",
+      "n1": 100000,
+      "n2": 400000,
+      "runs": 2,
+      "i_n1": {
+        "median": 4072376,
+        "min": 4072376,
+        "max": 4072376,
+        "runs": [
+          4072376,
+          4072376
+        ]
+      },
+      "i_n2": {
+        "median": 15622572,
+        "min": 15622572,
+        "max": 15622572,
+        "runs": [
+          15622572,
+          15622572
+        ]
+      },
+      "differential": 11550196,
+      "correct": true,
+      "determinism": "exact",
+      "measuredDate": "2026-10-21"
     }
   ]
 }

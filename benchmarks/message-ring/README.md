@@ -162,6 +162,9 @@ threads combined). The determinism pinning for each language achieves this:
 | **PHP** | Fibers (PHP 8.1+) | single-threaded by construction (no PHP threading model) | `Fiber::suspend()` / `Fiber::resume($value)` for the handoff. Requires PHP >= 8.1. No `parallel` extension. |
 | **Ruby** | `Fiber` (MRI cooperative fibers) | single-threaded by construction (GIL ensures no true parallelism) | `Fiber.new { |v| loop { v = Fiber.yield(transform(v)) } }`. MRI Fibers are cooperative and do not spawn OS threads. |
 | **Perl** | **N/A -- no fair option exists** | -- | Perl has no core cooperative fiber / green-thread primitive. `ithreads` are OS threads (violates the single-OS-thread rule and hits the plugin ceiling). CPAN modules like `Coro` exist but are not present in the lang-lab Perl image. **This cell is N/A**: Perl does not participate in this benchmark. Document in results as "no cooperative primitive in core". |
+| **OCaml** | OCaml 5 effect handlers (`Effect.Deep`), 32 fibers on one domain | one domain, no `Thread`/`Domain` by construction | One `perform` + one `continue` per hop through a hand-rolled scheduler. `Thread`/`Event` (pthreads) and `Domain` (OS threads) are rejected; Lwt/Eio are libraries absent from the image. The token is masked with `land 0xFFFFFFFF` right after each transform (63-bit `int` wraps mod 2^63, which preserves the low 32 bits). The token is shared module-level state (a `ref`), not carried as the effect's payload; each hop is still one `perform` and one `continue`. |
+| **VB.NET** | `Async`/`Await` with a `SynchronizationContext` on a single thread | same pump and `runtimeEnv` as C# | Mirrors the C# port on the same CLR (`TaskCompletionSource(Of Long)` handoff). Overflow checks stay on, so the transform is computed in `Long` and masked with `And &HFFFFFFFFL`. |
+| **Fortran** | **N/A, no fair option exists** | n/a | Standard Fortran has no cooperative primitive: coarrays are processes, `do concurrent` and OpenMP are OS threads, and `swapcontext` through `iso_c_binding` would measure C via FFI. **This cell is N/A**, like Perl. |
 
 ### C baseline rationale
 
@@ -201,7 +204,7 @@ the harness's adaptive RUNS logic and the checksum gate will behave normally.
 
 ## Results: uniform qemu+insn pass
 
-Perl does not participate (no cooperative primitive in core), so 13 languages are compared
+Perl and Fortran do not participate (no cooperative primitive in core), so 15 languages are compared
 (Java via virtual threads + `SynchronousQueue`, JavaScript via a single-slot Promise channel on
 the event loop).
 
@@ -254,12 +257,14 @@ is the reference floor. Read this as user-space machinery weight, not speed. Raw
 |---|--:|--:|--:|--:|---|
 | Rust | 724.5k | 2.4M | 1.7M | **0.28×** | exact |
 | **C** | 2.1M | 8.0M | 5.9M | **1.00×** | exact |
+| OCaml | 4.6M | 17.4M | 12.8M | 2.16× | exact |
 | PHP | 50.7M | 97.4M | 46.8M | 7.88× | exact |
 | Go | 23.2M | 91.7M | 68.5M | 11.54× | jitter |
 | Ruby | 314.7M | 425.2M | 110.5M | 18.62× | jitter |
 | JavaScript | 181.8M | 339.7M | 157.9M | 26.60× | jitter |
 | Elixir | 2.03B | 2.20B | 177.1M | 29.83× | jitter |
 | C# | 388.5M | 597.9M | 209.4M | 35.28× | jitter |
+| VB.NET | 389.2M | 600.0M | 210.8M | 35.51× | jitter |
 | Java | 1.20B | 1.49B | 289.1M | 48.70× | jitter |
 | Swift | 115.5M | 425.5M | 310.0M | 52.23× | jitter |
 | Scala | 1.34B | 1.67B | 327.3M | 55.15× | jitter |

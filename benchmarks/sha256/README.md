@@ -79,7 +79,7 @@ the differential `I(10000) − I(2500)` is dominated by the marginal compression
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(10000) − I(2500)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-sha256.json`](../../results/2026-06-17-arm64-sha256.json).
-All 14 printed the identical `720457911` / `506466333` hashes.
+Every implementation printed the identical `720457911` / `506466333` hashes.
 
 ![relative real work](../../docs/charts/sha256-diff-ratio.svg)
 
@@ -87,10 +87,13 @@ All 14 printed the identical `720457911` / `506466333` hashes.
 |---|--:|--:|--:|--:|---|
 | Rust | 7.6M | 30.1M | 22.4M | **0.90×** | exact |
 | **C** | 8.4M | 33.3M | 24.9M | **1.00×** | exact |
+| Fortran | 9.8M | 38.4M | 28.6M | 1.15× | exact |
 | Go | 11.7M | 45.9M | 34.2M | 1.37× | jitter |
 | C# | 229.8M | 269.5M | 39.6M | 1.59× | jitter |
 | Swift | 26.6M | 72.4M | 45.8M | 1.84× | exact |
+| VB.NET | 239.8M | 303.0M | 63.3M | 2.54× | jitter |
 | JavaScript | 167.0M | 233.1M | 66.1M | 2.65× | jitter |
+| OCaml | 31.6M | 125.2M | 93.6M | 3.75× | exact |
 | Kotlin | 228.3M | 364.2M | 135.9M | 5.45× | jitter |
 | Scala | 715.3M | 855.3M | 140.1M | 5.61× | jitter |
 | Java | 173.1M | 330.3M | 157.2M | 6.30× | jitter |

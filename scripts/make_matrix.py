@@ -35,8 +35,8 @@ HEADLINE_ISA = "arm64"
 BG, FG, MUTED, GRID = "#0d1117", "#e6edf3", "#9aa7b4", "#0d1117"
 from _langnames import NAMES
 # How the per-row `version` field reads in the provenance line: the registry pins a toolchain
-# version, not a language version, for these three.
-TOOLCHAIN = {"c": "gcc", "csharp": ".NET", "javascript": "Node"}
+# version, not a language version, for these.
+TOOLCHAIN = {"c": "gcc", "csharp": ".NET", "javascript": "Node", "vbnet": ".NET", "fortran": "gfortran"}
 # Archetype colour for the row label (matches make_charts.py palette).
 PALETTE = {"native": "#3fb950", "interpreter": "#f0883e", "vm": "#a371f7"}
 KIND_ARCH = {"native": "native", "interp": "interpreter", "inproc-vm": "vm", "launcher": "vm"}
@@ -391,7 +391,7 @@ def check_metric_validity_sync(geomean):
         return
     rev = {v: k for k, v in NAMES.items()}
     # Study 2's table: | Language | geomean arm64 | geomean x86_64 | ... (bold markers optional)
-    row_re = re.compile(r"^\|\s*\**([A-Za-z#+ ]+?)\**\s*\|\s*\**([0-9]+\.?[0-9]*)\**\s*\|"
+    row_re = re.compile(r"^\|\s*\**([A-Za-z#+. ]+?)\**\s*\|\s*\**([0-9]+\.?[0-9]*)\**\s*\|"
                         r"\s*\**([0-9]+\.?[0-9]*)?")
     col = 2 if ISA == "arm64" else 3
     for line in open(path, encoding="utf-8"):

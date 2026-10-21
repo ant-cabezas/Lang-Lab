@@ -91,13 +91,16 @@ Uniform qemu+insn pass, **arm64**, median of 5, differential `I(14) − I(10)` n
 
 | Language | I(10) | I(14) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
+| OCaml | 5.6M | 152.5M | 146.9M | **0.19×** | exact |
 | Scala | 647.8M | 860.6M | 212.8M | **0.28×** | jitter |
 | Kotlin | 185.6M | 399.4M | 213.8M | **0.28×** | jitter |
 | Elixir | 1.98B | 2.21B | 227.3M | **0.30×** | jitter |
 | Java | 130.3M | 381.1M | 250.8M | **0.33×** | jitter |
 | C# | 220.7M | 565.4M | 344.7M | **0.45×** | jitter |
+| VB.NET | 221.2M | 573.5M | 352.4M | **0.46×** | jitter |
 | JavaScript | 141.4M | 579.4M | 438.0M | **0.57×** | jitter |
 | **C** | 33.7M | 800.4M | 766.7M | **1.00×** | exact |
+| Fortran | 36.2M | 853.7M | 817.5M | 1.07× | exact |
 | Rust | 40.2M | 949.3M | 909.0M | 1.19× | exact |
 | Go | 36.9M | 1.32B | 1.28B | 1.67× | jitter |
 | Swift | 69.5M | 1.39B | 1.32B | 1.72× | exact |

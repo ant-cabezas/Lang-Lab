@@ -99,7 +99,7 @@ JIT. Tunable up for a stronger signal if the slow interpreters stay tractable un
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(256) − I(128)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-mandelbrot.json`](../../results/2026-06-17-arm64-mandelbrot.json).
-All 14 printed the identical `6518` / `26004` counts; the FMA-proof formulation holds across
+Every implementation printed the identical `6518` / `26004` counts; the FMA-proof formulation holds across
 every toolchain.
 
 ![relative real work](../../docs/charts/mandelbrot-diff-ratio.svg)
@@ -108,11 +108,14 @@ every toolchain.
 |---|--:|--:|--:|--:|---|
 | Scala | 669.9M | 683.4M | 13.5M | **0.97×** | jitter |
 | **C** | 4.7M | 18.6M | 13.9M | **1.00×** | exact |
+| Fortran | 4.9M | 18.8M | 13.9M | 1.00× | exact |
 | Rust | 5.6M | 21.8M | 16.3M | 1.17× | exact |
 | Swift | 16.7M | 33.0M | 16.3M | 1.17× | exact |
 | C# | 212.1M | 228.7M | 16.6M | 1.19× | jitter |
 | Kotlin | 193.5M | 211.4M | 17.8M | 1.28× | jitter |
 | Go | 6.2M | 24.2M | 17.9M | 1.29× | jitter |
+| VB.NET | 213.0M | 232.1M | 19.1M | 1.37× | jitter |
+| OCaml | 8.5M | 32.9M | 24.4M | 1.75× | exact |
 | JavaScript | 146.0M | 180.2M | 34.2M | 2.45× | jitter |
 | Java | 141.5M | 183.1M | 41.7M | 2.99× | jitter |
 | Elixir | 2.05B | 2.31B | 261.2M | 18.76× | jitter |

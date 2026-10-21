@@ -129,12 +129,15 @@ work. C (gcc `-O2`, no GC) is the reference floor; below 1.0x beats C.
 |---|--:|--:|--:|--:|---|
 | Rust | 13.3M | 52.8M | 39.5M | **0.80×** | exact |
 | **C** | 16.6M | 66.3M | 49.6M | **1.00×** | exact |
+| Fortran | 17.3M | 68.6M | 51.3M | 1.03× | exact |
 | C# | 242.5M | 306.3M | 63.8M | 1.29× | jitter |
 | Go | 22.8M | 90.4M | 67.6M | 1.36× | jitter |
 | Swift | 44.1M | 142.3M | 98.3M | 1.98× | exact |
+| VB.NET | 257.0M | 362.0M | 105.0M | 2.12× | jitter |
 | Kotlin | 246.3M | 358.2M | 111.9M | 2.26× | jitter |
 | Scala | 721.1M | 835.4M | 114.3M | 2.30× | jitter |
 | Java | 231.3M | 348.6M | 117.3M | 2.36× | jitter |
+| OCaml | 62.2M | 251.7M | 189.5M | 3.82× | exact |
 | JavaScript | 284.0M | 562.3M | 278.3M | 5.61× | jitter |
 | PHP | 581.3M | 2.22B | 1.64B | 33.03× | exact |
 | Elixir | 2.72B | 4.47B | 1.74B | 35.16× | jitter |

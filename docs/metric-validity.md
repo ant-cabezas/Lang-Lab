@@ -20,7 +20,8 @@ wall-clock speed.
 ## Study 1: instruction count vs wall-clock (calibration)
 
 **Method.** Five compute-heavy, syscall-free benchmarks (gemm, sha256, k-means, lz77, mandelbrot)
-x 11 languages, measured **both ways on the same machine (arm64)**: the qemu+insn instruction
+x 11 languages (the roster at the time; the languages added later, Java, JavaScript, OCaml, VB.NET
+and Fortran, are not in this calibration), measured **both ways on the same machine (arm64)**: the qemu+insn instruction
 differential and the native wall-clock differential (min of repetitions, `t(n2) - t(n1)` to cancel
 startup). Both normalized to C, correlated in log space.
 
@@ -74,6 +75,9 @@ median shift is x1.02 (no systematic bias). The tail is the story, and it is **t
 | Ruby | 75.3 | 63.6 | x0.84 | yes |
 | Python | 104 | 114 | x1.10 | yes |
 | Perl | 146 | 130 | x0.89 | yes |
+
+OCaml, VB.NET and Fortran (added in v0.2.0) have no x86_64 run yet, so they are absent from this
+table until CI measures them.
 
 The ten non-JVM geomeans move at most 16% between ISAs and keep exactly the same order. V8
 (JavaScript) turns out as ISA-stable as the interpreters, which settles the question left open when

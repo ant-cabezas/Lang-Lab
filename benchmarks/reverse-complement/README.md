@@ -90,7 +90,7 @@ startup + JIT.
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(400000) − I(100000)` normalized
 to **C = 1.0×**. Source: [`results/2026-06-17-arm64-reverse-complement.json`](../../results/2026-06-17-arm64-reverse-complement.json).
-All 14 printed the identical `827974717` / `533032773` hashes.
+Every implementation printed the identical `827974717` / `533032773` hashes.
 
 ![relative real work](../../docs/charts/reverse-complement-diff-ratio.svg)
 
@@ -98,9 +98,12 @@ All 14 printed the identical `827974717` / `533032773` hashes.
 |---|--:|--:|--:|--:|---|
 | Rust | 3.9M | 15.0M | 11.1M | **0.99×** | exact |
 | **C** | 3.8M | 15.1M | 11.3M | **1.00×** | exact |
+| Fortran | 4.1M | 15.6M | 11.6M | 1.03× | exact |
 | Swift | 16.9M | 33.5M | 16.7M | 1.48× | exact |
 | Go | 6.3M | 24.2M | 17.9M | 1.59× | jitter |
 | C# | 214.9M | 234.2M | 19.3M | 1.71× | jitter |
+| VB.NET | 216.8M | 240.0M | 23.2M | 2.06× | jitter |
+| OCaml | 13.2M | 51.4M | 38.3M | 3.40× | exact |
 | Kotlin | 195.2M | 244.6M | 49.4M | 4.39× | jitter |
 | Scala | 657.1M | 710.9M | 53.8M | 4.78× | jitter |
 | Java | 142.0M | 211.0M | 69.0M | 6.13× | jitter |
@@ -162,7 +165,7 @@ Read the rows, not the cells:
   shine (relatively) at hash maps (their native-C associative array), and crater at compute and
   per-character loops.
 
-Five benchmarks, **five different orderings of the same fourteen languages**. There is no scalar
+Five benchmarks, **five different orderings of the same languages**. There is no scalar
 "speed of a language": only a speed *at a kind of work*. That is the entire reason lang-lab is a
 suite.
 

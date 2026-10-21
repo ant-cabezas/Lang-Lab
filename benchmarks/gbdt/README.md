@@ -121,13 +121,16 @@ work. C (gcc `-O2`, no GC) is the reference floor; below 1.0x beats C.
 | Language | I(5k) | I(20k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | Rust | 93.4M | 370.3M | 276.9M | **0.82×** | exact |
+| Fortran | 105.6M | 418.6M | 313.0M | **0.93×** | exact |
 | **C** | 113.5M | 450.5M | 337.1M | **1.00×** | exact |
 | Go | 173.0M | 685.0M | 512.0M | 1.52× | jitter |
 | C# | 394.0M | 922.4M | 528.4M | 1.57× | jitter |
 | Swift | 206.5M | 786.9M | 580.4M | 1.72× | exact |
+| VB.NET | 478.5M | 1.25B | 775.8M | 2.30× | jitter |
 | Scala | 983.0M | 1.76B | 777.5M | 2.31× | jitter |
 | Java | 464.9M | 1.26B | 791.2M | 2.35× | jitter |
 | Kotlin | 495.3M | 1.34B | 840.3M | 2.49× | jitter |
+| OCaml | 293.1M | 1.14B | 847.6M | 2.51× | exact |
 | JavaScript | 698.1M | 2.12B | 1.42B | 4.21× | jitter |
 | PHP | 3.45B | 13.6B | 10.1B | 30.04× | exact |
 | Elixir | 6.57B | 19.8B | 13.2B | 39.19× | jitter |

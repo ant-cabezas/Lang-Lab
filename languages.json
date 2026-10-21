@@ -104,5 +104,28 @@
     "runtimeKind": "inproc-vm",
     "runtimeEnv": { "UV_THREADPOOL_SIZE": "1" },
     "run": "node --predictable --single-threaded --single-threaded-gc /app/{b}.js"
+  },
+  "ocaml": {
+    "versionSource": "manual",
+    "dockerfile": "languages/ocaml/Dockerfile",
+    "buildArg": "OCAML_VERSION",
+    "runtimeKind": "native",
+    "run": "/app/{b}"
+  },
+  "vbnet": {
+    "eol": "dotnet",
+    "pinPrecision": "minor",
+    "dockerfile": "languages/vbnet/Dockerfile",
+    "buildArg": "DOTNET_VERSION",
+    "runtimeKind": "inproc-vm",
+    "runtimeEnv": { "DOTNET_gcServer": "0", "DOTNET_TieredCompilation": "0" },
+    "run": "/app/out/{b}/{b}"
+  },
+  "fortran": {
+    "versionSource": "manual",
+    "dockerfile": "languages/fortran/Dockerfile",
+    "buildArg": "GCC_VERSION",
+    "runtimeKind": "native",
+    "run": "/app/{b}"
   }
 }

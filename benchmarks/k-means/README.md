@@ -9,7 +9,7 @@ its members).
 Most ML is floating-point, but float would wreck cross-language reproducibility (FMA contraction and
 non-associative summation give different bits in different languages). So this is **integer k-means**,
 which is also exactly how quantized models run in production. Integer arithmetic is exact and
-associative, so all fourteen implementations land on the bit-identical result.
+associative, so every implementation lands on the bit-identical result.
 
 ## The algorithm
 
@@ -99,17 +99,20 @@ differential `I(8000) − I(2000)` is dominated by the marginal nearest-centroid
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(8000) − I(2000)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-k-means.json`](../../results/2026-06-17-arm64-k-means.json).
-All 14 printed the identical `70735446` / `52003413` checksums: same clusters, same assignments.
+Every implementation printed the identical `70735446` / `52003413` checksums: same clusters, same assignments.
 
 ![relative real work](../../docs/charts/k-means-diff-ratio.svg)
 
 | Language | I(2k) | I(8k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | Rust | 8.9M | 35.0M | 26.1M | **0.59×** | exact |
+| Fortran | 14.9M | 59.0M | 44.1M | **1.00×** | exact |
 | **C** | 14.8M | 58.9M | 44.1M | **1.00×** | exact |
 | C# | 240.1M | 302.1M | 62.0M | 1.41× | jitter |
 | Go | 24.9M | 98.9M | 74.0M | 1.68× | jitter |
 | Swift | 48.0M | 158.0M | 110.0M | 2.49× | exact |
+| VB.NET | 262.0M | 394.6M | 132.7M | 3.01× | jitter |
+| OCaml | 47.5M | 188.8M | 141.3M | 3.20× | exact |
 | Scala | 771.8M | 943.2M | 171.4M | 3.89× | jitter |
 | Java | 236.3M | 464.9M | 228.6M | 5.18× | jitter |
 | Kotlin | 282.6M | 580.6M | 298.0M | 6.76× | jitter |
@@ -151,7 +154,7 @@ Differential vs C = 1.0× across all nine benchmarks (int / alloc / float / hash
 | Python | 69.57 | 11.15 | 124.76 | 49.80 | 114.00 | 131.93 | 92.92 | 120.91 | 149.26 |
 | Perl | 189.62 | 18.98 | 216.87 | 36.40 | 181.17 | 189.53 | 155.46 | 264.40 | 203.14 |
 
-Nine benchmarks, nine orderings of the same fourteen languages, the thesis now overdetermined:
+Nine benchmarks, nine orderings of the same languages, the thesis now overdetermined:
 
 - **C is the baseline, not the ceiling.** It wins seven of nine, but loses both vectorizable axes
   (blur, k-means) to LLVM-backed Rust. A `gcc -O3` C build would narrow that, but the suite pins

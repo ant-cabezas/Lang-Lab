@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Fortran** (gfortran 14, built from the same `gcc` image and `-O2` flags as the C baseline, so
+  the two pins move together): 18 benchmarks with bit-exact reference checksums, every cell
+  deterministic. Overall 1.05x C on arm64, the closest any language has come to the baseline.
+  message-ring is N/A: standard Fortran has no cooperative concurrency primitive.
+- **OCaml** (OCaml 5.4, native `ocamlopt`, no flambda, bounds checks on): all 19 benchmarks with
+  bit-exact reference checksums, every cell deterministic without any runtime pinning. Adds a new
+  archetype, native code with a garbage collector and no JIT; its bump-allocating minor heap puts
+  binary-trees at 0.19x C. The ports respect OCaml's 63-bit `int`; message-ring uses OCaml 5
+  effect handlers on a single domain.
+- **VB.NET** (.NET 9, same CLR and runtime pinning as C#): all 19 benchmarks with bit-exact
+  reference checksums. Measured with Visual Basic's default integer overflow checks on, so the
+  gap to C# on the same runtime (1.0x to 2.2x per axis) is the cost of that language default.
+- **Language admission memos** in `docs/fairness-audit.md`: the binding fairness rules each new
+  language was implemented against, and the closing audit that cleared all three ports.
+
+### Fixed
+
+- The sort-search and dijkstra READMEs understated the LCG product `state*1103515245` as ~2.4e10;
+  it reaches ~2.37e18, which is why those benchmarks need at least 63-bit integers.
+- C# projects hardcoded `net9.0`, so bumping the pinned .NET SDK would have kept building against
+  the 9.0 runtime while labelling the results with the new version. The target framework now follows
+  the pin (`DOTNET_VERSION`), as VB.NET's does; on .NET 9 the build and its counts are unchanged.
+
 ## [0.1.0] - 2026-10-14
 
 ### Added

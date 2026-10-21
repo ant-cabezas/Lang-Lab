@@ -79,8 +79,9 @@ number validates the whole pipeline.
 2. **One mutable array**, sorted in place. 64-bit integer elements.
 3. **Integer (floor) division** for every `/2` and the `mod N`: a frequent bug is a language whose
    `/` is float division (Python `//`, Perl `int(...)`, Elixir `div`/`rem`).
-4. **64-bit arithmetic**: the LCG product `state*1103515245` reaches ~2.4e10 and `h*31` ~3.1e10, so
-   the state, array elements and hash must be 64-bit.
+4. **64-bit arithmetic**: the LCG product `state*1103515245` reaches ~2.37e18 and `h*31` ~3.1e10, so
+   the state, array elements and hash need at least 63 bits (64-bit integers, or OCaml's 63-bit
+   `int`, whose limit 2^62 ~4.6e18 still clears the product).
 5. **All integer**: no floating point.
 
 ### Per-language array representation
@@ -112,7 +113,7 @@ searches, so the differential `I(200000) − I(50000)` is dominated by the margi
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(200000) − I(50000)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-sort-search.json`](../../results/2026-06-17-arm64-sort-search.json).
-All 14 printed the identical `408844375` / `110297196` checksums: the same quicksort and binary
+Every implementation printed the identical `408844375` / `110297196` checksums: the same quicksort and binary
 search, operation for operation.
 
 ![relative real work](../../docs/charts/sort-search-diff-ratio.svg)
@@ -120,10 +121,13 @@ search, operation for operation.
 | Language | I(50k) | I(200k) | differential | **vs C** (lower is better) | determinism |
 |---|--:|--:|--:|--:|---|
 | **C** | 15.5M | 68.2M | 52.7M | **1.00×** | exact |
+| Fortran | 16.1M | 70.3M | 54.2M | 1.03× | exact |
 | Rust | 20.8M | 91.6M | 70.7M | 1.34× | exact |
 | Go | 22.4M | 96.9M | 74.6M | 1.41× | jitter |
 | C# | 233.9M | 310.6M | 76.8M | 1.46× | jitter |
+| VB.NET | 239.6M | 336.6M | 97.0M | 1.84× | jitter |
 | Swift | 40.8M | 140.3M | 99.5M | 1.89× | exact |
+| OCaml | 39.2M | 172.3M | 133.1M | 2.53× | exact |
 | Scala | 770.3M | 933.7M | 163.3M | 3.10× | jitter |
 | Kotlin | 280.9M | 467.8M | 186.9M | 3.55× | jitter |
 | Java | 229.8M | 457.4M | 227.6M | 4.32× | jitter |

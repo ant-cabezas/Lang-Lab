@@ -85,7 +85,7 @@ included) a full 3×3 window, so there is no special-cased border.
 
 Uniform qemu+insn pass, **arm64**, median of 5, differential `I(256) − I(128)` normalized to
 **C = 1.0×**. Source: [`results/2026-06-17-arm64-blur.json`](../../results/2026-06-17-arm64-blur.json).
-All 14 printed the identical `722869223` / `229750350` hashes.
+Every implementation printed the identical `722869223` / `229750350` hashes.
 
 ![relative real work](../../docs/charts/blur-diff-ratio.svg)
 
@@ -93,9 +93,12 @@ All 14 printed the identical `722869223` / `229750350` hashes.
 |---|--:|--:|--:|--:|---|
 | Rust | 6.0M | 23.4M | 17.5M | **0.48×** | exact |
 | Swift | 18.1M | 38.4M | 20.3M | **0.56×** | exact |
+| Fortran | 12.0M | 47.5M | 35.4M | **0.97×** | exact |
 | **C** | 12.2M | 48.7M | 36.4M | **1.00×** | exact |
 | C# | 222.8M | 259.5M | 36.7M | 1.01× | jitter |
 | Go | 15.3M | 60.1M | 44.9M | 1.23× | jitter |
+| VB.NET | 236.2M | 316.5M | 80.3M | 2.20× | jitter |
+| OCaml | 27.5M | 110.3M | 82.8M | 2.27× | exact |
 | Java | 200.1M | 292.9M | 92.8M | 2.55× | jitter |
 | Kotlin | 235.8M | 355.2M | 119.3M | 3.28× | jitter |
 | Scala | 707.9M | 828.6M | 120.7M | 3.32× | jitter |
@@ -143,7 +146,7 @@ Differential vs C = 1.0× across all eight benchmarks:
 | Python | 69.57× | 11.15× | 124.76× | 49.80× | 114.00× | 131.93× | 92.92× | 120.91× |
 | Perl | 189.62× | 18.98× | 216.87× | 36.40× | 181.17× | 189.53× | 155.46× | 264.40× |
 
-Eight benchmarks, eight orderings of the same fourteen languages: the case the suite was built to make:
+Eight benchmarks, eight orderings of the same languages: the case the suite was built to make:
 
 - **C is the baseline, not the ceiling.** It wins six of eight axes, ties one (k-nucleotide it leads,
   blur it loses), but on a vectorizable stencil, LLVM-backed Rust and Swift beat it outright.
