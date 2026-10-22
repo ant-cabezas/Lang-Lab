@@ -13,7 +13,7 @@
 <text x="170.1" y="178" font-size="13" fill="#e6edf3">395.84M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="201" width="96.8" height="24" rx="5" fill="#3fb950"/>
-<text x="237.8" y="218" font-size="13" fill="#e6edf3">764.28M</text>
+<text x="237.8" y="218" font-size="13" fill="#e6edf3">764.27M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="241" width="100.6" height="24" rx="5" fill="#a371f7"/>
 <text x="241.6" y="258" font-size="13" fill="#e6edf3">793.54M</text>
@@ -24,8 +24,8 @@
 <rect x="132" y="321" width="129.2" height="24" rx="5" fill="#a371f7"/>
 <text x="270.2" y="338" font-size="13" fill="#e6edf3">1.05B</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="135.1" height="24" rx="5" fill="#a371f7"/>
-<text x="276.1" y="378" font-size="13" fill="#e6edf3">1.11B</text>
+<rect x="132" y="361" width="133.6" height="24" rx="5" fill="#a371f7"/>
+<text x="274.6" y="378" font-size="13" fill="#e6edf3">1.09B</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
 <rect x="132" y="401" width="136.9" height="24" rx="5" fill="#a371f7"/>
 <text x="277.9" y="418" font-size="13" fill="#e6edf3">1.13B</text>
@@ -33,8 +33,8 @@
 <rect x="132" y="441" width="140.8" height="24" rx="5" fill="#3fb950"/>
 <text x="281.8" y="458" font-size="13" fill="#e6edf3">1.17B</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="481" width="173.4" height="24" rx="5" fill="#a371f7"/>
-<text x="314.4" y="498" font-size="13" fill="#e6edf3">1.61B</text>
+<rect x="132" y="481" width="173.0" height="24" rx="5" fill="#a371f7"/>
+<text x="314.0" y="498" font-size="13" fill="#e6edf3">1.60B</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="521" width="203.2" height="24" rx="5" fill="#a371f7"/>
 <text x="344.2" y="538" font-size="13" fill="#e6edf3">2.15B</text>

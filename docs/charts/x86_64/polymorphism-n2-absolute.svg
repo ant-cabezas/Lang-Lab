@@ -15,42 +15,42 @@
 <rect x="132" y="201" width="59.9" height="24" rx="5" fill="#3fb950"/>
 <text x="200.9" y="218" font-size="13" fill="#e6edf3">60.62M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">OCaml</text>
-<rect x="132" y="241" width="124.3" height="24" rx="5" fill="#3fb950"/>
-<text x="265.3" y="258" font-size="13" fill="#e6edf3">120.56M</text>
+<rect x="132" y="241" width="124.4" height="24" rx="5" fill="#3fb950"/>
+<text x="265.4" y="258" font-size="13" fill="#e6edf3">120.56M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="281" width="193.5" height="24" rx="5" fill="#a371f7"/>
-<text x="334.5" y="298" font-size="13" fill="#e6edf3">252.66M</text>
+<rect x="132" y="281" width="191.9" height="24" rx="5" fill="#a371f7"/>
+<text x="332.9" y="298" font-size="13" fill="#e6edf3">247.82M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
-<rect x="132" y="321" width="198.2" height="24" rx="5" fill="#a371f7"/>
-<text x="339.2" y="338" font-size="13" fill="#e6edf3">265.70M</text>
+<rect x="132" y="321" width="198.4" height="24" rx="5" fill="#a371f7"/>
+<text x="339.4" y="338" font-size="13" fill="#e6edf3">265.70M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
-<rect x="132" y="361" width="199.0" height="24" rx="5" fill="#3fb950"/>
-<text x="340.0" y="378" font-size="13" fill="#e6edf3">268.02M</text>
+<rect x="132" y="361" width="199.2" height="24" rx="5" fill="#3fb950"/>
+<text x="340.2" y="378" font-size="13" fill="#e6edf3">268.02M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">VB.NET</text>
-<rect x="132" y="401" width="201.4" height="24" rx="5" fill="#a371f7"/>
-<text x="342.4" y="418" font-size="13" fill="#e6edf3">274.97M</text>
+<rect x="132" y="401" width="201.6" height="24" rx="5" fill="#a371f7"/>
+<text x="342.6" y="418" font-size="13" fill="#e6edf3">274.98M</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="441" width="210.7" height="24" rx="5" fill="#a371f7"/>
-<text x="351.7" y="458" font-size="13" fill="#e6edf3">303.62M</text>
+<rect x="132" y="441" width="208.0" height="24" rx="5" fill="#a371f7"/>
+<text x="349.0" y="458" font-size="13" fill="#e6edf3">294.28M</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
-<rect x="132" y="481" width="278.7" height="24" rx="5" fill="#a371f7"/>
-<text x="419.7" y="498" font-size="13" fill="#e6edf3">627.56M</text>
+<rect x="132" y="481" width="278.9" height="24" rx="5" fill="#a371f7"/>
+<text x="419.9" y="498" font-size="13" fill="#e6edf3">627.56M</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="521" width="296.1" height="24" rx="5" fill="#a371f7"/>
-<text x="437.1" y="538" font-size="13" fill="#e6edf3">755.61M</text>
+<rect x="132" y="521" width="297.6" height="24" rx="5" fill="#a371f7"/>
+<text x="438.6" y="538" font-size="13" fill="#e6edf3">766.42M</text>
 <text x="120" y="577" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
-<rect x="132" y="561" width="326.4" height="24" rx="5" fill="#f0883e"/>
-<text x="467.4" y="578" font-size="13" fill="#e6edf3">1.05B</text>
+<rect x="132" y="561" width="326.7" height="24" rx="5" fill="#f0883e"/>
+<text x="467.7" y="578" font-size="13" fill="#e6edf3">1.05B</text>
 <text x="120" y="617" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
-<rect x="132" y="601" width="404.8" height="24" rx="5" fill="#f0883e"/>
-<text x="545.8" y="618" font-size="13" fill="#e6edf3">2.41B</text>
+<rect x="132" y="601" width="405.2" height="24" rx="5" fill="#f0883e"/>
+<text x="546.2" y="618" font-size="13" fill="#e6edf3">2.41B</text>
 <text x="120" y="657" text-anchor="end" font-size="14" fill="#9aa7b4">Perl</text>
-<rect x="132" y="641" width="463.0" height="24" rx="5" fill="#f0883e"/>
-<text x="604.0" y="658" font-size="13" fill="#e6edf3">4.49B</text>
+<rect x="132" y="641" width="463.4" height="24" rx="5" fill="#f0883e"/>
+<text x="604.4" y="658" font-size="13" fill="#e6edf3">4.49B</text>
 <text x="120" y="697" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
-<rect x="132" y="681" width="484.6" height="24" rx="5" fill="#f0883e"/>
-<text x="625.6" y="698" font-size="13" fill="#e6edf3">5.66B</text>
+<rect x="132" y="681" width="485.0" height="24" rx="5" fill="#f0883e"/>
+<text x="626.0" y="698" font-size="13" fill="#e6edf3">5.66B</text>
 <text x="120" y="737" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
 <rect x="132" y="721" width="532.0" height="24" rx="5" fill="#a371f7"/>
-<text x="673.0" y="738" font-size="13" fill="#e6edf3">9.39B</text>
+<text x="673.0" y="738" font-size="13" fill="#e6edf3">9.35B</text>
 </svg>

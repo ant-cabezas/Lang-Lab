@@ -22,25 +22,25 @@
 <text x="258.8" y="298" font-size="13" fill="#e6edf3">46.53M</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="321" width="286.2" height="24" rx="5" fill="#a371f7"/>
-<text x="427.2" y="338" font-size="13" fill="#e6edf3">244.72M</text>
+<text x="427.2" y="338" font-size="13" fill="#e6edf3">244.71M</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">VB.NET</text>
 <rect x="132" y="361" width="287.6" height="24" rx="5" fill="#a371f7"/>
 <text x="428.6" y="378" font-size="13" fill="#e6edf3">247.99M</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="401" width="290.7" height="24" rx="5" fill="#a371f7"/>
 <text x="431.7" y="418" font-size="13" fill="#e6edf3">255.80M</text>
-<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="441" width="293.1" height="24" rx="5" fill="#a371f7"/>
-<text x="434.1" y="458" font-size="13" fill="#e6edf3">261.95M</text>
-<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="481" width="294.9" height="24" rx="5" fill="#a371f7"/>
-<text x="435.9" y="498" font-size="13" fill="#e6edf3">266.56M</text>
+<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="441" width="295.7" height="24" rx="5" fill="#a371f7"/>
+<text x="436.7" y="458" font-size="13" fill="#e6edf3">268.70M</text>
+<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
+<rect x="132" y="481" width="302.8" height="24" rx="5" fill="#a371f7"/>
+<text x="443.8" y="498" font-size="13" fill="#e6edf3">288.11M</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="521" width="373.1" height="24" rx="5" fill="#f0883e"/>
 <text x="514.1" y="538" font-size="13" fill="#e6edf3">575.90M</text>
 <text x="120" y="577" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="561" width="396.8" height="24" rx="5" fill="#a371f7"/>
-<text x="537.8" y="578" font-size="13" fill="#e6edf3">728.11M</text>
+<rect x="132" y="561" width="398.4" height="24" rx="5" fill="#a371f7"/>
+<text x="539.4" y="578" font-size="13" fill="#e6edf3">739.54M</text>
 <text x="120" y="617" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="601" width="455.9" height="24" rx="5" fill="#f0883e"/>
 <text x="596.9" y="618" font-size="13" fill="#e6edf3">1.30B</text>

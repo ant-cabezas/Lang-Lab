@@ -12,11 +12,11 @@
 <rect x="132" y="161" width="3.0" height="24" rx="5" fill="#3fb950"/>
 <text x="144.0" y="178" font-size="13" fill="#e6edf3">1.25×</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="201" width="3.1" height="24" rx="5" fill="#a371f7"/>
-<text x="144.1" y="218" font-size="13" fill="#e6edf3">1.31×</text>
+<rect x="132" y="201" width="3.6" height="24" rx="5" fill="#a371f7"/>
+<text x="144.6" y="218" font-size="13" fill="#e6edf3">1.53×</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="241" width="3.5" height="24" rx="5" fill="#a371f7"/>
-<text x="144.5" y="258" font-size="13" fill="#e6edf3">1.49×</text>
+<rect x="132" y="241" width="4.2" height="24" rx="5" fill="#a371f7"/>
+<text x="145.2" y="258" font-size="13" fill="#e6edf3">1.75×</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="281" width="5.1" height="24" rx="5" fill="#3fb950"/>
 <text x="146.1" y="298" font-size="13" fill="#e6edf3">2.14×</text>
@@ -25,7 +25,7 @@
 <text x="146.1" y="338" font-size="13" fill="#e6edf3">2.16×</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
 <rect x="132" y="361" width="5.7" height="24" rx="5" fill="#a371f7"/>
-<text x="146.7" y="378" font-size="13" fill="#e6edf3">2.37×</text>
+<text x="146.7" y="378" font-size="13" fill="#e6edf3">2.39×</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="401" width="5.9" height="24" rx="5" fill="#3fb950"/>
 <text x="146.9" y="418" font-size="13" fill="#e6edf3">2.47×</text>
@@ -52,5 +52,5 @@
 <text x="502.6" y="698" font-size="13" fill="#e6edf3">151.87×</text>
 <text x="120" y="737" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
 <rect x="132" y="721" width="532.0" height="24" rx="5" fill="#f0883e"/>
-<text x="673.0" y="738" font-size="13" fill="#e6edf3">223.44×</text>
+<text x="673.0" y="738" font-size="13" fill="#e6edf3">223.43×</text>
 </svg>
