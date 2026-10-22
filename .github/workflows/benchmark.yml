@@ -26,9 +26,10 @@ env:
   # without the plugin ever printing its instruction summary; the only plugin output is its
   # "detected repeat execution" log line. Not the OOM csharp/k-nucleotide was first attributed to:
   # the 2026-06-21 allocation fix targeted that, yet every x86_64 envelope since 2026-06-22 records
-  # this same exit-4 signature. Cause found 2026-10-22: the plugin's per-repeat log line (one line per
-  # `rep movs/stos` iteration on x86_64) filled the runner disk; the print is removed from the vendored
-  # plugin. Keep these entries until a run measures the cells, then drop them.
+  # this same exit-4 signature. The "repeat execution" line was noise (removed 2026-10-22); with it gone the
+  # cells still fail with exit 0 and an empty stderr. Current hypothesis: the runtime closes fd 2, which
+  # qemu-user shares with the guest, swallowing the plugin summary; measure.sh now writes the summary to its
+  # own log file (qemu -D). Keep these entries until a run measures the cells, then drop them.
   # vbnet:k-nucleotide (same CLR, same benchmark) showed the identical exit-4 signature in its
   # first x86_64 run on 2026-10-21. java:message-ring (the third JVM virtual-thread port) is
   # intermittent: measured in the 2026-10-21 18:50 UTC run, failed with the same signature in the

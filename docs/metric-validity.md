@@ -130,13 +130,18 @@ without the plugin ever printing its instruction summary, and the only plugin ou
 `detected repeat execution @ 0x...` log line. It is not the out-of-memory the cell was first
 attributed to: the C# allocation fix of 2026-06-21 targeted an OOM, but every x86_64 envelope since,
 starting with the first one after that fix (2026-06-22), records this same exit-4 signature. The
-cause was found on 2026-10-22, and it is the log line itself: the vendored `insn` plugin printed
-`detected repeat execution` whenever one PC executed twice in a row, which on an x86_64 guest
-happens on every iteration of a `rep movs`/`rep stos` (memcpy, memset, GC heap clearing). A local
-x86_64 reproduction wrote 148 MB of stderr for a 4 MB memset+memcpy, so an allocation-heavy CLR or
-JVM run writes gigabytes, which is the likely reason the final instruction summary never appeared
-(the runner's disk fills; the job log cannot show a write that failed inside the container). The print is now removed from the plugin (the count is unchanged: identical totals on
-both ISAs with and without it). The cells stay allow-listed until an x86_64 run measures them. The
+`detected repeat execution` line was a red herring: the vendored `insn` plugin printed it whenever
+one PC executed twice in a row, which on an x86_64 guest is every iteration of a `rep movs`/`rep
+stos`, so it flooded stderr (148 MB for a 4 MB memset+memcpy in a local x86_64 reproduction). The
+print was removed on 2026-10-22 (identical totals on both ISAs with and without it), and the next
+x86_64 run still lost the same cells, now with an empty stderr and exit 0. That points at a different
+mechanism: qemu-user shares file descriptors with the guest, and the plugin wrote its summary to the
+guest's stderr, so a runtime that closes fd 2 before exiting swallows the summary without any error
+(reproduced locally: a guest that closes stderr loses the summary, while qemu's `-D` log file keeps
+it). `scripts/measure.sh` now sends the plugin output to its own log file; counts are unchanged
+(C# k-nucleotide on arm64: 46,989,916 before, 46,969,892 after, within its jitter). Whether this is
+the cause on the x86_64 runner is still to be confirmed by a run, and the cells stay allow-listed
+until one measures them. The
 allow-list in `.github/workflows/benchmark.yml` names exactly these cells, so they are
 recorded instead of failing the run; any other cell failing still turns the run red. A fourth cell
 joined it after this study: vbnet/k-nucleotide, which runs on the same CLR as C#, failed its first

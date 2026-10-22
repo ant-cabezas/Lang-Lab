@@ -373,8 +373,8 @@ the suite and both tracks are complete; the headline matrix is the arm64 measure
 x86_64 CI data under `results/` and its own matrix (`docs/charts/matrix-x86_64.svg`) refresh on
 every green `benchmark` run. Five cells have failed to measure on the x86_64 runner and are recorded
 there as `measured: false` rather than silently missing (csharp and vbnet k-nucleotide; java, kotlin
-and scala message-ring: the process ends without the plugin's instruction summary; the cause, the
-plugin's own per-iteration log output on x86_64, is now fixed and awaits a confirming CI run; see [Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)).
+and scala message-ring: the process ends without the plugin's instruction summary; the likely
+cause, a runtime closing the stderr the plugin wrote its summary to, has a fix that awaits a confirming CI run; see [Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)).
 
 ## License
 

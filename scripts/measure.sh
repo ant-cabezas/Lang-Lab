@@ -68,10 +68,13 @@ validate() {  # n expected_sum expected_secondary("" = skip)
   [ "$sv" = "$3" ]
 }
 
-# Stderr + exit code of the most recent guest run, kept so a failed count can be diagnosed
-# (the qemu plugin writes "total insns" to stderr; a crash/OOM leaves its trace there too).
-RUN_ERR="$(mktemp)"; RUN_RC=0
-trap 'rm -f "$RUN_ERR"' EXIT
+# The plugin's summary goes to its own log file (qemu -D), not to stderr: qemu-user
+# shares file descriptors with the guest, so a runtime that closes fd 2 before
+# exiting silently swallowed the "total insns" line (exit 0, empty stderr) - the
+# signature of every unmeasured x86_64 cell. The guest's stderr + exit code are
+# still kept so a failed count can be diagnosed (a crash/OOM leaves its trace there).
+RUN_ERR="$(mktemp)"; RUN_LOG="$(mktemp)"; RUN_RC=0
+trap 'rm -f "$RUN_ERR" "$RUN_LOG"' EXIT
 
 # One instruction count at size $1 (summed over processes for launcher runtimes).
 count_once() {
@@ -82,11 +85,11 @@ count_once() {
   # emulate - without it CPython/Perl/PHP/JVM/BEAM crash silently at startup.
   RUN_RC=0
   GLIBC_TUNABLES="glibc.pthread.rseq=0" \
-    "$QEMU" -plugin "$PLUGIN" -d plugin "${runcmd[@]}" "$n" >/dev/null 2>"$RUN_ERR" || RUN_RC=$?
+    "$QEMU" -plugin "$PLUGIN" -d plugin -D "$RUN_LOG" "${runcmd[@]}" "$n" >/dev/null 2>"$RUN_ERR" || RUN_RC=$?
   if [ "$KIND" = "launcher" ]; then
-    awk '/total insns/ {s+=$3} END{print s+0}' "$RUN_ERR"
+    awk '/total insns/ {s+=$3} END{print s+0}' "$RUN_LOG"
   else
-    awk '/total insns/ {print $3; exit}' "$RUN_ERR"
+    awk '/total insns/ {print $3; exit}' "$RUN_LOG"
   fi
 }
 
@@ -99,6 +102,8 @@ measure_size() {
       echo "measure FAIL: no instruction count at n=$n (kind=$KIND, run exit=${RUN_RC:-?})" >&2
       echo "  exit hint: 137≈OOM-kill (SIGKILL), 139=SIGSEGV, 132=SIGILL, 134=SIGABRT; run stderr tail:" >&2
       tail -n 12 "$RUN_ERR" 2>/dev/null | sed 's/^/    /' >&2
+      echo "  plugin log tail:" >&2
+      tail -n 4 "$RUN_LOG" 2>/dev/null | sed 's/^/    /' >&2
       exit 4
     fi
     vals+=("$v")
