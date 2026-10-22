@@ -13,7 +13,7 @@ at Spearman 0.87. [How far it can be trusted, quantified.](docs/metric-validity.
 
 _Real work each language does vs the **C baseline** (= 1.00×), as the differential `I(n₂)−I(n₁)` that cancels startup + JIT. **Lower is better** (less work than C). Geomean across the 18 compute axes; green cells beat or tie C. **message-ring is shown but not ranked**: its instruction count is syscall-blind and misleading for context-switch primitives (wall-clock inverts it; see [the concurrency study](docs/concurrency-study.md)). Full method below._
 
-_Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-16 and 2026-10-22, on the toolchains pinned in `versions.lock.json`: C gcc 14, Fortran gfortran 14, Rust 1.88.0, C# .NET 9.0, Go 1.24.4, Swift 6.1, VB.NET .NET 9.0, Scala 3.6.2, Kotlin 2.1.0, OCaml 5.4, Java 26, JavaScript Node 26.5.0, Elixir 1.18, PHP 8.4.8, Ruby 3.3, Python 3.13.4, Perl 5.40.2. The x86_64 CI run of 2026-10-22 reproduces the non-JVM geomeans within ±16%, with the JVM geomeans 1.0-1.2× higher ([Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)); its matrix is [docs/charts/matrix-x86_64.svg](docs/charts/matrix-x86_64.svg)._
+_Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-16 and 2026-10-22, on the toolchains pinned in `versions.lock.json`: C gcc 14, Fortran gfortran 14, Rust 1.88.0, C# .NET 9.0, Go 1.24.4, Swift 6.1, VB.NET .NET 9.0, Scala 3.6.2, Kotlin 2.1.0, OCaml 5.4, Java 26, JavaScript Node 26.5.0, Elixir 1.18, PHP 8.4.8, Ruby 3.3, Python 3.13.4, Perl 5.40.2. The x86_64 CI run of 2026-10-22 reproduces the non-JVM geomeans within ±16%, with the JVM geomeans 1.0-1.1× higher ([Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)); its matrix is [docs/charts/matrix-x86_64.svg](docs/charts/matrix-x86_64.svg)._
 
 <details><summary><b>Leaderboard</b> (sorted by overall geomean)</summary>
 
@@ -37,7 +37,7 @@ _Measured on **arm64** (local Docker on an Apple Silicon host) between 2026-06-1
 | 16 | Python | **104×** | binary-trees 11.2× | sha256 601× |
 | 17 | Perl | **146×** | binary-trees 19.0× | sha256 701× |
 
-_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured their geomeans up to 1.2× higher on x86_64 than on arm64 (single cells up to 2×) and JVM cells moving between CI runs on the same ISA, so their number here is one arm64 measurement, not a constant. Non-JVM rankings are ISA-robust and reproduce run to run ([details](docs/metric-validity.md))._
+_‡ JVM ratios are ISA- and run-specific: metric-validity Study 2 measured their geomeans up to 1.1× higher on x86_64 than on arm64 (single cells up to 2×) and JVM cells moving between CI runs on the same ISA, so their number here is one arm64 measurement, not a constant. Non-JVM rankings are ISA-robust and reproduce run to run ([details](docs/metric-validity.md))._
 
 **Per-family geomean** (same scale: vs C, lower is better). The flat geomean above weights every axis equally, but the axes are not independent: 13 of the 18 sit in three families whose members correlate at r ≈ 0.94-1.00, so it over-weights tight-loop execution. This view casts one vote per runtime capability instead:
 
