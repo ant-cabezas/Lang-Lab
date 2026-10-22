@@ -76,6 +76,10 @@ median shift is x1.02 (no systematic bias). The tail is the story, and it is **t
 | Python | 104 | 114 | x1.10 | yes |
 | Perl | 146 | 130 | x0.89 | yes |
 
+_This table is the 2026-10-14 snapshot. On 2026-10-22 the arm64 C# k-nucleotide cell was re-measured
+on the current code (it predated a 2026-06-21 change), which moves C#'s current arm64 geomean to 1.49;
+the snapshot keeps 1.54 because its x86_64 column and every figure below come from that day's runs._
+
 OCaml, VB.NET and Fortran (added in v0.2.0) have no x86_64 run yet, so they are absent from this
 table until CI measures them.
 
