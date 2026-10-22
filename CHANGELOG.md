@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   runtime that closes stderr before exiting can no longer swallow the instruction count. This is
   the likely cause of the x86_64 cells that never produced a count (C# and VB.NET k-nucleotide, the
   JVM message-ring ports); they stay allow-listed until a run confirms it. Counts are unchanged.
+- The arm64 C# k-nucleotide cell was measured on 2026-06-17, before the 2026-06-21 change that
+  stopped allocating a string per dictionary lookup, and was never re-measured. Re-measured on the
+  current code: 5.71x C instead of 9.73x, which moves C#'s arm64 geomean from 1.54x to 1.49x.
 - The sort-search and dijkstra READMEs understated the LCG product `state*1103515245` as ~2.4e10;
   it reaches ~2.37e18, which is why those benchmarks need at least 63-bit integers.
 - C# projects hardcoded `net9.0`, so bumping the pinned .NET SDK would have kept building against

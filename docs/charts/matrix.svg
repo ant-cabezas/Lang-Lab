@@ -151,8 +151,8 @@
 <text x="161.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.45</text>
 <rect x="186" y="242" width="50" height="30" fill="#f9f8b3" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.19</text>
-<rect x="236" y="242" width="50" height="30" fill="#feb44e" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">9.73</text>
+<rect x="236" y="242" width="50" height="30" fill="#fed26e" stroke="#0d1117" stroke-width="1"/>
+<text x="261.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.71</text>
 <rect x="286" y="242" width="50" height="30" fill="#fdf0a6" stroke="#0d1117" stroke-width="1"/>
 <text x="311.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.71</text>
 <rect x="336" y="242" width="50" height="30" fill="#fbf4ab" stroke="#0d1117" stroke-width="1"/>
@@ -183,8 +183,8 @@
 <text x="961.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.57</text>
 <rect x="986" y="242" width="50" height="30" fill="#fd953f" stroke="#0d1117" stroke-width="1"/>
 <text x="1011.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">35.3</text>
-<rect x="1052" y="242" width="60" height="30" fill="#fcf3a9" stroke="#0d1117" stroke-width="1.5"/>
-<text x="1082.0" y="261.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">1.54×</text>
+<rect x="1052" y="242" width="60" height="30" fill="#fcf3aa" stroke="#0d1117" stroke-width="1.5"/>
+<text x="1082.0" y="261.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">1.49×</text>
 <text x="74" y="291.0" text-anchor="end" font-size="13" font-weight="600" fill="#3fb950">Go</text>
 <rect x="86" y="272" width="50" height="30" fill="#fcf3ab" stroke="#0d1117" stroke-width="1"/>
 <text x="111.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.49</text>
@@ -746,5 +746,5 @@
 <text x="972.7" y="714" text-anchor="middle" font-size="10" fill="#9aa7b4">100k×</text>
 <text x="1112" y="698" font-size="10.5" fill="#9aa7b4" text-anchor="end">← beats C · slower →</text>
 <text x="86" y="744" font-size="10" fill="#9aa7b4">† shown but excluded from the geomean: instruction counts are syscall-blind, misleading for context-switch primitives (see the concurrency study)</text>
-<text x="86" y="758" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA- and run-specific (geomeans up to 1.9× higher on x86_64 than on arm64, single cells up to 7×, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
+<text x="86" y="758" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA- and run-specific (geomeans up to 1.2× higher on x86_64 than on arm64, single cells up to 2×, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
 </svg>

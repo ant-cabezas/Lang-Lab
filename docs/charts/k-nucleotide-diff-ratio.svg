@@ -14,12 +14,12 @@
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="201" width="45.5" height="24" rx="5" fill="#3fb950"/>
 <text x="186.5" y="218" font-size="13" fill="#e6edf3">4.82×</text>
-<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
-<rect x="132" y="241" width="91.2" height="24" rx="5" fill="#3fb950"/>
-<text x="232.2" y="258" font-size="13" fill="#e6edf3">9.67×</text>
-<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
-<rect x="132" y="281" width="91.8" height="24" rx="5" fill="#a371f7"/>
-<text x="232.8" y="298" font-size="13" fill="#e6edf3">9.73×</text>
+<text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
+<rect x="132" y="241" width="53.8" height="24" rx="5" fill="#a371f7"/>
+<text x="194.8" y="258" font-size="13" fill="#e6edf3">5.71×</text>
+<text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
+<rect x="132" y="281" width="91.2" height="24" rx="5" fill="#3fb950"/>
+<text x="232.2" y="298" font-size="13" fill="#e6edf3">9.67×</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">VB.NET</text>
 <rect x="132" y="321" width="93.0" height="24" rx="5" fill="#a371f7"/>
 <text x="234.0" y="338" font-size="13" fill="#e6edf3">9.86×</text>

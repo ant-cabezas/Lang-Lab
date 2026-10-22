@@ -112,8 +112,8 @@ across 14 completely different hash-map implementations.
 | Fortran | 16.5M | 27.3M | 10.8M | 1.31× | exact |
 | Rust | 37.4M | 59.9M | 22.5M | 2.73× | jitter |
 | Go | 74.4M | 114.1M | 39.7M | 4.82× | jitter |
+| C# | 286.5M | 333.5M | 47.0M | 5.71× | jitter |
 | Swift | 112.3M | 192.0M | 79.6M | 9.67× | jitter |
-| C# | 292.4M | 372.5M | 80.1M | 9.73× | jitter |
 | VB.NET | 295.9M | 377.1M | 81.2M | 9.86× | jitter |
 | Kotlin | 503.4M | 585.5M | 82.2M | 9.98× | jitter |
 | Scala | 1.01B | 1.09B | 86.7M | 10.53× | jitter |
