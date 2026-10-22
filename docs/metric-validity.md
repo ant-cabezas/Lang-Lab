@@ -134,14 +134,13 @@ starting with the first one after that fix (2026-06-22), records this same exit-
 one PC executed twice in a row, which on an x86_64 guest is every iteration of a `rep movs`/`rep
 stos`, so it flooded stderr (148 MB for a 4 MB memset+memcpy in a local x86_64 reproduction). The
 print was removed on 2026-10-22 (identical totals on both ISAs with and without it), and the next
-x86_64 run still lost the same cells, now with an empty stderr and exit 0. That points at a different
-mechanism: qemu-user shares file descriptors with the guest, and the plugin wrote its summary to the
-guest's stderr, so a runtime that closes fd 2 before exiting swallows the summary without any error
-(reproduced locally: a guest that closes stderr loses the summary, while qemu's `-D` log file keeps
-it). `scripts/measure.sh` now sends the plugin output to its own log file; counts are unchanged
-(C# k-nucleotide on arm64: 46,989,916 before, 46,969,892 after, within its jitter). Whether this is
-the cause on the x86_64 runner is still to be confirmed by a run, and the cells stay allow-listed
-until one measures them. The
+x86_64 run still lost the same cells, now with an empty stderr and exit 0. A second hypothesis, that
+the runtime closes fd 2 (which qemu-user shares with the guest) and swallows the summary, was also
+ruled out: `scripts/measure.sh` now writes the plugin output to its own log file (qemu `-D`; counts
+unchanged, C# k-nucleotide on arm64 46,989,916 before and 46,969,892 after, within its jitter), and in
+the next run that log file was empty too. qemu exits with status 0 without the plugin's exit callback
+ever running. The cause is undiagnosed; the next step is to reproduce one cell on an x86_64 host with
+qemu's `-strace` to see how the guest process ends. The cells stay allow-listed. The
 allow-list in `.github/workflows/benchmark.yml` names exactly these cells, so they are
 recorded instead of failing the run; any other cell failing still turns the run red. A fourth cell
 joined it after this study: vbnet/k-nucleotide, which runs on the same CLR as C#, failed its first

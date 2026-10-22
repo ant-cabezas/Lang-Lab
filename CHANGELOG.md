@@ -37,9 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The measurement plugin no longer floods stderr on x86_64: it logged a line for every iteration of
   a `rep movs`/`rep stos` (memcpy, memset). Instruction counts are unchanged on both ISAs.
 - The plugin's summary is now written to its own log file instead of the guest's stderr, so a
-  runtime that closes stderr before exiting can no longer swallow the instruction count. This is
-  the likely cause of the x86_64 cells that never produced a count (C# and VB.NET k-nucleotide, the
-  JVM message-ring ports); they stay allow-listed until a run confirms it. Counts are unchanged.
+  runtime that closes stderr before exiting can no longer swallow the instruction count. Counts are
+  unchanged. It did not recover the x86_64 cells that never produce a count (C# and VB.NET
+  k-nucleotide, the JVM message-ring ports), which stay allow-listed: there qemu exits without
+  running the plugin's exit callback, cause still undiagnosed.
 - The arm64 C# k-nucleotide cell was measured on 2026-06-17, before the 2026-06-21 change that
   stopped allocating a string per dictionary lookup, and was never re-measured. Re-measured on the
   current code: 5.71x C instead of 9.73x, which moves C#'s arm64 geomean from 1.54x to 1.49x.
