@@ -12,11 +12,11 @@
 <rect x="132" y="161" width="3.0" height="24" rx="5" fill="#3fb950"/>
 <text x="144.0" y="178" font-size="13" fill="#e6edf3">1.25×</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="201" width="3.6" height="24" rx="5" fill="#a371f7"/>
-<text x="144.6" y="218" font-size="13" fill="#e6edf3">1.53×</text>
+<rect x="132" y="201" width="4.0" height="24" rx="5" fill="#a371f7"/>
+<text x="145.0" y="218" font-size="13" fill="#e6edf3">1.66×</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="241" width="4.2" height="24" rx="5" fill="#a371f7"/>
-<text x="145.2" y="258" font-size="13" fill="#e6edf3">1.75×</text>
+<rect x="132" y="241" width="4.0" height="24" rx="5" fill="#a371f7"/>
+<text x="145.0" y="258" font-size="13" fill="#e6edf3">1.69×</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="281" width="5.1" height="24" rx="5" fill="#3fb950"/>
 <text x="146.1" y="298" font-size="13" fill="#e6edf3">2.14×</text>
@@ -24,8 +24,8 @@
 <rect x="132" y="321" width="5.1" height="24" rx="5" fill="#a371f7"/>
 <text x="146.1" y="338" font-size="13" fill="#e6edf3">2.16×</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="361" width="5.7" height="24" rx="5" fill="#a371f7"/>
-<text x="146.7" y="378" font-size="13" fill="#e6edf3">2.39×</text>
+<rect x="132" y="361" width="5.4" height="24" rx="5" fill="#a371f7"/>
+<text x="146.4" y="378" font-size="13" fill="#e6edf3">2.25×</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="401" width="5.9" height="24" rx="5" fill="#3fb950"/>
 <text x="146.9" y="418" font-size="13" fill="#e6edf3">2.47×</text>
@@ -43,7 +43,7 @@
 <text x="231.0" y="578" font-size="13" fill="#e6edf3">37.79×</text>
 <text x="120" y="617" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
 <rect x="132" y="601" width="143.3" height="24" rx="5" fill="#a371f7"/>
-<text x="284.3" y="618" font-size="13" fill="#e6edf3">60.18×</text>
+<text x="284.3" y="618" font-size="13" fill="#e6edf3">60.17×</text>
 <text x="120" y="657" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="641" width="222.4" height="24" rx="5" fill="#f0883e"/>
 <text x="363.4" y="658" font-size="13" fill="#e6edf3">93.39×</text>
