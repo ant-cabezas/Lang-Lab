@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **VB.NET** (.NET 9, same CLR and runtime pinning as C#): all 19 benchmarks with bit-exact
   reference checksums. Measured with Visual Basic's default integer overflow checks on, so the
   gap to C# on the same runtime (1.0x to 2.2x per axis) is the cost of that language default.
+  On x86_64, k-nucleotide is recorded as unmeasured: it fails under qemu with the same exit-4
+  signature as C#'s k-nucleotide.
 - **COBOL side study** (`docs/cobol-study.md`, `results/cobol/`, `scripts/cobol-study.sh`), outside
   the matrix; COBOL remains removed from the ranking since 0.1.0. GnuCOBOL 3.2 and GCC's gcobol 15.2
   on the 15 benchmarks that need no hand-rolled machinery, measured at full size with C at the same

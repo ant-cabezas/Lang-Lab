@@ -21,14 +21,15 @@ env:
   # Cells that genuinely can't be measured on the free x86_64 runner. A failure here is RECORDED
   # as an unmeasured cell ({"measured": false}) and the run stays green; a failure for any cell
   # NOT listed here still fails the job, so real regressions are not masked. Format "lang:bench".
-  # All three measure fine on arm64 and fail the same way under qemu-x86_64: the process ends
-  # (exit 4 for csharp/k-nucleotide, exit 0 for the two JVM virtual-thread message-ring ports)
+  # All four measure fine on arm64 and fail the same way under qemu-x86_64: the process ends
+  # (exit 4 for csharp/ and vbnet/k-nucleotide, exit 0 for the two JVM virtual-thread message-ring ports)
   # without the plugin ever printing its instruction summary; the only plugin output is its
   # "detected repeat execution" log line. Not the OOM csharp/k-nucleotide was first attributed to:
   # the 2026-06-21 allocation fix targeted that, yet every x86_64 envelope since 2026-06-22 records
   # this same exit-4 signature. Cause undiagnosed; reproduce on an x86_64 host (/backend-doctor).
-  # Documented for readers in docs/metric-validity.md, Study 2.
-  ALLOW_NOMEASURE: "csharp:k-nucleotide scala:message-ring kotlin:message-ring"
+  # vbnet:k-nucleotide (same CLR, same benchmark) showed the identical exit-4 signature in its
+  # first x86_64 run on 2026-10-21. Documented for readers in docs/metric-validity.md, Study 2.
+  ALLOW_NOMEASURE: "csharp:k-nucleotide vbnet:k-nucleotide scala:message-ring kotlin:message-ring"
 
 # Serialize runs so the collect job's commit/push to main can't race.
 concurrency:

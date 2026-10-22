@@ -131,8 +131,11 @@ without the plugin ever printing its instruction summary, and the only plugin ou
 attributed to: the C# allocation fix of 2026-06-21 targeted an OOM, but every x86_64 envelope since,
 starting with the first one after that fix (2026-06-22), records this same exit-4 signature. The
 cause has not been diagnosed (it needs reproducing on an x86_64 host). The
-allow-list in `.github/workflows/benchmark.yml` names exactly these three cells, so they are
-recorded instead of failing the run; any other cell failing still turns the run red.
+allow-list in `.github/workflows/benchmark.yml` names exactly these cells, so they are
+recorded instead of failing the run; any other cell failing still turns the run red. A fourth cell
+joined it after this study: vbnet/k-nucleotide, which runs on the same CLR as C#, failed its first
+x86_64 run (2026-10-21) with the identical exit-4 `detected repeat execution` signature and is
+allow-listed on that evidence.
 
 **Why.** A JVM program's instruction count is dominated by JIT-generated machine code, which differs
 substantially between arm64 and x86_64. The differential cancels startup, but not the per-ISA
