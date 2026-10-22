@@ -135,7 +135,10 @@ allow-list in `.github/workflows/benchmark.yml` names exactly these cells, so th
 recorded instead of failing the run; any other cell failing still turns the run red. A fourth cell
 joined it after this study: vbnet/k-nucleotide, which runs on the same CLR as C#, failed its first
 x86_64 run (2026-10-21) with the identical exit-4 `detected repeat execution` signature and is
-allow-listed on that evidence.
+allow-listed on that evidence. A fifth followed: java/message-ring, the third JVM virtual-thread
+port, measured in one x86_64 run of 2026-10-21 and failed with the same signature in the next run
+that day, so on x86_64 it is intermittent rather than always unmeasurable. message-ring is not
+ranked, so this cell affects no geomean.
 
 **Why.** A JVM program's instruction count is dominated by JIT-generated machine code, which differs
 substantially between arm64 and x86_64. The differential cancels startup, but not the per-ISA
