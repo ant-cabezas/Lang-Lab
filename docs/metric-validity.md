@@ -130,7 +130,13 @@ without the plugin ever printing its instruction summary, and the only plugin ou
 `detected repeat execution @ 0x...` log line. It is not the out-of-memory the cell was first
 attributed to: the C# allocation fix of 2026-06-21 targeted an OOM, but every x86_64 envelope since,
 starting with the first one after that fix (2026-06-22), records this same exit-4 signature. The
-cause has not been diagnosed (it needs reproducing on an x86_64 host). The
+cause was found on 2026-10-22, and it is the log line itself: the vendored `insn` plugin printed
+`detected repeat execution` whenever one PC executed twice in a row, which on an x86_64 guest
+happens on every iteration of a `rep movs`/`rep stos` (memcpy, memset, GC heap clearing). A local
+x86_64 reproduction wrote 148 MB of stderr for a 4 MB memset+memcpy, so an allocation-heavy CLR or
+JVM run writes gigabytes, which is the likely reason the final instruction summary never appeared
+(the runner's disk fills; the job log cannot show a write that failed inside the container). The print is now removed from the plugin (the count is unchanged: identical totals on
+both ISAs with and without it). The cells stay allow-listed until an x86_64 run measures them. The
 allow-list in `.github/workflows/benchmark.yml` names exactly these cells, so they are
 recorded instead of failing the run; any other cell failing still turns the run red. A fourth cell
 joined it after this study: vbnet/k-nucleotide, which runs on the same CLR as C#, failed its first

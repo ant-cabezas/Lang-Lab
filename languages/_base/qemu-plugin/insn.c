@@ -52,11 +52,15 @@ static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
     unsigned int i = cpu_index % MAX_CPUS;
     InstructionCount *c = &counts[i];
     uint64_t this_pc = GPOINTER_TO_UINT(udata);
-    if (this_pc == c->last_pc) {
-        g_autofree gchar *out = g_strdup_printf("detected repeat execution @ 0x%"
-                                                PRIx64 "\n", this_pc);
-        qemu_plugin_outs(out);
-    }
+    /*
+     * lang-lab change to the v7.2.0 source: upstream prints "detected repeat
+     * execution @ <pc>" here whenever the same PC executes twice in a row. On
+     * an x86_64 guest every iteration of a `rep movs`/`rep stos` (memcpy,
+     * memset, GC heap clearing) does that, so the line is written once per
+     * iteration: gigabytes of stderr on allocation-heavy runs, enough to fill
+     * the CI runner's disk before the final "total insns" line is written.
+     * The diagnostic is dropped; the count below is unchanged.
+     */
     c->last_pc = this_pc;
     c->insn_count++;
 }

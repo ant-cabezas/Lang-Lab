@@ -371,10 +371,10 @@ the measurement engine characterized empirically, CI pipelines defined. A comple
 cross-track **concurrency study** (`docs/concurrency-study.md`) ties the two together. Pre-1.0:
 the suite and both tracks are complete; the headline matrix is the arm64 measurement, and the
 x86_64 CI data under `results/` and its own matrix (`docs/charts/matrix-x86_64.svg`) refresh on
-every green `benchmark` run. Three cells cannot be measured on the x86_64 runner and are recorded
-there as `measured: false` rather than silently missing (csharp/k-nucleotide, kotlin/message-ring,
-scala/message-ring: the process ends without the plugin's instruction summary, cause undiagnosed;
-see [Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)).
+every green `benchmark` run. Five cells have failed to measure on the x86_64 runner and are recorded
+there as `measured: false` rather than silently missing (csharp and vbnet k-nucleotide; java, kotlin
+and scala message-ring: the process ends without the plugin's instruction summary; the cause, the
+plugin's own per-iteration log output on x86_64, is now fixed and awaits a confirming CI run; see [Study 2](docs/metric-validity.md#study-2-cross-isa-stability-arm64-vs-x86_64)).
 
 ## License
 

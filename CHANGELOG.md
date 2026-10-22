@@ -34,6 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- The x86_64 cells that never produced an instruction count (C# and VB.NET k-nucleotide, the JVM
+  message-ring ports) were caused by the measurement plugin itself: it logged a line for every
+  iteration of an x86 `rep movs`/`rep stos` (memcpy, memset), gigabytes of output on
+  allocation-heavy runs, and the run lost its final count. The log line is removed; instruction
+  counts are unchanged on both ISAs.
 - The sort-search and dijkstra READMEs understated the LCG product `state*1103515245` as ~2.4e10;
   it reaches ~2.37e18, which is why those benchmarks need at least 63-bit integers.
 - C# projects hardcoded `net9.0`, so bumping the pinned .NET SDK would have kept building against
