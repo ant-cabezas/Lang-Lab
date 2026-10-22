@@ -149,7 +149,7 @@
 <text x="111.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.56</text>
 <rect x="136" y="242" width="50" height="30" fill="#60b96b" stroke="#0d1117" stroke-width="1"/>
 <text x="161.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.55</text>
-<rect x="186" y="242" width="50" height="30" fill="#bfe498" stroke="#0d1117" stroke-width="1"/>
+<rect x="186" y="242" width="50" height="30" fill="#bee498" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="261.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.77</text>
 <rect x="236" y="242" width="50" height="30" fill="#161b22" stroke="#0d1117" stroke-width="1"/>
 <rect x="286" y="242" width="50" height="30" fill="#faf7b1" stroke="#0d1117" stroke-width="1"/>
@@ -191,14 +191,14 @@
 <text x="161.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.08</text>
 <rect x="186" y="272" width="50" height="30" fill="#f9f8b2" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.21</text>
-<rect x="236" y="272" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.05</text>
+<rect x="236" y="272" width="50" height="30" fill="#fedd7e" stroke="#0d1117" stroke-width="1"/>
+<text x="261.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.17</text>
 <rect x="286" y="272" width="50" height="30" fill="#f9f8b2" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.20</text>
+<text x="311.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.21</text>
 <rect x="336" y="272" width="50" height="30" fill="#fbf4ac" stroke="#0d1117" stroke-width="1"/>
 <text x="361.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.44</text>
 <rect x="386" y="272" width="50" height="30" fill="#fee085" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.62</text>
+<text x="411.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.57</text>
 <rect x="436" y="272" width="50" height="30" fill="#faf6af" stroke="#0d1117" stroke-width="1"/>
 <text x="461.0" y="291.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.34</text>
 <rect x="486" y="272" width="50" height="30" fill="#fdf1a6" stroke="#0d1117" stroke-width="1"/>
@@ -234,7 +234,7 @@
 <text x="211.0" y="321.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.89</text>
 <rect x="236" y="302" width="50" height="30" fill="#161b22" stroke="#0d1117" stroke-width="1"/>
 <rect x="286" y="302" width="50" height="30" fill="#faf6af" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="321.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.32</text>
+<text x="311.0" y="321.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.33</text>
 <rect x="336" y="302" width="50" height="30" fill="#fdf1a7" stroke="#0d1117" stroke-width="1"/>
 <text x="361.0" y="321.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.65</text>
 <rect x="386" y="302" width="50" height="30" fill="#ffe793" stroke="#0d1117" stroke-width="1"/>
@@ -273,7 +273,7 @@
 <rect x="186" y="332" width="50" height="30" fill="#f8fbb7" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.06</text>
 <rect x="236" y="332" width="50" height="30" fill="#feb751" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">9.14</text>
+<text x="261.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">9.16</text>
 <rect x="286" y="332" width="50" height="30" fill="#f9f9b3" stroke="#0d1117" stroke-width="1"/>
 <text x="311.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.17</text>
 <rect x="336" y="332" width="50" height="30" fill="#fdf0a5" stroke="#0d1117" stroke-width="1"/>
@@ -302,174 +302,172 @@
 <text x="911.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.95</text>
 <rect x="936" y="332" width="50" height="30" fill="#ffeb9d" stroke="#0d1117" stroke-width="1"/>
 <text x="961.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.15</text>
-<rect x="986" y="332" width="50" height="30" fill="#fc532b" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">95.0</text>
+<rect x="986" y="332" width="50" height="30" fill="#fc542c" stroke="#0d1117" stroke-width="1"/>
+<text x="1011.0" y="351.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">93.8</text>
 <rect x="1052" y="332" width="60" height="30" fill="#ffed9f" stroke="#0d1117" stroke-width="1.5"/>
 <text x="1082.0" y="351.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">2.03×</text>
-<text x="74" y="381.0" text-anchor="end" font-size="13" font-weight="600" fill="#3fb950">OCaml</text>
-<rect x="86" y="362" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
-<text x="111.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.20</text>
-<rect x="136" y="362" width="50" height="30" fill="#238443" stroke="#0d1117" stroke-width="1"/>
-<text x="161.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.20</text>
-<rect x="186" y="362" width="50" height="30" fill="#fcf3aa" stroke="#0d1117" stroke-width="1"/>
-<text x="211.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.52</text>
-<rect x="236" y="362" width="50" height="30" fill="#fea848" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">15.7</text>
-<rect x="286" y="362" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.19</text>
-<rect x="336" y="362" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
-<text x="361.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.20</text>
-<rect x="386" y="362" width="50" height="30" fill="#fee188" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.39</text>
-<rect x="436" y="362" width="50" height="30" fill="#ffea99" stroke="#0d1117" stroke-width="1"/>
-<text x="461.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.31</text>
-<rect x="486" y="362" width="50" height="30" fill="#fee085" stroke="#0d1117" stroke-width="1"/>
-<text x="511.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.62</text>
-<rect x="536" y="362" width="50" height="30" fill="#fee084" stroke="#0d1117" stroke-width="1"/>
-<text x="561.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.69</text>
-<rect x="586" y="362" width="50" height="30" fill="#ffe794" stroke="#0d1117" stroke-width="1"/>
-<text x="611.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.59</text>
-<rect x="636" y="362" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
-<text x="661.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.19</text>
-<rect x="686" y="362" width="50" height="30" fill="#ffe58f" stroke="#0d1117" stroke-width="1"/>
-<text x="711.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.87</text>
-<rect x="736" y="362" width="50" height="30" fill="#f9f9b4" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.15</text>
-<rect x="786" y="362" width="50" height="30" fill="#ffe58e" stroke="#0d1117" stroke-width="1"/>
-<text x="811.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.94</text>
-<rect x="836" y="362" width="50" height="30" fill="#fed471" stroke="#0d1117" stroke-width="1"/>
-<text x="861.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.44</text>
-<rect x="886" y="362" width="50" height="30" fill="#fede81" stroke="#0d1117" stroke-width="1"/>
-<text x="911.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.90</text>
-<rect x="936" y="362" width="50" height="30" fill="#ffe58e" stroke="#0d1117" stroke-width="1"/>
-<text x="961.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.95</text>
-<rect x="986" y="362" width="50" height="30" fill="#ffe48c" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.08</text>
-<rect x="1052" y="362" width="60" height="30" fill="#ffe895" stroke="#0d1117" stroke-width="1.5"/>
-<text x="1082.0" y="381.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">2.53×</text>
-<text x="74" y="411.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Java‡</text>
-<rect x="86" y="392" width="50" height="30" fill="#fedf82" stroke="#0d1117" stroke-width="1"/>
-<text x="111.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.88</text>
-<rect x="136" y="392" width="50" height="30" fill="#30954e" stroke="#0d1117" stroke-width="1"/>
-<text x="161.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.34</text>
-<rect x="186" y="392" width="50" height="30" fill="#ffec9d" stroke="#0d1117" stroke-width="1"/>
-<text x="211.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.12</text>
-<rect x="236" y="392" width="50" height="30" fill="#fea044" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">21.5</text>
-<rect x="286" y="392" width="50" height="30" fill="#fedb7b" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.52</text>
-<rect x="336" y="392" width="50" height="30" fill="#fed672" stroke="#0d1117" stroke-width="1"/>
-<text x="361.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.32</text>
-<rect x="386" y="392" width="50" height="30" fill="#fed470" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.52</text>
-<rect x="436" y="392" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
-<text x="461.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.07</text>
-<rect x="486" y="392" width="50" height="30" fill="#fec35e" stroke="#0d1117" stroke-width="1"/>
-<text x="511.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.42</text>
-<rect x="536" y="392" width="50" height="30" fill="#fed977" stroke="#0d1117" stroke-width="1"/>
-<text x="561.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.90</text>
-<rect x="586" y="392" width="50" height="30" fill="#fedf83" stroke="#0d1117" stroke-width="1"/>
-<text x="611.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.74</text>
-<rect x="636" y="392" width="50" height="30" fill="#feeea2" stroke="#0d1117" stroke-width="1"/>
-<text x="661.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.87</text>
-<rect x="686" y="392" width="50" height="30" fill="#ffe691" stroke="#0d1117" stroke-width="1"/>
-<text x="711.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.79</text>
-<rect x="736" y="392" width="50" height="30" fill="#fdf1a7" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.65</text>
-<rect x="786" y="392" width="50" height="30" fill="#ffe794" stroke="#0d1117" stroke-width="1"/>
-<text x="811.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.58</text>
-<rect x="836" y="392" width="50" height="30" fill="#ffec9f" stroke="#0d1117" stroke-width="1"/>
-<text x="861.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.06</text>
-<rect x="886" y="392" width="50" height="30" fill="#fee288" stroke="#0d1117" stroke-width="1"/>
-<text x="911.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.38</text>
-<rect x="936" y="392" width="50" height="30" fill="#ffe997" stroke="#0d1117" stroke-width="1"/>
-<text x="961.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.42</text>
-<rect x="986" y="392" width="50" height="30" fill="#fc512b" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">96.5</text>
-<rect x="1052" y="392" width="60" height="30" fill="#fee28a" stroke="#0d1117" stroke-width="1.5"/>
-<text x="1082.0" y="411.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">3.25×</text>
+<text x="74" y="381.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Scala‡</text>
+<rect x="86" y="362" width="50" height="30" fill="#ffe38c" stroke="#0d1117" stroke-width="1"/>
+<text x="111.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.12</text>
+<rect x="136" y="362" width="50" height="30" fill="#298c48" stroke="#0d1117" stroke-width="1"/>
+<text x="161.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.29</text>
+<rect x="186" y="362" width="50" height="30" fill="#b5e092" stroke="#0d1117" stroke-width="1"/>
+<text x="211.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.73</text>
+<rect x="236" y="362" width="50" height="30" fill="#febc57" stroke="#0d1117" stroke-width="1"/>
+<text x="261.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">8.38</text>
+<rect x="286" y="362" width="50" height="30" fill="#fedd7f" stroke="#0d1117" stroke-width="1"/>
+<text x="311.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.10</text>
+<rect x="336" y="362" width="50" height="30" fill="#ffe48c" stroke="#0d1117" stroke-width="1"/>
+<text x="361.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.08</text>
+<rect x="386" y="362" width="50" height="30" fill="#feb14c" stroke="#0d1117" stroke-width="1"/>
+<text x="411.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">10.3</text>
+<rect x="436" y="362" width="50" height="30" fill="#fee085" stroke="#0d1117" stroke-width="1"/>
+<text x="461.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.58</text>
+<rect x="486" y="362" width="50" height="30" fill="#fed874" stroke="#0d1117" stroke-width="1"/>
+<text x="511.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.14</text>
+<rect x="536" y="362" width="50" height="30" fill="#feda77" stroke="#0d1117" stroke-width="1"/>
+<text x="561.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.87</text>
+<rect x="586" y="362" width="50" height="30" fill="#feefa3" stroke="#0d1117" stroke-width="1"/>
+<text x="611.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.82</text>
+<rect x="636" y="362" width="50" height="30" fill="#feeea2" stroke="#0d1117" stroke-width="1"/>
+<text x="661.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.87</text>
+<rect x="686" y="362" width="50" height="30" fill="#fbf4ac" stroke="#0d1117" stroke-width="1"/>
+<text x="711.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.43</text>
+<rect x="736" y="362" width="50" height="30" fill="#fbf5ad" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.38</text>
+<rect x="786" y="362" width="50" height="30" fill="#ffe793" stroke="#0d1117" stroke-width="1"/>
+<text x="811.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.64</text>
+<rect x="836" y="362" width="50" height="30" fill="#faf6af" stroke="#0d1117" stroke-width="1"/>
+<text x="861.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.31</text>
+<rect x="886" y="362" width="50" height="30" fill="#ffe48d" stroke="#0d1117" stroke-width="1"/>
+<text x="911.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.05</text>
+<rect x="936" y="362" width="50" height="30" fill="#ffea9a" stroke="#0d1117" stroke-width="1"/>
+<text x="961.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.29</text>
+<rect x="986" y="362" width="50" height="30" fill="#f94929" stroke="#0d1117" stroke-width="1"/>
+<text x="1011.0" y="381.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">127</text>
+<rect x="1052" y="362" width="60" height="30" fill="#ffe997" stroke="#0d1117" stroke-width="1.5"/>
+<text x="1082.0" y="381.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">2.45×</text>
+<text x="74" y="411.0" text-anchor="end" font-size="13" font-weight="600" fill="#3fb950">OCaml</text>
+<rect x="86" y="392" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
+<text x="111.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.20</text>
+<rect x="136" y="392" width="50" height="30" fill="#238443" stroke="#0d1117" stroke-width="1"/>
+<text x="161.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.20</text>
+<rect x="186" y="392" width="50" height="30" fill="#fcf3aa" stroke="#0d1117" stroke-width="1"/>
+<text x="211.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.52</text>
+<rect x="236" y="392" width="50" height="30" fill="#fea848" stroke="#0d1117" stroke-width="1"/>
+<text x="261.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">15.7</text>
+<rect x="286" y="392" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
+<text x="311.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.19</text>
+<rect x="336" y="392" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
+<text x="361.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.20</text>
+<rect x="386" y="392" width="50" height="30" fill="#fee188" stroke="#0d1117" stroke-width="1"/>
+<text x="411.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.39</text>
+<rect x="436" y="392" width="50" height="30" fill="#ffea99" stroke="#0d1117" stroke-width="1"/>
+<text x="461.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.31</text>
+<rect x="486" y="392" width="50" height="30" fill="#fee085" stroke="#0d1117" stroke-width="1"/>
+<text x="511.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.62</text>
+<rect x="536" y="392" width="50" height="30" fill="#fee084" stroke="#0d1117" stroke-width="1"/>
+<text x="561.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.69</text>
+<rect x="586" y="392" width="50" height="30" fill="#ffe794" stroke="#0d1117" stroke-width="1"/>
+<text x="611.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.59</text>
+<rect x="636" y="392" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
+<text x="661.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.19</text>
+<rect x="686" y="392" width="50" height="30" fill="#ffe58f" stroke="#0d1117" stroke-width="1"/>
+<text x="711.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.87</text>
+<rect x="736" y="392" width="50" height="30" fill="#f9f9b4" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.15</text>
+<rect x="786" y="392" width="50" height="30" fill="#ffe58e" stroke="#0d1117" stroke-width="1"/>
+<text x="811.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.94</text>
+<rect x="836" y="392" width="50" height="30" fill="#fed471" stroke="#0d1117" stroke-width="1"/>
+<text x="861.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.44</text>
+<rect x="886" y="392" width="50" height="30" fill="#fede81" stroke="#0d1117" stroke-width="1"/>
+<text x="911.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.90</text>
+<rect x="936" y="392" width="50" height="30" fill="#ffe58e" stroke="#0d1117" stroke-width="1"/>
+<text x="961.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.95</text>
+<rect x="986" y="392" width="50" height="30" fill="#ffe48c" stroke="#0d1117" stroke-width="1"/>
+<text x="1011.0" y="411.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.08</text>
+<rect x="1052" y="392" width="60" height="30" fill="#ffe895" stroke="#0d1117" stroke-width="1.5"/>
+<text x="1082.0" y="411.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">2.53×</text>
 <text x="74" y="441.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Kotlin‡</text>
-<rect x="86" y="422" width="50" height="30" fill="#fed774" stroke="#0d1117" stroke-width="1"/>
-<text x="111.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.20</text>
-<rect x="136" y="422" width="50" height="30" fill="#50b264" stroke="#0d1117" stroke-width="1"/>
-<text x="161.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.53</text>
-<rect x="186" y="422" width="50" height="30" fill="#ffe48d" stroke="#0d1117" stroke-width="1"/>
-<text x="211.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.04</text>
-<rect x="236" y="422" width="50" height="30" fill="#fd9f44" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">23.1</text>
-<rect x="286" y="422" width="50" height="30" fill="#feda79" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.69</text>
-<rect x="336" y="422" width="50" height="30" fill="#feaf4b" stroke="#0d1117" stroke-width="1"/>
-<text x="361.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">11.3</text>
-<rect x="386" y="422" width="50" height="30" fill="#feb954" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">8.77</text>
-<rect x="436" y="422" width="50" height="30" fill="#fed06c" stroke="#0d1117" stroke-width="1"/>
-<text x="461.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.92</text>
-<rect x="486" y="422" width="50" height="30" fill="#fecc68" stroke="#0d1117" stroke-width="1"/>
-<text x="511.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">6.34</text>
-<rect x="536" y="422" width="50" height="30" fill="#fee289" stroke="#0d1117" stroke-width="1"/>
-<text x="561.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.33</text>
-<rect x="586" y="422" width="50" height="30" fill="#fedb7a" stroke="#0d1117" stroke-width="1"/>
-<text x="611.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.62</text>
-<rect x="636" y="422" width="50" height="30" fill="#fed16e" stroke="#0d1117" stroke-width="1"/>
-<text x="661.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.74</text>
-<rect x="686" y="422" width="50" height="30" fill="#fed875" stroke="#0d1117" stroke-width="1"/>
-<text x="711.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.13</text>
-<rect x="736" y="422" width="50" height="30" fill="#ffeda0" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.99</text>
-<rect x="786" y="422" width="50" height="30" fill="#fec863" stroke="#0d1117" stroke-width="1"/>
-<text x="811.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">6.80</text>
-<rect x="836" y="422" width="50" height="30" fill="#fec662" stroke="#0d1117" stroke-width="1"/>
-<text x="861.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.01</text>
-<rect x="886" y="422" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
-<text x="911.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.03</text>
-<rect x="936" y="422" width="50" height="30" fill="#ffec9d" stroke="#0d1117" stroke-width="1"/>
-<text x="961.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.14</text>
-<rect x="986" y="422" width="50" height="30" fill="#f03523" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">304</text>
-<rect x="1052" y="422" width="60" height="30" fill="#feda79" stroke="#0d1117" stroke-width="1.5"/>
-<text x="1082.0" y="441.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">4.70×</text>
-<text x="74" y="471.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Scala‡</text>
-<rect x="86" y="452" width="50" height="30" fill="#fed977" stroke="#0d1117" stroke-width="1"/>
-<text x="111.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.91</text>
-<rect x="136" y="452" width="50" height="30" fill="#46ad5f" stroke="#0d1117" stroke-width="1"/>
-<text x="161.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.51</text>
-<rect x="186" y="452" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
-<text x="211.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.06</text>
+<rect x="86" y="422" width="50" height="30" fill="#ffe590" stroke="#0d1117" stroke-width="1"/>
+<text x="111.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.83</text>
+<rect x="136" y="422" width="50" height="30" fill="#288b47" stroke="#0d1117" stroke-width="1"/>
+<text x="161.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.28</text>
+<rect x="186" y="422" width="50" height="30" fill="#c3e69b" stroke="#0d1117" stroke-width="1"/>
+<text x="211.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">0.78</text>
+<rect x="236" y="422" width="50" height="30" fill="#fea747" stroke="#0d1117" stroke-width="1"/>
+<text x="261.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">16.0</text>
+<rect x="286" y="422" width="50" height="30" fill="#fee086" stroke="#0d1117" stroke-width="1"/>
+<text x="311.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.56</text>
+<rect x="336" y="422" width="50" height="30" fill="#fedd7e" stroke="#0d1117" stroke-width="1"/>
+<text x="361.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.21</text>
+<rect x="386" y="422" width="50" height="30" fill="#fecf6b" stroke="#0d1117" stroke-width="1"/>
+<text x="411.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.99</text>
+<rect x="436" y="422" width="50" height="30" fill="#fedb7a" stroke="#0d1117" stroke-width="1"/>
+<text x="461.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.58</text>
+<rect x="486" y="422" width="50" height="30" fill="#fecd69" stroke="#0d1117" stroke-width="1"/>
+<text x="511.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">6.16</text>
+<rect x="536" y="422" width="50" height="30" fill="#fed976" stroke="#0d1117" stroke-width="1"/>
+<text x="561.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.97</text>
+<rect x="586" y="422" width="50" height="30" fill="#ffe998" stroke="#0d1117" stroke-width="1"/>
+<text x="611.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.36</text>
+<rect x="636" y="422" width="50" height="30" fill="#feeea2" stroke="#0d1117" stroke-width="1"/>
+<text x="661.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.90</text>
+<rect x="686" y="422" width="50" height="30" fill="#ffeb9c" stroke="#0d1117" stroke-width="1"/>
+<text x="711.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.20</text>
+<rect x="736" y="422" width="50" height="30" fill="#fcf3aa" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.52</text>
+<rect x="786" y="422" width="50" height="30" fill="#ffe691" stroke="#0d1117" stroke-width="1"/>
+<text x="811.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.77</text>
+<rect x="836" y="422" width="50" height="30" fill="#fcf3ab" stroke="#0d1117" stroke-width="1"/>
+<text x="861.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.49</text>
+<rect x="886" y="422" width="50" height="30" fill="#ffe38b" stroke="#0d1117" stroke-width="1"/>
+<text x="911.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.15</text>
+<rect x="936" y="422" width="50" height="30" fill="#ffea9b" stroke="#0d1117" stroke-width="1"/>
+<text x="961.0" y="441.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.24</text>
+<rect x="986" y="422" width="50" height="30" fill="#161b22" stroke="#0d1117" stroke-width="1"/>
+<rect x="1052" y="422" width="60" height="30" fill="#ffe692" stroke="#0d1117" stroke-width="1.5"/>
+<text x="1082.0" y="441.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">2.69×</text>
+<text x="74" y="471.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Java‡</text>
+<rect x="86" y="452" width="50" height="30" fill="#feda79" stroke="#0d1117" stroke-width="1"/>
+<text x="111.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.72</text>
+<rect x="136" y="452" width="50" height="30" fill="#2e924d" stroke="#0d1117" stroke-width="1"/>
+<text x="161.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.32</text>
+<rect x="186" y="452" width="50" height="30" fill="#ffe896" stroke="#0d1117" stroke-width="1"/>
+<text x="211.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.47</text>
 <rect x="236" y="452" width="50" height="30" fill="#fea145" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">21.2</text>
-<rect x="286" y="452" width="50" height="30" fill="#ffe997" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.42</text>
-<rect x="336" y="452" width="50" height="30" fill="#feaf4b" stroke="#0d1117" stroke-width="1"/>
-<text x="361.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">11.5</text>
-<rect x="386" y="452" width="50" height="30" fill="#feac49" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">13.3</text>
-<rect x="436" y="452" width="50" height="30" fill="#fedc7c" stroke="#0d1117" stroke-width="1"/>
-<text x="461.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.38</text>
-<rect x="486" y="452" width="50" height="30" fill="#fedd7f" stroke="#0d1117" stroke-width="1"/>
-<text x="511.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.11</text>
-<rect x="536" y="452" width="50" height="30" fill="#fee187" stroke="#0d1117" stroke-width="1"/>
-<text x="561.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.46</text>
-<rect x="586" y="452" width="50" height="30" fill="#fed06c" stroke="#0d1117" stroke-width="1"/>
-<text x="611.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.90</text>
-<rect x="636" y="452" width="50" height="30" fill="#fec15c" stroke="#0d1117" stroke-width="1"/>
-<text x="661.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.63</text>
-<rect x="686" y="452" width="50" height="30" fill="#fed773" stroke="#0d1117" stroke-width="1"/>
-<text x="711.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.23</text>
-<rect x="736" y="452" width="50" height="30" fill="#ffe794" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.62</text>
-<rect x="786" y="452" width="50" height="30" fill="#fecf6b" stroke="#0d1117" stroke-width="1"/>
-<text x="811.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.98</text>
-<rect x="836" y="452" width="50" height="30" fill="#fec460" stroke="#0d1117" stroke-width="1"/>
-<text x="861.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.24</text>
-<rect x="886" y="452" width="50" height="30" fill="#fedc7d" stroke="#0d1117" stroke-width="1"/>
-<text x="911.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.28</text>
+<text x="261.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">20.9</text>
+<rect x="286" y="452" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
+<text x="311.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.05</text>
+<rect x="336" y="452" width="50" height="30" fill="#feda79" stroke="#0d1117" stroke-width="1"/>
+<text x="361.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.69</text>
+<rect x="386" y="452" width="50" height="30" fill="#fed976" stroke="#0d1117" stroke-width="1"/>
+<text x="411.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">5.03</text>
+<rect x="436" y="452" width="50" height="30" fill="#feda78" stroke="#0d1117" stroke-width="1"/>
+<text x="461.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.76</text>
+<rect x="486" y="452" width="50" height="30" fill="#fec864" stroke="#0d1117" stroke-width="1"/>
+<text x="511.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">6.76</text>
+<rect x="536" y="452" width="50" height="30" fill="#fedb7a" stroke="#0d1117" stroke-width="1"/>
+<text x="561.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.62</text>
+<rect x="586" y="452" width="50" height="30" fill="#fedf82" stroke="#0d1117" stroke-width="1"/>
+<text x="611.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.85</text>
+<rect x="636" y="452" width="50" height="30" fill="#feeea2" stroke="#0d1117" stroke-width="1"/>
+<text x="661.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.88</text>
+<rect x="686" y="452" width="50" height="30" fill="#fee187" stroke="#0d1117" stroke-width="1"/>
+<text x="711.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.47</text>
+<rect x="736" y="452" width="50" height="30" fill="#fdf2a8" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">1.61</text>
+<rect x="786" y="452" width="50" height="30" fill="#ffe690" stroke="#0d1117" stroke-width="1"/>
+<text x="811.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.81</text>
+<rect x="836" y="452" width="50" height="30" fill="#ffe998" stroke="#0d1117" stroke-width="1"/>
+<text x="861.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.37</text>
+<rect x="886" y="452" width="50" height="30" fill="#fede80" stroke="#0d1117" stroke-width="1"/>
+<text x="911.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">3.99</text>
 <rect x="936" y="452" width="50" height="30" fill="#ffe997" stroke="#0d1117" stroke-width="1"/>
-<text x="961.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.43</text>
-<rect x="986" y="452" width="50" height="30" fill="#ef3223" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">340</text>
-<rect x="1052" y="452" width="60" height="30" fill="#feda79" stroke="#0d1117" stroke-width="1.5"/>
-<text x="1082.0" y="471.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">4.73×</text>
+<text x="961.0" y="471.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">2.41</text>
+<rect x="986" y="452" width="50" height="30" fill="#161b22" stroke="#0d1117" stroke-width="1"/>
+<rect x="1052" y="452" width="60" height="30" fill="#fee288" stroke="#0d1117" stroke-width="1.5"/>
+<text x="1082.0" y="471.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">3.36×</text>
 <text x="74" y="501.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">JavaScript</text>
 <rect x="86" y="482" width="50" height="30" fill="#fedc7d" stroke="#0d1117" stroke-width="1"/>
 <text x="111.0" y="501.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">4.29</text>
@@ -512,20 +510,20 @@
 <rect x="1052" y="482" width="60" height="30" fill="#feda77" stroke="#0d1117" stroke-width="1.5"/>
 <text x="1082.0" y="501.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">4.87×</text>
 <text x="74" y="531.0" text-anchor="end" font-size="13" font-weight="600" fill="#a371f7">Elixir</text>
-<rect x="86" y="512" width="50" height="30" fill="#fd943f" stroke="#0d1117" stroke-width="1"/>
-<text x="111.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">37.7</text>
+<rect x="86" y="512" width="50" height="30" fill="#fd933f" stroke="#0d1117" stroke-width="1"/>
+<text x="111.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">37.9</text>
 <rect x="136" y="512" width="50" height="30" fill="#369c53" stroke="#0d1117" stroke-width="1"/>
 <text x="161.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">0.39</text>
 <rect x="186" y="512" width="50" height="30" fill="#feac49" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">13.1</text>
 <rect x="236" y="512" width="50" height="30" fill="#fd943f" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">37.5</text>
+<text x="261.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">37.7</text>
 <rect x="286" y="512" width="50" height="30" fill="#febf5a" stroke="#0d1117" stroke-width="1"/>
-<text x="311.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.94</text>
+<text x="311.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">7.95</text>
 <rect x="336" y="512" width="50" height="30" fill="#fd9841" stroke="#0d1117" stroke-width="1"/>
 <text x="361.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">31.6</text>
 <rect x="386" y="512" width="50" height="30" fill="#fd7435" stroke="#0d1117" stroke-width="1"/>
-<text x="411.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">66.1</text>
+<text x="411.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">66.2</text>
 <rect x="436" y="512" width="50" height="30" fill="#fea546" stroke="#0d1117" stroke-width="1"/>
 <text x="461.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">17.7</text>
 <rect x="486" y="512" width="50" height="30" fill="#fd923e" stroke="#0d1117" stroke-width="1"/>
@@ -539,8 +537,8 @@
 <rect x="686" y="512" width="50" height="30" fill="#fd8f3d" stroke="#0d1117" stroke-width="1"/>
 <text x="711.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">45.3</text>
 <rect x="736" y="512" width="50" height="30" fill="#feae4a" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">12.2</text>
-<rect x="786" y="512" width="50" height="30" fill="#f64227" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">12.1</text>
+<rect x="786" y="512" width="50" height="30" fill="#f64327" stroke="#0d1117" stroke-width="1"/>
 <text x="811.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">166</text>
 <rect x="836" y="512" width="50" height="30" fill="#fd7c37" stroke="#0d1117" stroke-width="1"/>
 <text x="861.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">60.2</text>
@@ -548,8 +546,8 @@
 <text x="911.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">35.1</text>
 <rect x="936" y="512" width="50" height="30" fill="#fd903d" stroke="#0d1117" stroke-width="1"/>
 <text x="961.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">43.5</text>
-<rect x="986" y="512" width="50" height="30" fill="#fd8a3b" stroke="#0d1117" stroke-width="1"/>
-<text x="1011.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">51.5</text>
+<rect x="986" y="512" width="50" height="30" fill="#fd8b3b" stroke="#0d1117" stroke-width="1"/>
+<text x="1011.0" y="531.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">51.4</text>
 <rect x="1052" y="512" width="60" height="30" fill="#fd9f44" stroke="#0d1117" stroke-width="1.5"/>
 <text x="1082.0" y="531.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d1117">23.3×</text>
 <text x="74" y="561.0" text-anchor="end" font-size="13" font-weight="600" fill="#f0883e">PHP</text>
@@ -642,7 +640,7 @@
 <rect x="186" y="602" width="50" height="30" fill="#fc4e2a" stroke="#0d1117" stroke-width="1"/>
 <text x="211.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">101</text>
 <rect x="236" y="602" width="50" height="30" fill="#fd8d3c" stroke="#0d1117" stroke-width="1"/>
-<text x="261.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">50.1</text>
+<text x="261.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#0d1117">49.8</text>
 <rect x="286" y="602" width="50" height="30" fill="#fc4e2a" stroke="#0d1117" stroke-width="1"/>
 <text x="311.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">99.8</text>
 <rect x="336" y="602" width="50" height="30" fill="#fa4929" stroke="#0d1117" stroke-width="1"/>
@@ -661,10 +659,10 @@
 <text x="661.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">94.9</text>
 <rect x="686" y="602" width="50" height="30" fill="#f23824" stroke="#0d1117" stroke-width="1"/>
 <text x="711.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">262</text>
-<rect x="736" y="602" width="50" height="30" fill="#fd7836" stroke="#0d1117" stroke-width="1"/>
-<text x="761.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">62.8</text>
-<rect x="786" y="602" width="50" height="30" fill="#f84728" stroke="#0d1117" stroke-width="1"/>
-<text x="811.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">139</text>
+<rect x="736" y="602" width="50" height="30" fill="#fd7736" stroke="#0d1117" stroke-width="1"/>
+<text x="761.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">63.8</text>
+<rect x="786" y="602" width="50" height="30" fill="#f94728" stroke="#0d1117" stroke-width="1"/>
+<text x="811.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">137</text>
 <rect x="836" y="602" width="50" height="30" fill="#f33c25" stroke="#0d1117" stroke-width="1"/>
 <text x="861.0" y="621.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="#ffffff">223</text>
 <rect x="886" y="602" width="50" height="30" fill="#fb4b29" stroke="#0d1117" stroke-width="1"/>
@@ -744,5 +742,5 @@
 <text x="972.7" y="714" text-anchor="middle" font-size="10" fill="#9aa7b4">100k×</text>
 <text x="1112" y="698" font-size="10.5" fill="#9aa7b4" text-anchor="end">← beats C · slower →</text>
 <text x="86" y="744" font-size="10" fill="#9aa7b4">† shown but excluded from the geomean: instruction counts are syscall-blind, misleading for context-switch primitives (see the concurrency study)</text>
-<text x="86" y="758" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA- and run-specific (geomeans up to 2.0× higher on x86_64 than on arm64, single cells up to 7×, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
+<text x="86" y="758" font-size="10" fill="#9aa7b4">‡ JVM ratios are ISA- and run-specific (geomeans up to 1.2× higher on x86_64 than on arm64, single cells up to 2×, see docs/metric-validity.md); non-JVM rankings are ISA-robust</text>
 </svg>

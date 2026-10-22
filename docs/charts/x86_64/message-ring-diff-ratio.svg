@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="702" viewBox="0 0 760 702" font-family="ui-sans-serif,system-ui,Segoe UI,Helvetica,Arial">
-<rect width="760" height="702" rx="10" fill="#0d1117"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="622" viewBox="0 0 760 622" font-family="ui-sans-serif,system-ui,Segoe UI,Helvetica,Arial">
+<rect width="760" height="622" rx="10" fill="#0d1117"/>
 <text x="22" y="34" font-size="19" font-weight="700" fill="#e6edf3">message-ring:relative real work (I(2000)−I(500), C = 1.0×)</text>
 <text x="22" y="56" font-size="13" fill="#9aa7b4">differential cancels startup + JIT · qemu+insn · x86_64 · the fair metric · lower is better</text>
 <text x="120" y="97" text-anchor="end" font-size="14" fill="#9aa7b4">Rust</text>
@@ -18,33 +18,27 @@
 <rect x="132" y="241" width="18.3" height="24" rx="5" fill="#3fb950"/>
 <text x="159.3" y="258" font-size="13" fill="#e6edf3">20.16×</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
-<rect x="132" y="281" width="31.0" height="24" rx="5" fill="#f0883e"/>
-<text x="172.0" y="298" font-size="13" fill="#e6edf3">34.16×</text>
+<rect x="132" y="281" width="30.9" height="24" rx="5" fill="#f0883e"/>
+<text x="171.9" y="298" font-size="13" fill="#e6edf3">34.16×</text>
 <text x="120" y="337" text-anchor="end" font-size="14" fill="#9aa7b4">Elixir</text>
-<rect x="132" y="321" width="46.7" height="24" rx="5" fill="#a371f7"/>
-<text x="187.7" y="338" font-size="13" fill="#e6edf3">51.52×</text>
+<rect x="132" y="321" width="46.6" height="24" rx="5" fill="#a371f7"/>
+<text x="187.6" y="338" font-size="13" fill="#e6edf3">51.40×</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
-<rect x="132" y="361" width="48.5" height="24" rx="5" fill="#a371f7"/>
-<text x="189.5" y="378" font-size="13" fill="#e6edf3">53.48×</text>
+<rect x="132" y="361" width="48.4" height="24" rx="5" fill="#a371f7"/>
+<text x="189.4" y="378" font-size="13" fill="#e6edf3">53.47×</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
-<rect x="132" y="401" width="60.9" height="24" rx="5" fill="#a371f7"/>
-<text x="201.9" y="418" font-size="13" fill="#e6edf3">67.13×</text>
+<rect x="132" y="401" width="60.8" height="24" rx="5" fill="#a371f7"/>
+<text x="201.8" y="418" font-size="13" fill="#e6edf3">67.14×</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">VB.NET</text>
-<rect x="132" y="441" width="61.6" height="24" rx="5" fill="#a371f7"/>
-<text x="202.6" y="458" font-size="13" fill="#e6edf3">67.90×</text>
+<rect x="132" y="441" width="61.5" height="24" rx="5" fill="#a371f7"/>
+<text x="202.5" y="458" font-size="13" fill="#e6edf3">67.89×</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
-<rect x="132" y="481" width="86.1" height="24" rx="5" fill="#3fb950"/>
-<text x="227.1" y="498" font-size="13" fill="#e6edf3">94.97×</text>
-<text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="521" width="87.6" height="24" rx="5" fill="#a371f7"/>
-<text x="228.6" y="538" font-size="13" fill="#e6edf3">96.54×</text>
-<text x="120" y="577" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="561" width="275.7" height="24" rx="5" fill="#a371f7"/>
-<text x="416.7" y="578" font-size="13" fill="#e6edf3">303.95×</text>
-<text x="120" y="617" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="601" width="308.1" height="24" rx="5" fill="#a371f7"/>
-<text x="449.1" y="618" font-size="13" fill="#e6edf3">339.74×</text>
-<text x="120" y="657" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
-<rect x="132" y="641" width="532.0" height="24" rx="5" fill="#f0883e"/>
-<text x="673.0" y="658" font-size="13" fill="#e6edf3">586.58×</text>
+<rect x="132" y="481" width="85.0" height="24" rx="5" fill="#3fb950"/>
+<text x="226.0" y="498" font-size="13" fill="#e6edf3">93.82×</text>
+<text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
+<rect x="132" y="521" width="115.2" height="24" rx="5" fill="#a371f7"/>
+<text x="256.2" y="538" font-size="13" fill="#e6edf3">127.19×</text>
+<text x="120" y="577" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
+<rect x="132" y="561" width="532.0" height="24" rx="5" fill="#f0883e"/>
+<text x="673.0" y="578" font-size="13" fill="#e6edf3">587.24×</text>
 </svg>

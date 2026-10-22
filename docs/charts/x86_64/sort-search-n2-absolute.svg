@@ -29,15 +29,15 @@
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="401" width="206.0" height="24" rx="5" fill="#a371f7"/>
 <text x="347.0" y="418" font-size="13" fill="#e6edf3">483.02M</text>
-<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="441" width="233.2" height="24" rx="5" fill="#a371f7"/>
-<text x="374.2" y="458" font-size="13" fill="#e6edf3">631.64M</text>
-<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="481" width="292.3" height="24" rx="5" fill="#a371f7"/>
-<text x="433.3" y="498" font-size="13" fill="#e6edf3">1.13B</text>
+<text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
+<rect x="132" y="441" width="215.4" height="24" rx="5" fill="#a371f7"/>
+<text x="356.4" y="458" font-size="13" fill="#e6edf3">530.36M</text>
+<text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
+<rect x="132" y="481" width="221.9" height="24" rx="5" fill="#a371f7"/>
+<text x="362.9" y="498" font-size="13" fill="#e6edf3">565.47M</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="521" width="331.1" height="24" rx="5" fill="#a371f7"/>
-<text x="472.1" y="538" font-size="13" fill="#e6edf3">1.66B</text>
+<rect x="132" y="521" width="271.8" height="24" rx="5" fill="#a371f7"/>
+<text x="412.8" y="538" font-size="13" fill="#e6edf3">924.52M</text>
 <text x="120" y="577" text-anchor="end" font-size="14" fill="#9aa7b4">PHP</text>
 <rect x="132" y="561" width="368.5" height="24" rx="5" fill="#f0883e"/>
 <text x="509.5" y="578" font-size="13" fill="#e6edf3">2.40B</text>
@@ -46,7 +46,7 @@
 <text x="575.9" y="618" font-size="13" fill="#e6edf3">4.62B</text>
 <text x="120" y="657" text-anchor="end" font-size="14" fill="#9aa7b4">Ruby</text>
 <rect x="132" y="641" width="439.5" height="24" rx="5" fill="#f0883e"/>
-<text x="580.5" y="658" font-size="13" fill="#e6edf3">4.84B</text>
+<text x="580.5" y="658" font-size="13" fill="#e6edf3">4.83B</text>
 <text x="120" y="697" text-anchor="end" font-size="14" fill="#9aa7b4">Python</text>
 <rect x="132" y="681" width="516.0" height="24" rx="5" fill="#f0883e"/>
 <text x="657.0" y="698" font-size="13" fill="#e6edf3">10.28B</text>
