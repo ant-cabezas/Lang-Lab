@@ -13,10 +13,10 @@
 <text x="170.1" y="178" font-size="13" fill="#e6edf3">395.84M</text>
 <text x="120" y="217" text-anchor="end" font-size="14" fill="#9aa7b4">Go</text>
 <rect x="132" y="201" width="96.8" height="24" rx="5" fill="#3fb950"/>
-<text x="237.8" y="218" font-size="13" fill="#e6edf3">764.31M</text>
+<text x="237.8" y="218" font-size="13" fill="#e6edf3">764.23M</text>
 <text x="120" y="257" text-anchor="end" font-size="14" fill="#9aa7b4">C#</text>
 <rect x="132" y="241" width="100.6" height="24" rx="5" fill="#a371f7"/>
-<text x="241.6" y="258" font-size="13" fill="#e6edf3">793.57M</text>
+<text x="241.6" y="258" font-size="13" fill="#e6edf3">793.54M</text>
 <text x="120" y="297" text-anchor="end" font-size="14" fill="#9aa7b4">Swift</text>
 <rect x="132" y="281" width="109.4" height="24" rx="5" fill="#3fb950"/>
 <text x="250.4" y="298" font-size="13" fill="#e6edf3">864.08M</text>
@@ -24,17 +24,17 @@
 <rect x="132" y="321" width="129.2" height="24" rx="5" fill="#a371f7"/>
 <text x="270.2" y="338" font-size="13" fill="#e6edf3">1.05B</text>
 <text x="120" y="377" text-anchor="end" font-size="14" fill="#9aa7b4">Kotlin</text>
-<rect x="132" y="361" width="134.3" height="24" rx="5" fill="#a371f7"/>
-<text x="275.3" y="378" font-size="13" fill="#e6edf3">1.10B</text>
+<rect x="132" y="361" width="134.4" height="24" rx="5" fill="#a371f7"/>
+<text x="275.4" y="378" font-size="13" fill="#e6edf3">1.10B</text>
 <text x="120" y="417" text-anchor="end" font-size="14" fill="#9aa7b4">Java</text>
-<rect x="132" y="401" width="136.5" height="24" rx="5" fill="#a371f7"/>
-<text x="277.5" y="418" font-size="13" fill="#e6edf3">1.12B</text>
+<rect x="132" y="401" width="135.3" height="24" rx="5" fill="#a371f7"/>
+<text x="276.3" y="418" font-size="13" fill="#e6edf3">1.11B</text>
 <text x="120" y="457" text-anchor="end" font-size="14" fill="#9aa7b4">OCaml</text>
 <rect x="132" y="441" width="140.8" height="24" rx="5" fill="#3fb950"/>
 <text x="281.8" y="458" font-size="13" fill="#e6edf3">1.17B</text>
 <text x="120" y="497" text-anchor="end" font-size="14" fill="#9aa7b4">Scala</text>
-<rect x="132" y="481" width="173.3" height="24" rx="5" fill="#a371f7"/>
-<text x="314.3" y="498" font-size="13" fill="#e6edf3">1.61B</text>
+<rect x="132" y="481" width="172.6" height="24" rx="5" fill="#a371f7"/>
+<text x="313.6" y="498" font-size="13" fill="#e6edf3">1.60B</text>
 <text x="120" y="537" text-anchor="end" font-size="14" fill="#9aa7b4">JavaScript</text>
 <rect x="132" y="521" width="203.2" height="24" rx="5" fill="#a371f7"/>
 <text x="344.2" y="538" font-size="13" fill="#e6edf3">2.15B</text>
