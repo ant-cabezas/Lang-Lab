@@ -1,0 +1,38 @@
+{
+  "language": "rust",
+  "nativeImage": "lang-lab-rust",
+  "nativeRun": "/app/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:rust",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "rustc": "1.88.0 (6b00bc388 2025-06-23), LLVM 20.1.5, same binary for native and wasm",
+    "nativeFlags": "rustc -O (matrix image languages/rust/Dockerfile, no other flags)",
+    "wasmFlags": "rustc -O --target wasm32-wasip1 -C link-arg=-zstack-size=8388608",
+    "wasmStd": "rust-std-1.88.0-wasm32-wasip1.tar.xz sha256 d8b9068daa681ad309f628254d0019b13f51690769d7e26d22469d97bde74248"
+  },
+  "transforms": [],
+  "asymmetries": [
+    "no target-cpu on either side; the wasm default feature set (bulk-memory, multivalue, mutable-globals, nontrapping-fptoint, reference-types, sign-ext) is rustc's baseline for the target, no simd128",
+    "native std links glibc (system malloc), wasm std ships its own dlmalloc",
+    "wasm shadow stack raised to 8 MiB to match the native 8 MiB main-thread stack",
+    "the native column is aarch64 machine code, so ratios mix ISA with wasm cost",
+    "panic strategy: rustc 1.88.0 builds wasm32-wasip1 with panic=abort (target default) and aarch64-unknown-linux-gnu with panic=unwind (verified with rustc --print cfg); the wasm code has no unwinding landing pads. Kept: forcing one strategy on both would move the native build away from the matrix binary",
+    "wasm32 is ILP32: usize and pointers are 32-bit (all 18 sources are correct unchanged)"
+  ],
+  "na": {},
+  "matrixPins": {
+    "rust": "1.88.0"
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm"
+  }
+}

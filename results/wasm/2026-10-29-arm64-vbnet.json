@@ -1,0 +1,1345 @@
+{
+ "study": "wasm-side-study",
+ "language": "vbnet",
+ "date": "2026-10-29",
+ "isa": "arm64",
+ "ranked": false,
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "ratioMeaning": "column differential / native differential, same language version and compiler family (lower is better; 1.00 = no overhead over native)",
+ "spreadMeaning": "maxSpreadPct: largest (max - min) / median of I(n1) or I(n2) over the runs, percent (lower is better; 0 = bit-exact)",
+ "lane": {
+  "language": "vbnet",
+  "nativeImage": "lang-lab-wasm:vbnet",
+  "nativeRun": "/app/mono/{b}",
+  "nativeEnv": {
+   "MONO_ENV_OPTIONS": "--interpreter",
+   "MONO_GC_PARAMS": "major=marksweep"
+  },
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:vbnet",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "interp",
+  "wasmEnv": {
+   "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+   "coreclr": {
+    "image": "lang-lab-wasm:vbnet",
+    "run": "/app/coreclr/{b}",
+    "env": {
+     "DOTNET_gcServer": "0",
+     "DOTNET_TieredCompilation": "0"
+    },
+    "kind": "inproc-vm",
+    "role": "reference: the matrix runtime (CoreCLR 9.0.22, RyuJIT, TieredCompilation=0, workstation GC); self-contained but not single-file (startup-only difference, cancels in the differential)"
+   },
+   "mono-jit": {
+    "image": "lang-lab-wasm:vbnet",
+    "run": "/app/mono/{b}",
+    "env": {
+     "MONO_GC_PARAMS": "major=marksweep"
+    },
+    "kind": "inproc-vm",
+    "role": "context: the same Mono build as the native column but with its default JIT instead of the interpreter"
+   }
+  },
+  "versions": {
+   "sdk": "dotnet SDK 9.0.320 (mcr.microsoft.com/dotnet/sdk:9.0 @ sha256:d7cfd59385751fc87897a138ba173fb1bbc2bf946ea78aecc91a119993676997)",
+   "wasmRuntime": "Mono 9.0.22 interpreter (Microsoft.NETCore.App.Runtime.Mono.wasi-wasm 9.0.22) via the wasi-experimental workload",
+   "wasmToolchain": "wasi-sdk 24 (clang 18.1.2), target rewritten to wasm32-wasip1, WasmSingleFileBundle, no AOT",
+   "nativeRuntime": "Mono 9.0.0-preview.7.24405.7 (Microsoft.NETCore.App.Runtime.Mono.linux-arm64), interpreter via MONO_ENV_OPTIONS=--interpreter",
+   "referenceRuntime": "CoreCLR 9.0.22",
+   "flags": "Release; wasm: -O2 via the workload defaults, 8 MiB stack, 50 MiB initial memory"
+  },
+  "transforms": [
+   "languages/wasm/csharp/Directory.Build.targets: no-op redefinition of the workload's FailBuild target (the .NET 9 SDK aborts every wasi-wasm build)",
+   "languages/wasm/csharp/wasi-clang-p1.sh (-p:WasiClang): wasip2 component link rewritten to a wasm32-wasip1 core module so V8 can load it; sources and runtime pack untouched"
+  ],
+  "asymmetries": [
+   "the .NET 9 wasi-experimental workload is officially unsupported (SDK manifest error); the guard is bypassed",
+   "wasm engine is Mono 9.0.22; no stable Mono linux-arm64 runtime pack exists for 9.0.x, so the native counterpart is Mono 9.0.0-preview.7 (same interpreter design, about 15 months of servicing older)",
+   "native Mono --interpreter may still JIT wrappers and trampolines; the wasm interpreter cannot",
+   "wasm assemblies are IL-trimmed (TrimMode partial/full by the workload); native Mono/CoreCLR apps are not trimmed",
+   "native Mono is built by Microsoft's linux toolchain, the wasm runtime by the workload's wasi-sdk 24 clang 18",
+   "Mono AOT (RunAOTCompilation) builds but crashes at startup on .NET 9 wasi; so no compiled-code wasm column and no matching native AOT exists",
+   "the CoreCLR reference column is not the matrix single-file image (same SDK/runtime 9.0.22)",
+   "VB.NET keeps integer overflow checks ON in every column (compiled into the IL)",
+   "GC: the native column runs with MONO_GC_PARAMS=major=marksweep (non-concurrent major collector); the wasm runtime is single-threaded, so its collector cannot run concurrently either, but the parameter itself is not passed to the wasm columns",
+   "class library: native preview.7 and wasm 9.0.22 ship different builds of the base class library (collections, Dictionary), not only a different engine; C# k-nucleotide fails on preview.7 for this reason, and other BCL-heavy cells may differ in managed library cost"
+  ],
+  "na": {},
+  "columnRoles": {
+   "native": "control",
+   "wasmtime": "wasm",
+   "node": "wasm",
+   "coreclr": "reference",
+   "mono-jit": "reference"
+  },
+  "diagnostics": {
+   "v8LazyCompile": {
+    "finding": "the V8 excess on k-nucleotide and sha256 is TurboFan compile cost of Mono runtime functions first called only at n2 (lazy compilation), which lands in I(n2)-I(n1) instead of cancelling",
+    "differentials": {
+     "sha256": {
+      "native": 904500000.0,
+      "wasmtime": 1948000000.0,
+      "nodeLazy": 2879000000.0,
+      "nodeEager": 2522800000.0
+     },
+     "k-nucleotide": {
+      "native": 438000000.0,
+      "wasmtime": 922500000.0,
+      "nodeLazy": 1531700000.0,
+      "nodeEager": 1150600000.0
+     }
+    },
+    "functionsCompiledByTurboFan": {
+     "sha256": [
+      1283,
+      1410
+     ],
+     "k-nucleotide": [
+      1301,
+      1429
+     ],
+     "binary-trees": [
+      1278,
+      1412
+     ],
+     "reverse-complement": [
+      1284,
+      1284
+     ]
+    },
+    "functionsOrder": "[n1, n2], from node --trace-wasm-compilation-times outside qemu; about 30 KB of wasm bodies are new at n2, a shared runtime path (123 functions common to sha256 and k-nucleotide, all of sha256's in binary-trees)",
+    "eager": "node ... --no-wasm-lazy-compilation: compile moves to startup and cancels; V8/wasmtime falls from 1.48 to 1.30 (sha256) and 1.66 to 1.25 (k-nucleotide)"
+   }
+  }
+ },
+ "toolchain": [
+  "sdk: 9.0.320",
+  "Microsoft.NETCore.App 9.0.22 [/usr/share/dotnet/shared/Microsoft.NETCore.App]",
+  "wasi-experimental          9.0.22/9.0.100        SDK 9.0.300        ",
+  "",
+  "Use `dotnet workload search` to find additional workloads to install.",
+  "wasi-sdk: clang version 18.1.2-wasi-sdk (https://github.com/llvm/llvm-project 26a1d6601d727a96f4301d0d8647b5a42760ae0c)",
+  "mono-pack: 9.0.0-preview.7.24405.7",
+  "wasmtime: wasmtime 50.0.0 (ebe5e8df1 2026-10-20)",
+  "node: v26.5.0",
+  "wasmtime-compile-flags:"
+ ],
+ "summary": {
+  "wasmtime": {
+   "measured": 18,
+   "geomeanRatioToNative": 1.9577
+  },
+  "node": {
+   "measured": 18,
+   "geomeanRatioToNative": 2.4603
+  },
+  "coreclr": {
+   "measured": 18,
+   "geomeanRatioToNative": 0.1291
+  },
+  "mono-jit": {
+   "measured": 18,
+   "geomeanRatioToNative": 0.5136
+  }
+ },
+ "results": [
+  {
+   "benchmark": "bigint",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 243939156,
+     "i_n2": 1087160453,
+     "differential": 843221297,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00027
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 196864136,
+     "i_n2": 1788109547,
+     "differential": 1591245411,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00066
+    },
+    "node": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 6439852246,
+     "i_n2": 8385672397,
+     "differential": 1945820151,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 208142016,
+     "i_n2": 291516214,
+     "differential": 83374198,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00271
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 300366133,
+     "i_n2": 1111099024,
+     "differential": 810732891,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0288
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.8871,
+    "node": 2.3076,
+    "coreclr": 0.0989,
+    "mono-jit": 0.9615
+   }
+  },
+  {
+   "benchmark": "binary-trees",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 261912111,
+     "i_n2": 1700563748,
+     "differential": 1438651637,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0002
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 220767362,
+     "i_n2": 2692298831,
+     "differential": 2471531469,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00037
+    },
+    "node": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 6494971464,
+     "i_n2": 9828152813,
+     "differential": 3333181349,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 217074469,
+     "i_n2": 592803078,
+     "differential": 375728609,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00471
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 282303880,
+     "i_n2": 896754676,
+     "differential": 614450796,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.03554
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.7179,
+    "node": 2.3169,
+    "coreclr": 0.2612,
+    "mono-jit": 0.4271
+   }
+  },
+  {
+   "benchmark": "blur",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 418686061,
+     "i_n2": 1075792479,
+     "differential": 657106418,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00017
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 544277925,
+     "i_n2": 1838154762,
+     "differential": 1293876837,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00013
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 6860537553,
+     "i_n2": 8423411792,
+     "differential": 1562874239,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 231731694,
+     "i_n2": 311990383,
+     "differential": 80258689,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00349
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 458387874,
+     "i_n2": 1062461659,
+     "differential": 604073785,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.06425
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9691,
+    "node": 2.3784,
+    "coreclr": 0.1221,
+    "mono-jit": 0.9193
+   }
+  },
+  {
+   "benchmark": "dijkstra",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 312625621,
+     "i_n2": 677000876,
+     "differential": 364375255,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00021
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 336695660,
+     "i_n2": 1060190259,
+     "differential": 723494599,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00025
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 6619001600,
+     "i_n2": 7495523567,
+     "differential": 876521967,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 5e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 224184499,
+     "i_n2": 265607720,
+     "differential": 41423221,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00338
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 328275003,
+     "i_n2": 554301586,
+     "differential": 226026583,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.08135
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9856,
+    "node": 2.4055,
+    "coreclr": 0.1137,
+    "mono-jit": 0.6203
+   }
+  },
+  {
+   "benchmark": "fannkuch",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 228527512,
+     "i_n2": 2322143206,
+     "differential": 2093615694,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00026
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 161034273,
+     "i_n2": 3824104563,
+     "differential": 3663070290,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00097
+    },
+    "node": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 6439651072,
+     "i_n2": 10900376033,
+     "differential": 4460724961,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 207023446,
+     "i_n2": 355570651,
+     "differential": 148547205,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00138
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 266404207,
+     "i_n2": 925858773,
+     "differential": 659454566,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.03439
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.7496,
+    "node": 2.1306,
+    "coreclr": 0.071,
+    "mono-jit": 0.315
+   }
+  },
+  {
+   "benchmark": "gbdt",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 2189194270,
+     "i_n2": 8073171112,
+     "differential": 5883976842,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 4035044819,
+     "i_n2": 15624049781,
+     "differential": 11589004962,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 5e-05
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 11107235360,
+     "i_n2": 25032650306,
+     "differential": 13925414946,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 2e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 473724708,
+     "i_n2": 1249474928,
+     "differential": 775750220,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0021
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 1544431365,
+     "i_n2": 5318913088,
+     "differential": 3774481723,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01432
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9696,
+    "node": 2.3667,
+    "coreclr": 0.1318,
+    "mono-jit": 0.6415
+   }
+  },
+  {
+   "benchmark": "gemm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 583384119,
+     "i_n2": 3214276537,
+     "differential": 2630892418,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00012
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 844640396,
+     "i_n2": 5859415216,
+     "differential": 5014774820,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00018
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 7243344787,
+     "i_n2": 13137333729,
+     "differential": 5893988942,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 263178772,
+     "i_n2": 636077508,
+     "differential": 372898736,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00238
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 602648623,
+     "i_n2": 2946936484,
+     "differential": 2344287861,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.04893
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9061,
+    "node": 2.2403,
+    "coreclr": 0.1417,
+    "mono-jit": 0.8911
+   }
+  },
+  {
+   "benchmark": "k-means",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 592064477,
+     "i_n2": 1765248558,
+     "differential": 1173184081,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0001
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 857533655,
+     "i_n2": 3085770996,
+     "differential": 2228237341,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00018
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 7221940084,
+     "i_n2": 9877466813,
+     "differential": 2655526729,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 255588210,
+     "i_n2": 388260299,
+     "differential": 132672089,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0028
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 746571800,
+     "i_n2": 2210901772,
+     "differential": 1464329972,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0411
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.8993,
+    "node": 2.2635,
+    "coreclr": 0.1131,
+    "mono-jit": 1.2482
+   }
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 721966701,
+     "i_n2": 1160054156,
+     "differential": 438087455,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 8e-05
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 1190946271,
+     "i_n2": 2113468916,
+     "differential": 922522645,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 7752723153,
+     "i_n2": 9284378003,
+     "differential": 1531654850,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 4e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 291100357,
+     "i_n2": 379238962,
+     "differential": 88138605,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1.85437
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 443513592,
+     "i_n2": 582980299,
+     "differential": 139466707,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00051
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1058,
+    "node": 3.4962,
+    "coreclr": 0.2012,
+    "mono-jit": 0.3184
+   }
+  },
+  {
+   "benchmark": "lz77",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 332231901,
+     "i_n2": 746749154,
+     "differential": 414517253,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00021
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 369097124,
+     "i_n2": 1168797400,
+     "differential": 799700276,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00015
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 6612485963,
+     "i_n2": 7584811158,
+     "differential": 972325195,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 222432696,
+     "i_n2": 279076902,
+     "differential": 56644206,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00467
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 293177208,
+     "i_n2": 405211403,
+     "differential": 112034195,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.06405
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9292,
+    "node": 2.3457,
+    "coreclr": 0.1367,
+    "mono-jit": 0.2703
+   }
+  },
+  {
+   "benchmark": "mandelbrot",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 261981045,
+     "i_n2": 451497622,
+     "differential": 189516577,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00304
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 245677249,
+     "i_n2": 647272654,
+     "differential": 401595405,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0004
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 6480504226,
+     "i_n2": 6998913902,
+     "differential": 518409676,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 4e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 209121313,
+     "i_n2": 228204110,
+     "differential": 19082797,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00397
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 274564477,
+     "i_n2": 328362477,
+     "differential": 53798000,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.07569
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1191,
+    "node": 2.7354,
+    "coreclr": 0.1007,
+    "mono-jit": 0.2839
+   }
+  },
+  {
+   "benchmark": "polymorphism",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 350876924,
+     "i_n2": 767998184,
+     "differential": 417121260,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 8e-05
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 418337206,
+     "i_n2": 1265504300,
+     "differential": 847167094,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00012
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 6755769553,
+     "i_n2": 7758965031,
+     "differential": 1003195478,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 4e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 226337525,
+     "i_n2": 281089607,
+     "differential": 54752082,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01097
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 362088985,
+     "i_n2": 649996279,
+     "differential": 287907294,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0872
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.031,
+    "node": 2.405,
+    "coreclr": 0.1313,
+    "mono-jit": 0.6902
+   }
+  },
+  {
+   "benchmark": "reverse-complement",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 244661948,
+     "i_n2": 377947174,
+     "differential": 133285226,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00028
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 204680645,
+     "i_n2": 477616917,
+     "differential": 272936272,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00048
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 6497471446,
+     "i_n2": 6824107161,
+     "differential": 326635715,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 5e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 212308842,
+     "i_n2": 235472303,
+     "differential": 23163461,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00195
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 293475453,
+     "i_n2": 402639730,
+     "differential": 109164277,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.08034
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.0478,
+    "node": 2.4507,
+    "coreclr": 0.1738,
+    "mono-jit": 0.819
+   }
+  },
+  {
+   "benchmark": "sha256",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 504956293,
+     "i_n2": 1409468512,
+     "differential": 904512219,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00014
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 768354349,
+     "i_n2": 2716311772,
+     "differential": 1947957423,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00016
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 7227477205,
+     "i_n2": 10106610487,
+     "differential": 2879133282,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 233325532,
+     "i_n2": 296622877,
+     "differential": 63297345,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00266
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 362688202,
+     "i_n2": 673289554,
+     "differential": 310601352,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.08167
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1536,
+    "node": 3.1831,
+    "coreclr": 0.07,
+    "mono-jit": 0.3434
+   }
+  },
+  {
+   "benchmark": "sort-search",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 434036049,
+     "i_n2": 1225069999,
+     "differential": 791033950,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00309
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 564800566,
+     "i_n2": 2090460762,
+     "differential": 1525660196,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 6933371867,
+     "i_n2": 8781572444,
+     "differential": 1848200577,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 5e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 234787318,
+     "i_n2": 331742042,
+     "differential": 96954724,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00356
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 347335170,
+     "i_n2": 644085153,
+     "differential": 296749983,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.03663
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9287,
+    "node": 2.3364,
+    "coreclr": 0.1226,
+    "mono-jit": 0.3751
+   }
+  },
+  {
+   "benchmark": "tak",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 209542631,
+     "i_n2": 627459775,
+     "differential": 417917144,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 134013457,
+     "i_n2": 987463078,
+     "differential": 853449621,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00132
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 6333336538,
+     "i_n2": 7424297448,
+     "differential": 1090960910,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 205317667,
+     "i_n2": 295827318,
+     "differential": 90509651,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00444
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 259741624,
+     "i_n2": 359361683,
+     "differential": 99620059,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.11322
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.0422,
+    "node": 2.6105,
+    "coreclr": 0.2166,
+    "mono-jit": 0.2384
+   }
+  },
+  {
+   "benchmark": "viterbi",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 480064756,
+     "i_n2": 1314339669,
+     "differential": 834274913,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00014
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 656994813,
+     "i_n2": 2280199639,
+     "differential": 1623204826,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "node": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 7035744457,
+     "i_n2": 8975677018,
+     "differential": 1939932561,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 3e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 250552470,
+     "i_n2": 355576690,
+     "differential": 105024220,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0037
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 477331540,
+     "i_n2": 1126732018,
+     "differential": 649400478,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00374
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9456,
+    "node": 2.3253,
+    "coreclr": 0.1259,
+    "mono-jit": 0.7784
+   }
+  },
+  {
+   "benchmark": "vm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 1057538338,
+     "i_n2": 3631538405,
+     "differential": 2574000067,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 1752201270,
+     "i_n2": 6668600444,
+     "differential": 4916399174,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "node": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 8318308186,
+     "i_n2": 14332108098,
+     "differential": 6013799912,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 2e-05
+    },
+    "coreclr": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 311828243,
+     "i_n2": 631628626,
+     "differential": 319800383,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00242
+    },
+    "mono-jit": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 563469846,
+     "i_n2": 1479404897,
+     "differential": 915935051,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.04712
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.91,
+    "node": 2.3364,
+    "coreclr": 0.1242,
+    "mono-jit": 0.3558
+   }
+  }
+ ],
+ "provenance": {
+  "assembledAt": "2026-10-29T14:47:01Z",
+  "imageDigests": {
+   "lang-lab-wasm:vbnet": "sha256:830413091892b0cb6d7d87d3168e051ae0c964058b3c3761626dd8e85fe51daa"
+  }
+ }
+}

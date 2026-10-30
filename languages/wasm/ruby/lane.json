@@ -1,0 +1,141 @@
+{
+  "language": "ruby",
+  "nativeImage": "lang-lab-wasm:ruby",
+  "nativeRun": "/app/rb-native/bin/ruby /app/{b}.rb",
+  "nativeEnv": {},
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:ruby",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app /app/rb-wasm/bin/ruby.cwasm /app/{b}.rb",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/rb-wasm/bin/ruby /app/{b}.rb",
+  "wasmKind": "interp",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+    "matrix": {
+      "image": "lang-lab-ruby",
+      "run": "ruby /app/{b}.rb",
+      "env": {},
+      "kind": "interp",
+      "role": "reference: the matrix Ruby cell (ruby:3.3-slim = CRuby 3.3.13, gcc -O3, --enable-shared, YJIT compiled in but not enabled), built from languages/ruby/Dockerfile with RUBY_VERSION=3.3, measured with the languages.json run template"
+    }
+  },
+  "versions": {
+    "ruby": "3.3.13 (cache.ruby-lang.org ruby-3.3.13.tar.gz, sha256 4cae72e971bd1cdb20ca87d299111182417c5276c162de8ead0ab0531426cd61, matches the official index); the matrix image reports ruby 3.3.13 (2026-10-23 revision af48f08f21) [aarch64-linux]",
+    "nativeCompiler": "clang 23.1.0 (official LLVM release, /opt/llvm/bin/clang)",
+    "wasmCompiler": "clang 23.1.0 (wasi-sdk 34), target wasm32-wasi (wasi preview1)",
+    "binaryen": "version_133 (binaryen-version_133-aarch64-linux.tar.gz, sha256 89c07ea56faf38d0fbecf36ca8ec0721756716185f265b568e133d427f299bf8)",
+    "wasmtime": "50.0.0",
+    "node": "26.5.0",
+    "configureCommon": "--disable-install-doc --disable-shared --with-static-linked-ext --with-ext=ripper,monitor --disable-yjit --disable-rjit --disable-fortify-source stack_protector=no debugflags= (optflags default -O3 -fno-fast-math on both)",
+    "configureNativeOnly": "CC=/opt/llvm/bin/clang; -mbranch-protection=pac-ret removed from the generated Makefile",
+    "configureWasmOnly": "--host=wasm32-unknown-wasi --with-baseruby=/app/rb-native/bin/ruby CPPFLAGS=-Dmprotect=rb_wasm_mprotect_stub LDFLAGS=-Wl,-z,stack-size=16777216; configure adds -D_WASI_EMULATED_{SIGNAL,MMAN,GETPID,PROCESS_CLOCKS} with the matching wasi-emulated libraries, coroutine_type=asyncify, and POSTLINK = wasm-opt --asyncify -O3 --pass-arg=asyncify-ignore-imports",
+    "wasmtimeCompileFlags": "none (wasmtime compile with defaults)",
+    "wasmtimeRunFlags": "-C cache=n, TOKIO_WORKER_THREADS=1 (the study's binding runtime flags, docs/wasm-study.md)",
+    "nodeFlags": "--predictable --single-threaded --single-threaded-gc --no-liftoff (the study's binding runtime flags); UV_THREADPOOL_SIZE=1 comes from the base image environment"
+  },
+  "transforms": [
+    "No benchmark source is transformed: the canonical languages/ruby/*.rb run unchanged in every column.",
+    "Interpreter build, wasm only: CPPFLAGS=-Dmprotect=rb_wasm_mprotect_stub. CRuby 3.3 wasm/missing.c defines a weak no-op mprotect; wasi-sdk 34's libwasi-emulated-mman.a, linked for mmap, now also defines a strong mprotect that returns EINVAL for the unaligned fiber-pool guard page, so fiber_pool_expand raised FiberError inside Init_Cont, ruby_setup returned state 6 and ruby exited 1 with no output for every program (evidence: wasm backtrace fiber_pool_expand <- Init_Cont <- rb_call_inits <- ruby_setup; a standalone wasi-sdk 34 test of mmap + mprotect(PROT_NONE) returns EINVAL). The rename sends every CRuby call to CRuby's own stub, the behaviour upstream intends; the native build does not use it."
+  ],
+  "asymmetries": [
+    "wasm32 VALUE is 32 bits: Integer#size is 4 on wasm vs 8 natively, so Fixnum covers 31 bits instead of 63 and there are no flonums. Every Float result and every integer outside +-2^30 (poly-hash products near 3.1e10, LCG states, sha256/vm 32-bit words, packed heap keys, bigint limbs) is a heap object on wasm. Measured: 1000 float adds allocate 1003 objects on wasm vs 3 natively; 1000 steps of h=(h*31+i)%1000000007 allocate 4848 vs 1. Heap objects per run at n2 for every benchmark are in diagnostics.heapObjectsPerRunAtN2",
+    "Asyncify: setjmp/longjmp (every Ruby exception and tag), fibers and the GC's machine-register scan are implemented by unwinding/rewinding the wasm stack, and wasm-opt --asyncify instruments the whole module (asyncify-ignore-imports) with save/restore checks on every call path. Natively these are a libc setjmp and a register spill.",
+    "wasm-opt --asyncify -O3 is a post-link optimisation pass with no native counterpart; the native build gets only clang -O3.",
+    "Allocator and libc: native links glibc (ptmalloc, static libruby, dynamic glibc); wasm links wasi-libc (dlmalloc) with the _WASI_EMULATED_{SIGNAL,MMAN,GETPID,PROCESS_CLOCKS} emulations; mmap is emulated by malloc.",
+    "wasi-sdk 34's clang 23.1.0 and the official LLVM 23.1.0 release are built from different commits of the same release.",
+    "Residual hardening: after removing pac-ret from the CRuby objects, 4 paciasp instructions remain in the native binary (from the toolchain's crt/libc objects), none on wasm.",
+    "Stdlib reachability: the native column loads its stdlib from /app/rb-native/lib/ruby, the wasm columns from /app/rb-wasm/lib/ruby through the /app preopen (wasmtime --dir /app::/app, run-node.mjs preopens /app). Both load the same 53 features at startup (rubygems, did_you_mean, error_highlight, syntax_suggest, monitor, encdb, transdb); the matrix image also loads 53 from /usr/local/lib/ruby.",
+    "YJIT: off in every column. Lane builds are configured --disable-yjit (defined?(RubyVM::YJIT) is nil); the matrix image has YJIT compiled in but not enabled (RubyVM::YJIT.enabled? is false; no --yjit flag, no RUBY_YJIT_ENABLE). The wasm build has no JIT of any kind.",
+    "Matrix reference vs native-same-build: gcc vs clang 23.1.0; --enable-shared (libruby.so, -fPIC) vs static; extensions as shared objects vs statically linked ripper+monitor; -ggdb3 vs no debug info; fortify, stack protector and pac-ret present vs removed; YJIT compiled in (off) vs compiled out.",
+    "Hash seeds: CRuby seeds its hash function from the OS (getrandom natively, WASI random_get on wasm). On V8, run-node.mjs answers random_get with a fixed byte stream, so that column always gets the same seed; fixing it moved no V8 cell by more than 0.035%. Natively and on wasmtime the seed varies between runs; any run-to-run jitter in Hash-heavy benchmarks there comes from that and is reported as measured.",
+    "stack: the wasm interpreter links with -Wl,-z,stack-size=16777216 (16 MiB, CRuby's wasm recipe), native has the 8 MiB process stack"
+  ],
+  "na": {},
+  "matrixPins": {
+    "ruby": "3.3"
+  },
+  "diagnostics": {
+    "heapObjectsPerRunAtN2": {
+      "how": "languages/wasm/ruby/alloc.rb, unmodified sources, run outside qemu, native -> wasm",
+      "bigint": [
+        53604,
+        25162724
+      ],
+      "mandelbrot": [
+        70606,
+        13154154
+      ],
+      "polymorphism": [
+        63796,
+        10940056
+      ],
+      "sha256": [
+        83813,
+        40113460
+      ],
+      "vm": [
+        53665,
+        5323786
+      ],
+      "dijkstra": [
+        270997,
+        2774549
+      ],
+      "reverse-complement": [
+        53636,
+        1989464
+      ],
+      "sort-search": [
+        1000036,
+        3672129
+      ],
+      "gbdt": [
+        53949,
+        1741777
+      ],
+      "gemm": [
+        53657,
+        1031016
+      ],
+      "viterbi": [
+        53800,
+        923238
+      ],
+      "blur": [
+        1102257,
+        1751996
+      ],
+      "k-means": [
+        53881,
+        258374
+      ],
+      "lz77": [
+        53672,
+        248137
+      ],
+      "binary-trees": [
+        3275852,
+        3281572
+      ],
+      "fannkuch": [
+        1142299,
+        1148012
+      ],
+      "k-nucleotide": [
+        731674,
+        737386
+      ],
+      "tak": [
+        53533,
+        59251
+      ]
+    }
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm",
+    "matrix": "reference"
+  }
+}

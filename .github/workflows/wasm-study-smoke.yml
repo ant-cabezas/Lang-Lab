@@ -1,0 +1,28 @@
+name: wasm-study-smoke
+
+# Smoke check of the WebAssembly side study harness (outside the ranking): builds the qemu backend, the wasm
+# base image and the C lane, and measures two benchmarks with the checksum gate. It does not publish numbers.
+# arm64 runner on purpose: the wasm base image pins aarch64 releases of wasi-sdk, wasmtime, Node and LLVM, and
+# the study's counts are aarch64 guest instructions.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "languages/wasm/**"
+      - "scripts/wasm-study.sh"
+      - "scripts/wasm-smoke.sh"
+      - "scripts/assemble_wasm_envelope.py"
+      - "scripts/measure.sh"
+      - "languages/_base/Dockerfile.qemu-insn"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wasm smoke (C lane, two benchmarks)
+        run: |
+          chmod +x scripts/wasm-smoke.sh scripts/wasm-study.sh
+          RESDIR=/tmp/wasm-smoke scripts/wasm-smoke.sh

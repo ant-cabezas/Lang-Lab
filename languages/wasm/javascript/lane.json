@@ -1,0 +1,38 @@
+{
+  "language": "javascript",
+  "label": "JavaScript (QuickJS-ng)",
+  "nativeImage": "lang-lab-wasm:javascript",
+  "nativeRun": "/app/native/qjs /app/js/{b}.js",
+  "nativeEnv": {},
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:javascript",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app /app/wasm/qjs.cwasm /app/js/{b}.js",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/qjs.wasm /app/js/{b}.js",
+  "wasmKind": "interp",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "engine": "QuickJS-ng 0.17.0 (interpreter, no JIT), built from the pinned source tarball",
+    "nativeCompiler": "clang 23.1.0 (official LLVM release)",
+    "wasmCompiler": "clang 23.1.0 (wasi-sdk 34), wasm32-wasip1",
+    "cmake": "3.31.6",
+    "flags": "identical CMake configuration both sides: Release, -O2 -DNDEBUG, QJS_BUILD_LIBC=ON, no mimalloc, no static CLI, no reactor; wasm adds only what QuickJS's own WASI CMake branch adds (2 MiB stack, wasi-emulated process-clocks and signal)"
+  },
+  "transforms": [
+    "build time: the line globalThis.process = { argv: [\"qjs\", ...scriptArgs] }; is inserted after the first line (\"use strict\") of every languages/javascript/<b>.js to produce /app/js/<b>.js, run identically by all three columns (QuickJS has no process.argv; process.argv is the only Node-only API the 18 sources use)"
+  ],
+  "asymmetries": [
+    "this is QuickJS-ng, an interpreter, NOT V8: the ratio is NOT comparable to the matrix Node/V8 JavaScript cell (a speculative JIT); V8 cannot be compiled to wasm",
+    "the native qjs links glibc dynamically (glibc malloc, libm), the wasm module links wasi-libc statically (dlmalloc, wasi libm)",
+    "native clang is the official LLVM 23.1.0 release, wasm clang is wasi-sdk 34's build of 23.1.0 (different commits of the same release)",
+    "stack: native uses the process stack, the wasm build uses QuickJS's WASI default of 2 MiB; the benchmarks recurse shallowly, far from either limit",
+    "value representation: QuickJS uses NaN-boxing (64-bit JSValue) on 32-bit targets (quickjs.h: JS_NAN_BOXING when INTPTR_MAX < INT64_MAX), so the wasm32 build boxes values differently from the native 64-bit build (16-byte tagged struct)"
+  ],
+  "na": {},
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm"
+  }
+}

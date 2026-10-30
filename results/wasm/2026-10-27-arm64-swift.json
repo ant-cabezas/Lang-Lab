@@ -1,0 +1,1081 @@
+{
+ "study": "wasm-side-study",
+ "language": "swift",
+ "date": "2026-10-27",
+ "isa": "arm64",
+ "ranked": false,
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "ratioMeaning": "column differential / native differential, same language version and compiler family (lower is better; 1.00 = no overhead over native)",
+ "spreadMeaning": "maxSpreadPct: largest (max - min) / median of I(n1) or I(n2) over the runs, percent (lower is better; 0 = bit-exact)",
+ "lane": {
+  "language": "swift",
+  "nativeImage": "lang-lab-wasm:swift",
+  "nativeRun": "/app/native/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:swift",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+   "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+   "native-shim": {
+    "image": "lang-lab-wasm:swift",
+    "run": "/app/native-shim/{b}",
+    "env": {},
+    "kind": "native",
+    "role": "control: the 11 shimmed sources (int64.sh) compiled natively, measures what the Int64 shim costs on a 64-bit target (nothing on 9 of the 11); defined for the 11 shimmed benchmarks only",
+    "benchmarks": [
+     "dijkstra",
+     "gbdt",
+     "gemm",
+     "k-means",
+     "lz77",
+     "polymorphism",
+     "reverse-complement",
+     "sha256",
+     "sort-search",
+     "viterbi",
+     "vm"
+    ]
+   }
+  },
+  "versions": {
+   "swift": "6.2.0 (swift-6.2-RELEASE, image swift:6.2.0), same compiler for native and wasm; the matrix pins swift:6.1 (6.1.3)",
+   "wasmSdk": "swift-6.2-RELEASE_wasm.artifactbundle.tar.gz sha256 fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224 (swift.org release 6.2, Wasm SDK; no wasm SDK exists for 6.1.x)",
+   "wasmtime": "50.0.0",
+   "node": "26.5.0",
+   "nativeFlags": "swiftc -O (the matrix build line, dynamic stdlib)",
+   "wasmFlags": "swiftc -O -target wasm32-unknown-wasip1 -sdk WASI.sdk -resource-dir swift_static -static-stdlib -Xclang-linker -resource-dir -Xclang-linker swift_static/clang -Xlinker -z -Xlinker stack-size=8388608"
+  },
+  "transforms": [
+   "int64.sh (languages/wasm/swift/int64.sh + int64-shim.swift), wasm build of 11 benchmarks only (dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm): inserts after `import Foundation` typealiases making untyped integer literals, Int and UInt 64-bit, plus Array Int64 subscript/init/reserveCapacity overloads. Needed because Swift's Int is 32 bits on wasm32. Measured natively by the native-shim column: identical on 9 of the 11, dijkstra +0.88%, sha256 +0.098%. The other 7 benchmarks are built from the unmodified canonical source."
+  ],
+  "asymmetries": [
+   "Swift version: the matrix is 6.1.3 but the first official wasm SDK is 6.2; native and wasm both use 6.2.0 here, so the native column is not the matrix Swift cell",
+   "wasm links the stdlib and Foundation statically (-static-stdlib, from the SDK toolset); native links them dynamically, as in the matrix. Startup cancels in the differential",
+   "wasm32 Int is 32 bits: the 11 shimmed benchmarks run with Int64 (emulating the native 64-bit Int); array indexing then truncates an Int64 to the 32-bit address index, an extra wrap that native does not have. The other 7 run with the real 32-bit Int on wasm and 64-bit Int natively",
+   "wasm shadow stack raised to 8 MiB (SDK default 64 KiB) to match the native 8 MiB main-thread stack",
+   "wasm32-wasip1 libc is wasi-libc (dlmalloc) with Swift's wasm runtime; native uses glibc malloc",
+   "no -swift-sdk option in swiftc 6.2: the SDK is wired by hand with -sdk/-resource-dir/-static-stdlib exactly as its swift-sdk.json and toolset.json specify",
+   "the native column is aarch64 machine code, so ratios mix ISA with wasm cost; native is run under the gcc:14/trixie base (not the matrix swift image) with swift runtime libs copied to /opt/swift-rt",
+   "the Int64 shim is not a perfect no-op natively: the native-shim column matches the unmodified native build exactly on 9 of the 11 shimmed benchmarks, dijkstra is +0.88% and sha256 +0.098%"
+  ],
+  "na": {},
+  "cellMarks": [
+   {
+    "symbol": "\u2020",
+    "benchmarks": [
+     "dijkstra",
+     "gbdt",
+     "gemm",
+     "k-means",
+     "lz77",
+     "polymorphism",
+     "reverse-complement",
+     "sha256",
+     "sort-search",
+     "viterbi",
+     "vm"
+    ],
+    "note": "Swift: wasm built with the Int64 shim (int64.sh); the unmarked Swift cells run the unmodified source with wasm32's native 32-bit Int"
+   }
+  ],
+  "diagnostics": {
+   "unchangedSourcesOnWasm32": {
+    "correct": [
+     "bigint",
+     "binary-trees",
+     "blur",
+     "fannkuch",
+     "k-nucleotide",
+     "mandelbrot",
+     "tak"
+    ],
+    "compileError": {
+     "vm": "integer literal '4294967295' overflows when stored into 'Int'"
+    },
+    "trapOrWrong": "the other 10 trap on `unreachable` (overflow or bounds) or print a wrong checksum (dijkstra prints 0)"
+   },
+   "shimDoesNotCompile": [
+    "fannkuch",
+    "k-nucleotide"
+   ],
+   "checkedMultiply": {
+    "finding": "Swift's overflow-checked 64-bit multiply lowers on wasm32 to a call to __multi3 (a straight-line helper of about 130 wasm instructions; aarch64 uses mul + smulh/umulh) followed by a high-word overflow test. The hot loop of bigint, gemm, k-means and viterbi calls it (once per innermost iteration in bigint and gemm, about 1.3 per innermost iteration in k-means, about 73 per timestep in viterbi).",
+    "how": "diagnostic only, outside the benchmark sources: scratch copies with wrapping &* on the hot multiplies (k-means and viterbi also wrap the adjacent index additions), built with the same swiftc 6.2.0 flags and the int64 shim; checksums identical; qemu insn differentials, wasmtime 50",
+    "wasmtimeOverNativeShipped": {
+     "bigint": 11.14,
+     "gemm": 8.94,
+     "k-means": 8.77,
+     "viterbi": 7.57
+    },
+    "wasmtimeOverNativeWrapping": {
+     "bigint": 1.4,
+     "gemm": 2.46,
+     "k-means": 1.86,
+     "viterbi": 1.85
+    },
+    "shareOfExtraInstructionsRemoved": {
+     "bigint": 0.99,
+     "gemm": 0.86,
+     "k-means": 0.93,
+     "viterbi": 0.91
+    },
+    "instructionsPerCall": "about 131 to 138 (bigint exact: 5,550,104 calls in the differential, 727.1M instructions)",
+    "shimRole": "in gemm, k-means and viterbi the 64-bit multiplies come from the Int64 shim (native Int is 64-bit, so the work matches native); unshimmed 32-bit builds have no __multi3 call but are wrong on wasm32. bigint uses UInt64 explicitly and is unshimmed"
+   }
+  },
+  "columnRoles": {
+   "native": "control",
+   "wasmtime": "wasm",
+   "node": "wasm",
+   "native-shim": "reference"
+  }
+ },
+ "toolchain": [
+  "swiftc: Swift version 6.2 (swift-6.2-RELEASE)",
+  "wasm-sdk: swift-6.2-RELEASE_wasm",
+  "wasm-flags: -O -target wasm32-unknown-wasip1 -sdk /root/.swiftpm/swift-sdks/swift-6.2-RELEASE_wasm.artifactbundle/swift-6.2-RELEASE_wasm/wasm32-unknown-wasip1/WASI.sdk -resource-dir /root/.swiftpm/swift-sdks/swift-6.2-RELEASE_wasm.artifactbundle/swift-6.2-RELEASE_wasm/wasm32-unknown-wasip1/swift.xctoolchain/usr/lib/swift_static -static-stdlib -Xclang-linker -resource-dir -Xclang-linker /root/.swiftpm/swift-sdks/swift-6.2-RELEASE_wasm.artifactbundle/swift-6.2-RELEASE_wasm/wasm32-unknown-wasip1/swift.xctoolchain/usr/lib/swift_static/clang -Xlinker -z -Xlinker stack-size=8388608",
+  "native-flags: -O",
+  "int64-shim-benchmarks: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm",
+  "wasm-sdk-sha256: fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224",
+  "wasmtime: wasmtime 50.0.0 (ebe5e8df1 2026-10-20)",
+  "node: v26.5.0",
+  "wasmtime-compile-flags:"
+ ],
+ "summary": {
+  "wasmtime": {
+   "measured": 18,
+   "geomeanRatioToNative": 2.9906
+  },
+  "node": {
+   "measured": 18,
+   "geomeanRatioToNative": 3.1402
+  },
+  "native-shim": {
+   "measured": 11,
+   "geomeanRatioToNative": 1.0009
+  }
+ },
+ "results": [
+  {
+   "benchmark": "bigint",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 15529963,
+     "i_n2": 87762739,
+     "differential": 72232776,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 68857660,
+     "i_n2": 873721196,
+     "differential": 804863536,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00456
+    },
+    "node": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 3472912481,
+     "i_n2": 4594142105,
+     "differential": 1121229624,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 11.1426,
+    "node": 15.5224
+   }
+  },
+  {
+   "benchmark": "binary-trees",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 71123728,
+     "i_n2": 1422292344,
+     "differential": 1351168616,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 103409667,
+     "i_n2": 1866722063,
+     "differential": 1763312396,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00141
+    },
+    "node": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 3419051034,
+     "i_n2": 5028422525,
+     "differential": 1609371491,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.305,
+    "node": 1.1911
+   }
+  },
+  {
+   "benchmark": "blur",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 18464367,
+     "i_n2": 38840951,
+     "differential": 20376584,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 49455647,
+     "i_n2": 119952319,
+     "differential": 70496672,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00597
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 3401485913,
+     "i_n2": 3466160821,
+     "differential": 64674908,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.4597,
+    "node": 3.174
+   }
+  },
+  {
+   "benchmark": "dijkstra",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 23198266,
+     "i_n2": 61702877,
+     "differential": 38504611,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 48188422,
+     "i_n2": 121806300,
+     "differential": 73617878,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00421
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 3578261990,
+     "i_n2": 3662422777,
+     "differential": 84160787,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 8e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 23296982,
+     "i_n2": 62141913,
+     "differential": 38844931,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9119,
+    "node": 2.1857,
+    "native-shim": 1.0088
+   }
+  },
+  {
+   "benchmark": "fannkuch",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 15312399,
+     "i_n2": 293614078,
+     "differential": 278301679,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 31671835,
+     "i_n2": 472583561,
+     "differential": 440911726,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00838
+    },
+    "node": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 3391094063,
+     "i_n2": 3859490499,
+     "differential": 468396436,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5843,
+    "node": 1.6831
+   }
+  },
+  {
+   "benchmark": "gbdt",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 208980460,
+     "i_n2": 795555523,
+     "differential": 586575063,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 599825906,
+     "i_n2": 2308160523,
+     "differential": 1708334617,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00026
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 4070257963,
+     "i_n2": 5887170037,
+     "differential": 1816912074,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 6e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 208980507,
+     "i_n2": 795555553,
+     "differential": 586575046,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.9124,
+    "node": 3.0975,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "gemm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 54392866,
+     "i_n2": 350348718,
+     "differential": 295955852,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 407182995,
+     "i_n2": 3052374597,
+     "differential": 2645191602,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0006
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 3942239901,
+     "i_n2": 7384889729,
+     "differential": 3442649828,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 6e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 54392673,
+     "i_n2": 350348525,
+     "differential": 295955852,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 8.9378,
+    "node": 11.6323,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "k-means",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 48682880,
+     "i_n2": 159653769,
+     "differential": 110970889,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 350522968,
+     "i_n2": 1323959727,
+     "differential": 973436759,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00053
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 3927845110,
+     "i_n2": 5177393883,
+     "differential": 1249548773,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 48682701,
+     "i_n2": 159653590,
+     "differential": 110970889,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 8.772,
+    "node": 11.2601,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 107177242,
+     "i_n2": 183345747,
+     "differential": 76168505,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.2106
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 325098059,
+     "i_n2": 494931829,
+     "differential": 169833770,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.48434
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 3710294838,
+     "i_n2": 3868712631,
+     "differential": 158417793,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.03812
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.2297,
+    "node": 2.0798
+   }
+  },
+  {
+   "benchmark": "lz77",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 29058694,
+     "i_n2": 83189742,
+     "differential": 54131048,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 55546674,
+     "i_n2": 147537903,
+     "differential": 91991229,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00277
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 3460923134,
+     "i_n2": 3545582112,
+     "differential": 84658978,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 7e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 29058155,
+     "i_n2": 83189210,
+     "differential": 54131055,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.6994,
+    "node": 1.564,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "mandelbrot",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 17090254,
+     "i_n2": 33389878,
+     "differential": 16299624,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 33892375,
+     "i_n2": 57751707,
+     "differential": 23859332,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00543
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 3346478290,
+     "i_n2": 3363924606,
+     "differential": 17446316,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 6e-05
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4638,
+    "node": 1.0704
+   }
+  },
+  {
+   "benchmark": "polymorphism",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 89779586,
+     "i_n2": 309084212,
+     "differential": 219304626,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 269770707,
+     "i_n2": 983310325,
+     "differential": 713539618,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00032
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 3927167764,
+     "i_n2": 4674107788,
+     "differential": 746940024,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 8e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 89778644,
+     "i_n2": 309083287,
+     "differential": 219304643,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.2536,
+    "node": 3.4059,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "reverse-complement",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 17220238,
+     "i_n2": 33893601,
+     "differential": 16673363,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 61671070,
+     "i_n2": 168825177,
+     "differential": 107154107,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00253
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 3484130074,
+     "i_n2": 3624075428,
+     "differential": 139945354,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00014
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 17219829,
+     "i_n2": 33893192,
+     "differential": 16673363,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 6.4267,
+    "node": 8.3933,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "sha256",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 27027740,
+     "i_n2": 73100324,
+     "differential": 46072584,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 49865889,
+     "i_n2": 121543028,
+     "differential": 71677139,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00372
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 3540864161,
+     "i_n2": 3605748066,
+     "differential": 64883905,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 8e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 27044344,
+     "i_n2": 73161911,
+     "differential": 46117567,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5557,
+    "node": 1.4083,
+    "native-shim": 1.001
+   }
+  },
+  {
+   "benchmark": "sort-search",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 41087207,
+     "i_n2": 140372406,
+     "differential": 99285199,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 87396300,
+     "i_n2": 297409329,
+     "differential": 210013029,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00091
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 3523329943,
+     "i_n2": 3722829506,
+     "differential": 199499563,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00011
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 41087532,
+     "i_n2": 140372731,
+     "differential": 99285199,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1153,
+    "node": 2.0094,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "tak",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 13135173,
+     "i_n2": 69626669,
+     "differential": 56491496,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 28370624,
+     "i_n2": 121308409,
+     "differential": 92937785,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00876
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 3356950783,
+     "i_n2": 3436580642,
+     "differential": 79629859,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00014
+    },
+    "native-shim": {
+     "status": "n/a",
+     "reason": "column native-shim is defined only for: dijkstra gbdt gemm k-means lz77 polymorphism reverse-complement sha256 sort-search viterbi vm"
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.6452,
+    "node": 1.4096
+   }
+  },
+  {
+   "benchmark": "viterbi",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 46992315,
+     "i_n2": 152967340,
+     "differential": 105975025,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 293322823,
+     "i_n2": 1095418466,
+     "differential": 802095643,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00086
+    },
+    "node": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 3848138186,
+     "i_n2": 4908820553,
+     "differential": 1060682367,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 46991876,
+     "i_n2": 152966901,
+     "differential": 105975025,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 7.5687,
+    "node": 10.0088,
+    "native-shim": 1.0
+   }
+  },
+  {
+   "benchmark": "vm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 110464156,
+     "i_n2": 406864156,
+     "differential": 296400000,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 244762130,
+     "i_n2": 901161352,
+     "differential": 656399222,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00083
+    },
+    "node": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 3703446958,
+     "i_n2": 4454047555,
+     "differential": 750600597,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 4e-05
+    },
+    "native-shim": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 110464851,
+     "i_n2": 406864851,
+     "differential": 296400000,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.2146,
+    "node": 2.5324,
+    "native-shim": 1.0
+   }
+  }
+ ]
+}

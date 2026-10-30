@@ -1,0 +1,109 @@
+{
+  "language": "vbnet",
+  "nativeImage": "lang-lab-wasm:vbnet",
+  "nativeRun": "/app/mono/{b}",
+  "nativeEnv": {
+    "MONO_ENV_OPTIONS": "--interpreter",
+    "MONO_GC_PARAMS": "major=marksweep"
+  },
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:vbnet",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "interp",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+    "coreclr": {
+      "image": "lang-lab-wasm:vbnet",
+      "run": "/app/coreclr/{b}",
+      "env": {
+        "DOTNET_gcServer": "0",
+        "DOTNET_TieredCompilation": "0"
+      },
+      "kind": "inproc-vm",
+      "role": "reference: the matrix runtime (CoreCLR 9.0.22, RyuJIT, TieredCompilation=0, workstation GC); self-contained but not single-file (startup-only difference, cancels in the differential)"
+    },
+    "mono-jit": {
+      "image": "lang-lab-wasm:vbnet",
+      "run": "/app/mono/{b}",
+      "env": {
+        "MONO_GC_PARAMS": "major=marksweep"
+      },
+      "kind": "inproc-vm",
+      "role": "context: the same Mono build as the native column but with its default JIT instead of the interpreter"
+    }
+  },
+  "versions": {
+    "sdk": "dotnet SDK 9.0.320 (mcr.microsoft.com/dotnet/sdk:9.0 @ sha256:d7cfd59385751fc87897a138ba173fb1bbc2bf946ea78aecc91a119993676997)",
+    "wasmRuntime": "Mono 9.0.22 interpreter (Microsoft.NETCore.App.Runtime.Mono.wasi-wasm 9.0.22) via the wasi-experimental workload",
+    "wasmToolchain": "wasi-sdk 24 (clang 18.1.2), target rewritten to wasm32-wasip1, WasmSingleFileBundle, no AOT",
+    "nativeRuntime": "Mono 9.0.0-preview.7.24405.7 (Microsoft.NETCore.App.Runtime.Mono.linux-arm64), interpreter via MONO_ENV_OPTIONS=--interpreter",
+    "referenceRuntime": "CoreCLR 9.0.22",
+    "flags": "Release; wasm: -O2 via the workload defaults, 8 MiB stack, 50 MiB initial memory"
+  },
+  "transforms": [
+    "languages/wasm/csharp/Directory.Build.targets: no-op redefinition of the workload's FailBuild target (the .NET 9 SDK aborts every wasi-wasm build)",
+    "languages/wasm/csharp/wasi-clang-p1.sh (-p:WasiClang): wasip2 component link rewritten to a wasm32-wasip1 core module so V8 can load it; sources and runtime pack untouched"
+  ],
+  "asymmetries": [
+    "the .NET 9 wasi-experimental workload is officially unsupported (SDK manifest error); the guard is bypassed",
+    "wasm engine is Mono 9.0.22; no stable Mono linux-arm64 runtime pack exists for 9.0.x, so the native counterpart is Mono 9.0.0-preview.7 (same interpreter design, about 15 months of servicing older)",
+    "native Mono --interpreter may still JIT wrappers and trampolines; the wasm interpreter cannot",
+    "wasm assemblies are IL-trimmed (TrimMode partial/full by the workload); native Mono/CoreCLR apps are not trimmed",
+    "native Mono is built by Microsoft's linux toolchain, the wasm runtime by the workload's wasi-sdk 24 clang 18",
+    "Mono AOT (RunAOTCompilation) builds but crashes at startup on .NET 9 wasi; so no compiled-code wasm column and no matching native AOT exists",
+    "the CoreCLR reference column is not the matrix single-file image (same SDK/runtime 9.0.22)",
+    "VB.NET keeps integer overflow checks ON in every column (compiled into the IL)",
+    "GC: the native column runs with MONO_GC_PARAMS=major=marksweep (non-concurrent major collector); the wasm runtime is single-threaded, so its collector cannot run concurrently either, but the parameter itself is not passed to the wasm columns",
+    "class library: native preview.7 and wasm 9.0.22 ship different builds of the base class library (collections, Dictionary), not only a different engine; C# k-nucleotide fails on preview.7 for this reason, and other BCL-heavy cells may differ in managed library cost"
+  ],
+  "na": {},
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm",
+    "coreclr": "reference",
+    "mono-jit": "reference"
+  },
+  "diagnostics": {
+    "v8LazyCompile": {
+      "finding": "the V8 excess on k-nucleotide and sha256 is TurboFan compile cost of Mono runtime functions first called only at n2 (lazy compilation), which lands in I(n2)-I(n1) instead of cancelling",
+      "differentials": {
+        "sha256": {
+          "native": 904500000.0,
+          "wasmtime": 1948000000.0,
+          "nodeLazy": 2879000000.0,
+          "nodeEager": 2522800000.0
+        },
+        "k-nucleotide": {
+          "native": 438000000.0,
+          "wasmtime": 922500000.0,
+          "nodeLazy": 1531700000.0,
+          "nodeEager": 1150600000.0
+        }
+      },
+      "functionsCompiledByTurboFan": {
+        "sha256": [
+          1283,
+          1410
+        ],
+        "k-nucleotide": [
+          1301,
+          1429
+        ],
+        "binary-trees": [
+          1278,
+          1412
+        ],
+        "reverse-complement": [
+          1284,
+          1284
+        ]
+      },
+      "functionsOrder": "[n1, n2], from node --trace-wasm-compilation-times outside qemu; about 30 KB of wasm bodies are new at n2, a shared runtime path (123 functions common to sha256 and k-nucleotide, all of sha256's in binary-trees)",
+      "eager": "node ... --no-wasm-lazy-compilation: compile moves to startup and cancels; V8/wasmtime falls from 1.48 to 1.30 (sha256) and 1.66 to 1.25 (k-nucleotide)"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "language": "python",
+  "nativeImage": "lang-lab-wasm:python",
+  "nativeRun": "/app/py-native/bin/python3.13 /app/{b}.py",
+  "nativeEnv": {
+    "PYTHONHASHSEED": "0"
+  },
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:python",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app --env PYTHONHASHSEED=0 /app/py-wasm/bin/python3.13.cwasm /app/{b}.py",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs --env PYTHONHASHSEED=0 /app/py-wasm/bin/python3.13.wasm /app/{b}.py",
+  "wasmKind": "interp",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "cpython": "3.13.4",
+    "cpythonSha256": "2666038f1521b7a8ec34bf2997b363778118d6f3979282c93723e872bcd464e0",
+    "wasiSdk": "34 (clang 23.1.0)",
+    "nativeCompiler": "LLVM clang 23.1.0 (/opt/llvm)",
+    "wasmtime": "50.0.0",
+    "node": "26.5.0"
+  },
+  "transforms": [
+    "none: the canonical languages/python/*.py are copied unchanged (message-ring and the -par variants excluded)",
+    "the stdlib is found from argv[0] (installs under /app/py-native and /app/py-wasm), so no PYTHONHOME/PYTHONPATH and no interpreter flags on any column; plain `python <script> <n>` shape as in the matrix",
+    "python3.13.wasm is precompiled once with wasmtime compile (default flags) to python3.13.cwasm and shared by all benchmarks; node runs the .wasm",
+    "PYTHONHASHSEED=0 on every column (the matrix does not pin it): with random seeds polymorphism splits into two modes 3.4% apart and the median of 5 lands in either; with seed 0 the native count is bit-identical run to run. Py_hash_t is 32-bit on wasm32, so the same seed still gives different hash values and dict layouts on wasm than natively; that difference belongs to the target"
+  ],
+  "asymmetries": [
+    "native-same-build and wasm are the same source, same LLVM 23.1.0, same configure options (--without-ensurepip --disable-test-modules --with-pymalloc --with-computed-gotos, default OPT -O3, no PGO/LTO/shared); remaining differences are the target itself",
+    "ILP32 vs LP64: SIZEOF_VOID_P/SIZEOF_LONG/SIZEOF_SIZE_T 4 vs 8 (sys.maxsize 2^31-1 vs 2^63-1); this is part of the wasm cost, not removable",
+    "libc: wasi-libc (dlmalloc, WASI emulated signal/getpid/process-clocks) vs glibc malloc for allocations pymalloc does not serve",
+    "pymalloc is OFF by default on WASI; forced ON for both builds. HAVE_MMAP is undefined on wasm, so pymalloc arenas come from malloc there and from mmap natively",
+    "threads: WASI builds use the stub thread layer (posix_threads=stub, no real GIL mutex/pthread); native uses pthreads",
+    "native module set is larger (zlib, bz2, ssl, sqlite... not used by the benchmarks); wasm links 69 builtin modules",
+    "reference column (matrix lang-lab-python) is the official gcc 12.2 PGO+LTO+--enable-shared build: not comparable as a wasm ratio, shown only for context",
+    "wasmtime gets the AOT .cwasm, node compiles the .wasm at start (cancelled by the differential)",
+    "stack: the wasm build keeps wasi-sdk's default 1 MiB linear-memory stack (no -z stack-size), native has the 8 MiB process stack; no benchmark recurses deep enough to reach either (tak and sort-search pass on both)"
+  ],
+  "na": {},
+  "extraColumns": {
+    "matrix": {
+      "image": "lang-lab-python",
+      "run": "python /app/{b}.py",
+      "env": {
+        "PYTHONHASHSEED": "0"
+      },
+      "kind": "interp",
+      "role": "reference: the matrix image (official CPython build, gcc with PGO, LTO and --enable-shared), run with the matrix template; not a wasm control"
+    }
+  },
+  "matrixPins": {
+    "python": "3.13.4"
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm",
+    "matrix": "reference"
+  }
+}

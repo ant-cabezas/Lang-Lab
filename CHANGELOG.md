@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **WebAssembly side study** (`docs/wasm-study.md`, `results/wasm/`, `scripts/wasm-study.sh`, `languages/wasm/`),
+  outside the matrix. Measures what compiling each language to WebAssembly (WASI preview 1) costs that same
+  language, as wasm instructions over native instructions for the same source (lower is better), on wasmtime 50
+  and on V8's TurboFan tier. Covers C, Rust, Go, Swift, Python, Ruby, PHP, C# and VB.NET (Mono), JavaScript
+  (QuickJS-ng) and Java, Kotlin and Scala (TeaVM); OCaml, Perl, Fortran and Elixir have no usable route and the
+  page says why. Also: where the overhead comes from in the disassembly (indirect-call checks, 32-bit address
+  arithmetic and register allocation, not bounds checks), how much the wasmtime release, the wasi-sdk version
+  and compile options move it, why V8 must be pinned to TurboFan, and a wall-clock check showing that instruction
+  counts get the direction of the wasm overhead right but overstate its size. Companion pages define how
+  the ratios are read (`docs/wasm-rigor.md`) and record the audit of suspicious cells (`docs/wasm-fairness-audit.md`);
+  a CI smoke check (arm64 runner, C lane, two benchmarks) guards the harness. On V8, WASI `random_get` returns a
+  fixed byte stream, so runtimes that seed themselves from it (Go, Swift's hashing) give reproducible counts.
+
 ## [0.2.0] - 2026-10-22
 
 ### Added

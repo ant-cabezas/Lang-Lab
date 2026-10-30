@@ -1,0 +1,1267 @@
+{
+ "study": "wasm-side-study",
+ "date": "2026-10-26",
+ "isa": "arm64",
+ "metric": "user CPU time differential t(L)-t(n1) (median of 50 paired repetitions) vs instruction differential I(L)-I(n1)",
+ "kind": "wallclock",
+ "description": "Native timing inside lang-lab-wasm:c, pinned with taskset to one vCPU, benchmarks one at a time, each repetition running every (column, size) pair in a fresh random order. L is a per-benchmark size larger than the spec sizes (see checks.clangDifferentialMsAtL); the gate requires every column to print clang's checksum at L. Two passes (C, D) with the study's binding runtime flags, 25 repetitions each, pooled.",
+ "estimator": "user CPU time, because about half of the wall time was run-queue wait on a loaded host (checks.runQueueShareOfWallAtL); the two passes agree (checks.passCvsD) and the verdict also holds on wall time (stats.*.wallSpearman/wallR2Log)",
+ "ratioMeaning": "numerator / denominator (lower is better); timeRatio and instrRatio are both differentials. spearman and r2Log: how well instrRatio tracks timeRatio across benchmarks (higher is better)",
+ "caveats": [
+  "absolute times are not quoted: the Docker VM has no steal-time accounting, so user time may include host preemption",
+  "passes A and B used the pre-final runtime flags; their wasmtime time geomeans are in checks.wasmtimeTimeGeomeanByPass"
+ ],
+ "excludedBenchmarks": [],
+ "provenance": "languages/wasm/experiments/wallclock/",
+ "stats": {
+  "wasmtime/clang": {
+   "n": 18,
+   "spearman": 0.564,
+   "r2Log": 0.143,
+   "geomeanTime": 1.2727,
+   "geomeanInstr": 1.5274,
+   "wallSpearman": 0.643,
+   "wallR2Log": 0.2
+  },
+  "node/clang": {
+   "n": 18,
+   "spearman": 0.668,
+   "r2Log": 0.33,
+   "geomeanTime": 1.2358,
+   "geomeanInstr": 1.5595,
+   "wallSpearman": 0.54,
+   "wallR2Log": 0.313
+  },
+  "node-liftoff/clang": {
+   "n": 18,
+   "spearman": 0.612,
+   "r2Log": 0.452,
+   "geomeanTime": 1.9202,
+   "geomeanInstr": 3.0139,
+   "wallSpearman": 0.68,
+   "wallR2Log": 0.466
+  },
+  "gcc/clang": {
+   "n": 18,
+   "spearman": 0.833,
+   "r2Log": 0.674,
+   "geomeanTime": 1.2032,
+   "geomeanInstr": 1.2659,
+   "wallSpearman": 0.86,
+   "wallR2Log": 0.611
+  },
+  "node/wasmtime": {
+   "n": 18,
+   "spearman": 0.406,
+   "r2Log": 0.194,
+   "geomeanTime": 0.971,
+   "geomeanInstr": 1.021,
+   "wallSpearman": 0.096,
+   "wallR2Log": 0.035
+  },
+  "spec:wasmtime/clang": {
+   "n": 18,
+   "spearman": 0.344,
+   "r2Log": 0.027
+  },
+  "spec:node/clang": {
+   "n": 13,
+   "spearman": 0.599,
+   "r2Log": 0.164
+  },
+  "spec:node-liftoff/clang": {
+   "n": 17,
+   "spearman": 0.525,
+   "r2Log": 0.466
+  },
+  "spec:gcc/clang": {
+   "n": 18,
+   "spearman": 0.841,
+   "r2Log": 0.593
+  }
+ },
+ "checks": {
+  "passCvsD": {
+   "n": 72,
+   "r2Log": 0.993
+  },
+  "wasmtimeTimeGeomeanByPass": {
+   "passA": 1.254,
+   "passB": 1.268,
+   "passC": 1.28,
+   "passD": 1.265
+  },
+  "runQueueShareOfWallAtL": {
+   "p10": 0.052,
+   "median": 0.499,
+   "p90": 0.557
+  },
+  "numeratorRelIqrOfDifferential": {
+   "min": 0.021,
+   "median": 0.06,
+   "max": 0.197
+  },
+  "clangDifferentialMsAtL": {
+   "min": 53.5,
+   "max": 207.8
+  },
+  "clangDifferentialMsAtSpecSizes": {
+   "min": 0.7,
+   "max": 40.5
+  }
+ },
+ "rows": [
+  {
+   "benchmark": "bigint",
+   "num": "gcc",
+   "den": "clang",
+   "L": 24000,
+   "timeRatio": 0.998,
+   "ci95": [
+    0.9856,
+    1.0094
+   ],
+   "instrRatio": 1.0,
+   "numMs": 138.61,
+   "denMs": 138.89,
+   "numIqrMs": 5.41,
+   "denIqrMs": 4.16
+  },
+  {
+   "benchmark": "binary-trees",
+   "num": "gcc",
+   "den": "clang",
+   "L": 16,
+   "timeRatio": 0.9226,
+   "ci95": [
+    0.8964,
+    0.9624
+   ],
+   "instrRatio": 0.9267,
+   "numMs": 185.95,
+   "denMs": 201.54,
+   "numIqrMs": 24.07,
+   "denIqrMs": 14.52
+  },
+  {
+   "benchmark": "blur",
+   "num": "gcc",
+   "den": "clang",
+   "L": 3072,
+   "timeRatio": 2.8612,
+   "ci95": [
+    2.7592,
+    2.9394
+   ],
+   "instrRatio": 4.5457,
+   "numMs": 344.0,
+   "denMs": 120.23,
+   "numIqrMs": 27.61,
+   "denIqrMs": 10.22
+  },
+  {
+   "benchmark": "dijkstra",
+   "num": "gcc",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 0.9398,
+   "ci95": [
+    0.8845,
+    0.9992
+   ],
+   "instrRatio": 1.0857,
+   "numMs": 105.17,
+   "denMs": 111.91,
+   "numIqrMs": 16.22,
+   "denIqrMs": 14.1
+  },
+  {
+   "benchmark": "fannkuch",
+   "num": "gcc",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.0469,
+   "ci95": [
+    1.0304,
+    1.0744
+   ],
+   "instrRatio": 0.9746,
+   "numMs": 166.69,
+   "denMs": 159.22,
+   "numIqrMs": 8.71,
+   "denIqrMs": 6.58
+  },
+  {
+   "benchmark": "gbdt",
+   "num": "gcc",
+   "den": "clang",
+   "L": 80000,
+   "timeRatio": 1.3084,
+   "ci95": [
+    1.2658,
+    1.3557
+   ],
+   "instrRatio": 1.4918,
+   "numMs": 226.64,
+   "denMs": 173.22,
+   "numIqrMs": 18.99,
+   "denIqrMs": 9.41
+  },
+  {
+   "benchmark": "gemm",
+   "num": "gcc",
+   "den": "clang",
+   "L": 768,
+   "timeRatio": 1.2006,
+   "ci95": [
+    1.1759,
+    1.2353
+   ],
+   "instrRatio": 2.3096,
+   "numMs": 179.29,
+   "denMs": 149.34,
+   "numIqrMs": 12.71,
+   "denIqrMs": 7.98
+  },
+  {
+   "benchmark": "k-means",
+   "num": "gcc",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 1.8941,
+   "ci95": [
+    1.8255,
+    1.9387
+   ],
+   "instrRatio": 2.0273,
+   "numMs": 145.74,
+   "denMs": 76.95,
+   "numIqrMs": 6.48,
+   "denIqrMs": 5.79
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "num": "gcc",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.7059,
+   "ci95": [
+    1.6699,
+    1.7503
+   ],
+   "instrRatio": 1.4301,
+   "numMs": 91.25,
+   "denMs": 53.49,
+   "numIqrMs": 4.77,
+   "denIqrMs": 3.17
+  },
+  {
+   "benchmark": "lz77",
+   "num": "gcc",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 1.0241,
+   "ci95": [
+    1.0058,
+    1.0452
+   ],
+   "instrRatio": 0.916,
+   "numMs": 116.2,
+   "denMs": 113.46,
+   "numIqrMs": 6.32,
+   "denIqrMs": 4.81
+  },
+  {
+   "benchmark": "mandelbrot",
+   "num": "gcc",
+   "den": "clang",
+   "L": 1536,
+   "timeRatio": 0.9147,
+   "ci95": [
+    0.9003,
+    0.9339
+   ],
+   "instrRatio": 0.8566,
+   "numMs": 125.98,
+   "denMs": 137.73,
+   "numIqrMs": 4.17,
+   "denIqrMs": 6.24
+  },
+  {
+   "benchmark": "polymorphism",
+   "num": "gcc",
+   "den": "clang",
+   "L": 3000,
+   "timeRatio": 0.9983,
+   "ci95": [
+    0.9823,
+    1.0144
+   ],
+   "instrRatio": 1.0441,
+   "numMs": 158.62,
+   "denMs": 158.9,
+   "numIqrMs": 7.15,
+   "denIqrMs": 7.21
+  },
+  {
+   "benchmark": "reverse-complement",
+   "num": "gcc",
+   "den": "clang",
+   "L": 25600000,
+   "timeRatio": 1.903,
+   "ci95": [
+    1.8743,
+    1.9194
+   ],
+   "instrRatio": 1.1029,
+   "numMs": 373.99,
+   "denMs": 196.53,
+   "numIqrMs": 8.1,
+   "denIqrMs": 9.11
+  },
+  {
+   "benchmark": "sha256",
+   "num": "gcc",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 1.0982,
+   "ci95": [
+    1.0764,
+    1.1272
+   ],
+   "instrRatio": 1.0948,
+   "numMs": 157.83,
+   "denMs": 143.72,
+   "numIqrMs": 9.53,
+   "denIqrMs": 6.47
+  },
+  {
+   "benchmark": "sort-search",
+   "num": "gcc",
+   "den": "clang",
+   "L": 800000,
+   "timeRatio": 0.9948,
+   "ci95": [
+    0.9575,
+    1.0249
+   ],
+   "instrRatio": 1.0081,
+   "numMs": 142.28,
+   "denMs": 143.02,
+   "numIqrMs": 10.33,
+   "denIqrMs": 10.76
+  },
+  {
+   "benchmark": "tak",
+   "num": "gcc",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.0127,
+   "ci95": [
+    0.9836,
+    1.0328
+   ],
+   "instrRatio": 1.0386,
+   "numMs": 210.5,
+   "denMs": 207.85,
+   "numIqrMs": 11.04,
+   "denIqrMs": 12.35
+  },
+  {
+   "benchmark": "viterbi",
+   "num": "gcc",
+   "den": "clang",
+   "L": 2560000,
+   "timeRatio": 1.4863,
+   "ci95": [
+    1.4557,
+    1.5398
+   ],
+   "instrRatio": 1.7862,
+   "numMs": 114.01,
+   "denMs": 76.71,
+   "numIqrMs": 8.59,
+   "denIqrMs": 5.39
+  },
+  {
+   "benchmark": "vm",
+   "num": "gcc",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 0.7256,
+   "ci95": [
+    0.7169,
+    0.7414
+   ],
+   "instrRatio": 0.8457,
+   "numMs": 119.1,
+   "denMs": 164.15,
+   "numIqrMs": 7.2,
+   "denIqrMs": 5.03
+  },
+  {
+   "benchmark": "bigint",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 24000,
+   "timeRatio": 0.6182,
+   "ci95": [
+    0.6042,
+    0.6268
+   ],
+   "instrRatio": 3.1268,
+   "numMs": 85.86,
+   "denMs": 138.89,
+   "numIqrMs": 5.7,
+   "denIqrMs": 4.16
+  },
+  {
+   "benchmark": "binary-trees",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 16,
+   "timeRatio": 0.88,
+   "ci95": [
+    0.8571,
+    0.9106
+   ],
+   "instrRatio": 0.9288,
+   "numMs": 177.36,
+   "denMs": 201.54,
+   "numIqrMs": 17.93,
+   "denIqrMs": 14.52
+  },
+  {
+   "benchmark": "blur",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 3072,
+   "timeRatio": 2.0152,
+   "ci95": [
+    1.9496,
+    2.0757
+   ],
+   "instrRatio": 2.7121,
+   "numMs": 242.29,
+   "denMs": 120.23,
+   "numIqrMs": 24.23,
+   "denIqrMs": 10.22
+  },
+  {
+   "benchmark": "dijkstra",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 2.442,
+   "ci95": [
+    2.2692,
+    2.5666
+   ],
+   "instrRatio": 4.0711,
+   "numMs": 273.28,
+   "denMs": 111.91,
+   "numIqrMs": 51.61,
+   "denIqrMs": 14.1
+  },
+  {
+   "benchmark": "fannkuch",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.9526,
+   "ci95": [
+    1.9173,
+    1.9769
+   ],
+   "instrRatio": 4.2886,
+   "numMs": 310.9,
+   "denMs": 159.22,
+   "numIqrMs": 21.81,
+   "denIqrMs": 6.58
+  },
+  {
+   "benchmark": "gbdt",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 80000,
+   "timeRatio": 2.2797,
+   "ci95": [
+    2.1721,
+    2.3481
+   ],
+   "instrRatio": 2.4714,
+   "numMs": 394.9,
+   "denMs": 173.22,
+   "numIqrMs": 42.07,
+   "denIqrMs": 9.41
+  },
+  {
+   "benchmark": "gemm",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 768,
+   "timeRatio": 3.3926,
+   "ci95": [
+    3.325,
+    3.4573
+   ],
+   "instrRatio": 8.4069,
+   "numMs": 506.65,
+   "denMs": 149.34,
+   "numIqrMs": 25.68,
+   "denIqrMs": 7.98
+  },
+  {
+   "benchmark": "k-means",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 2.4755,
+   "ci95": [
+    2.3874,
+    2.5387
+   ],
+   "instrRatio": 3.3268,
+   "numMs": 190.48,
+   "denMs": 76.95,
+   "numIqrMs": 12.02,
+   "denIqrMs": 5.79
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 2.301,
+   "ci95": [
+    2.2366,
+    2.3646
+   ],
+   "instrRatio": 2.7874,
+   "numMs": 123.09,
+   "denMs": 53.49,
+   "numIqrMs": 9.52,
+   "denIqrMs": 3.17
+  },
+  {
+   "benchmark": "lz77",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 2.3152,
+   "ci95": [
+    2.2835,
+    2.3621
+   ],
+   "instrRatio": 3.2362,
+   "numMs": 262.69,
+   "denMs": 113.46,
+   "numIqrMs": 14.44,
+   "denIqrMs": 4.81
+  },
+  {
+   "benchmark": "mandelbrot",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 1536,
+   "timeRatio": 2.431,
+   "ci95": [
+    2.3895,
+    2.4603
+   ],
+   "instrRatio": 3.0374,
+   "numMs": 334.82,
+   "denMs": 137.73,
+   "numIqrMs": 9.62,
+   "denIqrMs": 6.24
+  },
+  {
+   "benchmark": "polymorphism",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 3000,
+   "timeRatio": 2.406,
+   "ci95": [
+    2.3647,
+    2.4426
+   ],
+   "instrRatio": 4.8861,
+   "numMs": 382.31,
+   "denMs": 158.9,
+   "numIqrMs": 22.85,
+   "denIqrMs": 7.21
+  },
+  {
+   "benchmark": "reverse-complement",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 25600000,
+   "timeRatio": 2.1633,
+   "ci95": [
+    2.1339,
+    2.1922
+   ],
+   "instrRatio": 2.9241,
+   "numMs": 425.15,
+   "denMs": 196.53,
+   "numIqrMs": 14.5,
+   "denIqrMs": 9.11
+  },
+  {
+   "benchmark": "sha256",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 3.2914,
+   "ci95": [
+    3.2503,
+    3.3345
+   ],
+   "instrRatio": 5.4403,
+   "numMs": 473.02,
+   "denMs": 143.72,
+   "numIqrMs": 19.1,
+   "denIqrMs": 6.47
+  },
+  {
+   "benchmark": "sort-search",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 800000,
+   "timeRatio": 1.3323,
+   "ci95": [
+    1.2739,
+    1.3701
+   ],
+   "instrRatio": 2.5853,
+   "numMs": 190.55,
+   "denMs": 143.02,
+   "numIqrMs": 14.26,
+   "denIqrMs": 10.76
+  },
+  {
+   "benchmark": "tak",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.0172,
+   "ci95": [
+    0.995,
+    1.0416
+   ],
+   "instrRatio": 0.9128,
+   "numMs": 211.44,
+   "denMs": 207.85,
+   "numIqrMs": 14.01,
+   "denIqrMs": 12.35
+  },
+  {
+   "benchmark": "viterbi",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 2560000,
+   "timeRatio": 2.335,
+   "ci95": [
+    2.2872,
+    2.4046
+   ],
+   "instrRatio": 2.601,
+   "numMs": 179.11,
+   "denMs": 76.71,
+   "numIqrMs": 10.23,
+   "denIqrMs": 5.39
+  },
+  {
+   "benchmark": "vm",
+   "num": "node-liftoff",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.7928,
+   "ci95": [
+    1.7705,
+    1.8134
+   ],
+   "instrRatio": 3.3889,
+   "numMs": 294.28,
+   "denMs": 164.15,
+   "numIqrMs": 16.92,
+   "denIqrMs": 5.03
+  },
+  {
+   "benchmark": "bigint",
+   "num": "node",
+   "den": "clang",
+   "L": 24000,
+   "timeRatio": 1.0073,
+   "ci95": [
+    0.9866,
+    1.0218
+   ],
+   "instrRatio": 1.4169,
+   "numMs": 139.9,
+   "denMs": 138.89,
+   "numIqrMs": 8.86,
+   "denIqrMs": 4.16
+  },
+  {
+   "benchmark": "binary-trees",
+   "num": "node",
+   "den": "clang",
+   "L": 16,
+   "timeRatio": 0.9595,
+   "ci95": [
+    0.9361,
+    0.9991
+   ],
+   "instrRatio": 0.98,
+   "numMs": 193.38,
+   "denMs": 201.54,
+   "numIqrMs": 27.95,
+   "denIqrMs": 14.52
+  },
+  {
+   "benchmark": "blur",
+   "num": "node",
+   "den": "clang",
+   "L": 3072,
+   "timeRatio": 1.1505,
+   "ci95": [
+    1.1182,
+    1.1894
+   ],
+   "instrRatio": 1.3254,
+   "numMs": 138.32,
+   "denMs": 120.23,
+   "numIqrMs": 16.43,
+   "denIqrMs": 10.22
+  },
+  {
+   "benchmark": "dijkstra",
+   "num": "node",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 1.0973,
+   "ci95": [
+    1.0349,
+    1.1527
+   ],
+   "instrRatio": 1.7647,
+   "numMs": 122.79,
+   "denMs": 111.91,
+   "numIqrMs": 24.22,
+   "denIqrMs": 14.1
+  },
+  {
+   "benchmark": "fannkuch",
+   "num": "node",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.2211,
+   "ci95": [
+    1.1758,
+    1.2518
+   ],
+   "instrRatio": 2.2269,
+   "numMs": 194.42,
+   "denMs": 159.22,
+   "numIqrMs": 21.6,
+   "denIqrMs": 6.58
+  },
+  {
+   "benchmark": "gbdt",
+   "num": "node",
+   "den": "clang",
+   "L": 80000,
+   "timeRatio": 1.3803,
+   "ci95": [
+    1.3443,
+    1.4094
+   ],
+   "instrRatio": 1.4935,
+   "numMs": 239.09,
+   "denMs": 173.22,
+   "numIqrMs": 21.8,
+   "denIqrMs": 9.41
+  },
+  {
+   "benchmark": "gemm",
+   "num": "node",
+   "den": "clang",
+   "L": 768,
+   "timeRatio": 1.2892,
+   "ci95": [
+    1.2581,
+    1.3243
+   ],
+   "instrRatio": 3.3431,
+   "numMs": 192.53,
+   "denMs": 149.34,
+   "numIqrMs": 14.6,
+   "denIqrMs": 7.98
+  },
+  {
+   "benchmark": "k-means",
+   "num": "node",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 1.4464,
+   "ci95": [
+    1.3899,
+    1.4856
+   ],
+   "instrRatio": 1.5962,
+   "numMs": 111.3,
+   "denMs": 76.95,
+   "numIqrMs": 8.45,
+   "denIqrMs": 5.79
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "num": "node",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.4488,
+   "ci95": [
+    1.4088,
+    1.4873
+   ],
+   "instrRatio": 1.5814,
+   "numMs": 77.5,
+   "denMs": 53.49,
+   "numIqrMs": 7.67,
+   "denIqrMs": 3.17
+  },
+  {
+   "benchmark": "lz77",
+   "num": "node",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 1.2587,
+   "ci95": [
+    1.2267,
+    1.293
+   ],
+   "instrRatio": 1.5127,
+   "numMs": 142.82,
+   "denMs": 113.46,
+   "numIqrMs": 17.34,
+   "denIqrMs": 4.81
+  },
+  {
+   "benchmark": "mandelbrot",
+   "num": "node",
+   "den": "clang",
+   "L": 1536,
+   "timeRatio": 1.0951,
+   "ci95": [
+    1.0785,
+    1.1145
+   ],
+   "instrRatio": 1.1231,
+   "numMs": 150.82,
+   "denMs": 137.73,
+   "numIqrMs": 9.09,
+   "denIqrMs": 6.24
+  },
+  {
+   "benchmark": "polymorphism",
+   "num": "node",
+   "den": "clang",
+   "L": 3000,
+   "timeRatio": 2.0182,
+   "ci95": [
+    1.9816,
+    2.067
+   ],
+   "instrRatio": 2.4369,
+   "numMs": 320.68,
+   "denMs": 158.9,
+   "numIqrMs": 16.55,
+   "denIqrMs": 7.21
+  },
+  {
+   "benchmark": "reverse-complement",
+   "num": "node",
+   "den": "clang",
+   "L": 25600000,
+   "timeRatio": 1.3722,
+   "ci95": [
+    1.3506,
+    1.3914
+   ],
+   "instrRatio": 1.3593,
+   "numMs": 269.67,
+   "denMs": 196.53,
+   "numIqrMs": 13.37,
+   "denIqrMs": 9.11
+  },
+  {
+   "benchmark": "sha256",
+   "num": "node",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 0.9512,
+   "ci95": [
+    0.9317,
+    0.9678
+   ],
+   "instrRatio": 1.3729,
+   "numMs": 136.7,
+   "denMs": 143.72,
+   "numIqrMs": 8.5,
+   "denIqrMs": 6.47
+  },
+  {
+   "benchmark": "sort-search",
+   "num": "node",
+   "den": "clang",
+   "L": 800000,
+   "timeRatio": 1.0616,
+   "ci95": [
+    1.0254,
+    1.0853
+   ],
+   "instrRatio": 1.3098,
+   "numMs": 151.83,
+   "denMs": 143.02,
+   "numIqrMs": 11.87,
+   "denIqrMs": 10.76
+  },
+  {
+   "benchmark": "tak",
+   "num": "node",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.0341,
+   "ci95": [
+    1.0134,
+    1.0645
+   ],
+   "instrRatio": 1.126,
+   "numMs": 214.93,
+   "denMs": 207.85,
+   "numIqrMs": 10.45,
+   "denIqrMs": 12.35
+  },
+  {
+   "benchmark": "viterbi",
+   "num": "node",
+   "den": "clang",
+   "L": 2560000,
+   "timeRatio": 1.3929,
+   "ci95": [
+    1.3649,
+    1.4435
+   ],
+   "instrRatio": 1.5295,
+   "numMs": 106.85,
+   "denMs": 76.71,
+   "numIqrMs": 11.84,
+   "denIqrMs": 5.39
+  },
+  {
+   "benchmark": "vm",
+   "num": "node",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.4656,
+   "ci95": [
+    1.4355,
+    1.4917
+   ],
+   "instrRatio": 1.8735,
+   "numMs": 240.57,
+   "denMs": 164.15,
+   "numIqrMs": 13.27,
+   "denIqrMs": 5.03
+  },
+  {
+   "benchmark": "bigint",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 24000,
+   "timeRatio": 0.9992,
+   "ci95": [
+    0.9867,
+    1.013
+   ],
+   "instrRatio": 1.0003,
+   "numMs": 138.77,
+   "denMs": 138.89,
+   "numIqrMs": 5.19,
+   "denIqrMs": 4.16
+  },
+  {
+   "benchmark": "binary-trees",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 16,
+   "timeRatio": 1.3047,
+   "ci95": [
+    1.2832,
+    1.3379
+   ],
+   "instrRatio": 1.0195,
+   "numMs": 262.94,
+   "denMs": 201.54,
+   "numIqrMs": 14.0,
+   "denIqrMs": 14.52
+  },
+  {
+   "benchmark": "blur",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 3072,
+   "timeRatio": 1.2848,
+   "ci95": [
+    1.2428,
+    1.3133
+   ],
+   "instrRatio": 1.2761,
+   "numMs": 154.47,
+   "denMs": 120.23,
+   "numIqrMs": 14.04,
+   "denIqrMs": 10.22
+  },
+  {
+   "benchmark": "dijkstra",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 1.3423,
+   "ci95": [
+    1.2568,
+    1.3915
+   ],
+   "instrRatio": 1.759,
+   "numMs": 150.21,
+   "denMs": 111.91,
+   "numIqrMs": 21.88,
+   "denIqrMs": 14.1
+  },
+  {
+   "benchmark": "fannkuch",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.3065,
+   "ci95": [
+    1.289,
+    1.331
+   ],
+   "instrRatio": 1.6796,
+   "numMs": 208.03,
+   "denMs": 159.22,
+   "numIqrMs": 12.23,
+   "denIqrMs": 6.58
+  },
+  {
+   "benchmark": "gbdt",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 80000,
+   "timeRatio": 1.2843,
+   "ci95": [
+    1.2493,
+    1.3126
+   ],
+   "instrRatio": 1.309,
+   "numMs": 222.47,
+   "denMs": 173.22,
+   "numIqrMs": 12.99,
+   "denIqrMs": 9.41
+  },
+  {
+   "benchmark": "gemm",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 768,
+   "timeRatio": 1.1985,
+   "ci95": [
+    1.1791,
+    1.221
+   ],
+   "instrRatio": 2.6447,
+   "numMs": 178.98,
+   "denMs": 149.34,
+   "numIqrMs": 8.56,
+   "denIqrMs": 7.98
+  },
+  {
+   "benchmark": "k-means",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 320000,
+   "timeRatio": 1.4365,
+   "ci95": [
+    1.3861,
+    1.4746
+   ],
+   "instrRatio": 1.6214,
+   "numMs": 110.53,
+   "denMs": 76.95,
+   "numIqrMs": 7.26,
+   "denIqrMs": 5.79
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.4519,
+   "ci95": [
+    1.4213,
+    1.4828
+   ],
+   "instrRatio": 1.6815,
+   "numMs": 77.67,
+   "denMs": 53.49,
+   "numIqrMs": 3.63,
+   "denIqrMs": 3.17
+  },
+  {
+   "benchmark": "lz77",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 1.1419,
+   "ci95": [
+    1.1264,
+    1.1573
+   ],
+   "instrRatio": 1.3206,
+   "numMs": 129.56,
+   "denMs": 113.46,
+   "numIqrMs": 7.15,
+   "denIqrMs": 4.81
+  },
+  {
+   "benchmark": "mandelbrot",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 1536,
+   "timeRatio": 1.0407,
+   "ci95": [
+    1.0211,
+    1.0562
+   ],
+   "instrRatio": 1.4634,
+   "numMs": 143.33,
+   "denMs": 137.73,
+   "numIqrMs": 7.94,
+   "denIqrMs": 6.24
+  },
+  {
+   "benchmark": "polymorphism",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 3000,
+   "timeRatio": 1.8402,
+   "ci95": [
+    1.8114,
+    1.8637
+   ],
+   "instrRatio": 1.9738,
+   "numMs": 292.39,
+   "denMs": 158.9,
+   "numIqrMs": 8.2,
+   "denIqrMs": 7.21
+  },
+  {
+   "benchmark": "reverse-complement",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 25600000,
+   "timeRatio": 1.3867,
+   "ci95": [
+    1.3617,
+    1.4058
+   ],
+   "instrRatio": 1.7294,
+   "numMs": 272.52,
+   "denMs": 196.53,
+   "numIqrMs": 9.17,
+   "denIqrMs": 9.11
+  },
+  {
+   "benchmark": "sha256",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 480000,
+   "timeRatio": 0.8709,
+   "ci95": [
+    0.8525,
+    0.8827
+   ],
+   "instrRatio": 1.5313,
+   "numMs": 125.16,
+   "denMs": 143.72,
+   "numIqrMs": 7.08,
+   "denIqrMs": 6.47
+  },
+  {
+   "benchmark": "sort-search",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 800000,
+   "timeRatio": 1.049,
+   "ci95": [
+    1.0148,
+    1.0749
+   ],
+   "instrRatio": 1.3608,
+   "numMs": 150.03,
+   "denMs": 143.02,
+   "numIqrMs": 8.99,
+   "denIqrMs": 10.76
+  },
+  {
+   "benchmark": "tak",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 10,
+   "timeRatio": 1.5619,
+   "ci95": [
+    1.5324,
+    1.5814
+   ],
+   "instrRatio": 1.5649,
+   "numMs": 324.64,
+   "denMs": 207.85,
+   "numIqrMs": 6.84,
+   "denIqrMs": 12.35
+  },
+  {
+   "benchmark": "viterbi",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 2560000,
+   "timeRatio": 1.4987,
+   "ci95": [
+    1.4758,
+    1.5451
+   ],
+   "instrRatio": 1.7095,
+   "numMs": 114.96,
+   "denMs": 76.71,
+   "numIqrMs": 7.03,
+   "denIqrMs": 5.39
+  },
+  {
+   "benchmark": "vm",
+   "num": "wasmtime",
+   "den": "clang",
+   "L": 6400000,
+   "timeRatio": 1.256,
+   "ci95": [
+    1.2456,
+    1.2693
+   ],
+   "instrRatio": 1.534,
+   "numMs": 206.17,
+   "denMs": 164.15,
+   "numIqrMs": 4.93,
+   "denIqrMs": 5.03
+  }
+ ]
+}

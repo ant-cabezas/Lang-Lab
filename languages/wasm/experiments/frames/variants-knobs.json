@@ -1,0 +1,136 @@
+{
+"clang": [
+"/app/clang/binary-trees"
+],
+"node": [
+"/usr/local/bin/node",
+"--predictable",
+"--single-threaded",
+"--single-threaded-gc",
+"--no-liftoff",
+"/opt/wasm/run-node.mjs",
+"/app/wasm/binary-trees.wasm"
+],
+"wt-default": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"/app/wasm/binary-trees.cwasm"
+],
+"wt-init-cow=n": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"memory-init-cow=n",
+"/diag/cow_n.cwasm"
+],
+"wt-signals-traps=n": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"signals-based-traps=n",
+"/diag/sbt_n.cwasm"
+],
+"wt-reserv=0,guard=0": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"memory-reservation=0",
+"-O",
+"memory-guard-size=0",
+"/diag/res0.cwasm"
+],
+"wt-guard=0": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"memory-guard-size=0",
+"/diag/guard0.cwasm"
+],
+"wt-reserv=0,grow=1G": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"memory-reservation-for-growth=1073741824",
+"-O",
+"memory-reservation=0",
+"/diag/grow1g.cwasm"
+],
+"wt-pooling": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-O",
+"pooling-allocator=y",
+"/app/wasm/binary-trees.cwasm"
+],
+"wt-inlining=y": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-C",
+"inlining=y",
+"/diag/inl.cwasm"
+],
+"wt-winch": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-C",
+"compiler=winch",
+"/diag/winch.cwasm"
+],
+"fl-clang": [
+"/diag/bt_fl_native"
+],
+"fl-node": [
+"/usr/local/bin/node",
+"--predictable",
+"--single-threaded",
+"--single-threaded-gc",
+"--no-liftoff",
+"/opt/wasm/run-node.mjs",
+"/diag/bt_fl.wasm"
+],
+"fl-wt": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"/diag/bt_fl.cwasm"
+],
+"fl-wt-inlining=y": [
+"/usr/local/bin/wasmtime",
+"run",
+"-C",
+"cache=n",
+"--allow-precompiled",
+"-C",
+"inlining=y",
+"/diag/bt_fl_inl.cwasm"
+]
+}

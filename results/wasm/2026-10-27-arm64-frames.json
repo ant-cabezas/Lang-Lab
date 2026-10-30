@@ -1,0 +1,567 @@
+{
+ "study": "wasm-side-study",
+ "kind": "frames",
+ "date": "2026-10-27",
+ "isa": "arm64",
+ "metric": "user CPU time differential t(16) - t(10) of C binary-trees, native timing inside lang-lab-wasm:c, pinned to one CPU, every (variant, size) pair in random order per repetition",
+ "ratioMeaning": "paired per repetition: variant differential / clang (toClang) or / wasmtime default (toWasmtimeDefault); lower is better",
+ "description": "binary-trees runs 1.02x native clang's instructions on wasmtime 50 but more of its time. The knobs batch varies wasmtime's memory and code-generation configuration and replaces malloc/free with a free list (fl-*); the patch batch rewrites the register save and restore code of chosen functions in the precompiled module from Cranelift's chained stack-pointer updates to one stack adjustment with the same instruction count (repatch.py; a timing probe, not a fix: .eh_frame is not updated).",
+ "caveats": [
+  "absolute milliseconds are comparable only within a batch (host load drifted); the ratios are paired",
+  "the memory knobs that raise time (signals-based-traps=n, memory-reservation/guard-size 0) switch wasmtime to explicit bounds checks, which add instructions: they are not a memory-system measurement"
+ ],
+ "provenance": "languages/wasm/experiments/frames/",
+ "knobs": {
+  "gateFailures": 0,
+  "variants": {
+   "clang": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 269.042,
+     "iqr": [
+      231.5515,
+      293.249
+     ]
+    },
+    "dSysMs": 2.9,
+    "dMinflt": 2015,
+    "toClang": null,
+    "toWasmtimeDefault": {
+     "median": 0.8249,
+     "iqr": [
+      0.7548,
+      0.8524
+     ]
+    }
+   },
+   "fl-clang": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 88.597,
+     "iqr": [
+      78.6155,
+      102.274
+     ]
+    },
+    "dSysMs": 1.96,
+    "dMinflt": 1010,
+    "toClang": {
+     "median": 0.3407,
+     "iqr": [
+      0.3008,
+      0.381
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.2834,
+     "iqr": [
+      0.2401,
+      0.3065
+     ]
+    }
+   },
+   "fl-node": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 85.604,
+     "iqr": [
+      79.8625,
+      110.1605
+     ]
+    },
+    "dSysMs": 1.29,
+    "dMinflt": 503,
+    "toClang": {
+     "median": 0.3317,
+     "iqr": [
+      0.2943,
+      0.3846
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.2767,
+     "iqr": [
+      0.2552,
+      0.2965
+     ]
+    },
+    "toFreeListClang": {
+     "median": 0.9749,
+     "iqr": [
+      0.8682,
+      1.2111
+     ]
+    }
+   },
+   "fl-wt": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 101.573,
+     "iqr": [
+      94.8945,
+      121.407
+     ]
+    },
+    "dSysMs": 0.56,
+    "dMinflt": 502,
+    "toClang": {
+     "median": 0.404,
+     "iqr": [
+      0.3657,
+      0.442
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.3249,
+     "iqr": [
+      0.2987,
+      0.3343
+     ]
+    },
+    "toFreeListClang": {
+     "median": 1.1988,
+     "iqr": [
+      1.0709,
+      1.3094
+     ]
+    }
+   },
+   "fl-wt-inlining=y": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 108.053,
+     "iqr": [
+      96.4275,
+      121.9575
+     ]
+    },
+    "dSysMs": 1.64,
+    "dMinflt": 503,
+    "toClang": {
+     "median": 0.4075,
+     "iqr": [
+      0.3824,
+      0.4546
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.3401,
+     "iqr": [
+      0.3131,
+      0.361
+     ]
+    },
+    "toFreeListClang": {
+     "median": 1.1988,
+     "iqr": [
+      1.1226,
+      1.3648
+     ]
+    }
+   },
+   "node": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 242.566,
+     "iqr": [
+      213.375,
+      278.901
+     ]
+    },
+    "dSysMs": 0.19,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 0.9165,
+     "iqr": [
+      0.8349,
+      1.0389
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.7533,
+     "iqr": [
+      0.7042,
+      0.8104
+     ]
+    }
+   },
+   "wt-default": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 321.346,
+     "iqr": [
+      299.18,
+      364.973
+     ]
+    },
+    "dSysMs": 0.51,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.2123,
+     "iqr": [
+      1.1732,
+      1.3258
+     ]
+    },
+    "toWasmtimeDefault": null
+   },
+   "wt-guard=0": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 447.232,
+     "iqr": [
+      422.5175,
+      473.4985
+     ]
+    },
+    "dSysMs": 1.06,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.6962,
+     "iqr": [
+      1.6057,
+      1.9031
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 1.3499,
+     "iqr": [
+      1.2844,
+      1.4983
+     ]
+    }
+   },
+   "wt-init-cow=n": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 306.795,
+     "iqr": [
+      295.059,
+      359.0165
+     ]
+    },
+    "dSysMs": 1.17,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.2306,
+     "iqr": [
+      1.1244,
+      1.3554
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.9883,
+     "iqr": [
+      0.9052,
+      1.076
+     ]
+    }
+   },
+   "wt-inlining=y": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 270.699,
+     "iqr": [
+      256.717,
+      319.569
+     ]
+    },
+    "dSysMs": 1.06,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.0633,
+     "iqr": [
+      0.977,
+      1.2148
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.8642,
+     "iqr": [
+      0.8188,
+      0.9278
+     ]
+    }
+   },
+   "wt-pooling": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 310.347,
+     "iqr": [
+      291.8995,
+      336.326
+     ]
+    },
+    "dSysMs": 0.74,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.1831,
+     "iqr": [
+      1.0952,
+      1.2872
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.9497,
+     "iqr": [
+      0.9048,
+      1.0352
+     ]
+    }
+   },
+   "wt-reserv=0,grow=1G": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 428.934,
+     "iqr": [
+      385.5775,
+      460.5715
+     ]
+    },
+    "dSysMs": 1.65,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.5901,
+     "iqr": [
+      1.456,
+      1.758
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 1.2622,
+     "iqr": [
+      1.2029,
+      1.4148
+     ]
+    }
+   },
+   "wt-reserv=0,guard=0": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 464.459,
+     "iqr": [
+      426.5625,
+      515.929
+     ]
+    },
+    "dSysMs": 1.08,
+    "dMinflt": 1009,
+    "toClang": {
+     "median": 1.804,
+     "iqr": [
+      1.6526,
+      1.981
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 1.4314,
+     "iqr": [
+      1.3493,
+      1.5049
+     ]
+    }
+   },
+   "wt-signals-traps=n": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 393.674,
+     "iqr": [
+      368.216,
+      468.9265
+     ]
+    },
+    "dSysMs": 1.75,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 1.5768,
+     "iqr": [
+      1.5116,
+      1.6925
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 1.2662,
+     "iqr": [
+      1.1399,
+      1.3647
+     ]
+    }
+   },
+   "wt-winch": {
+    "reps": 25,
+    "dUserMs": {
+     "median": 816.319,
+     "iqr": [
+      731.7685,
+      913.838
+     ]
+    },
+    "dSysMs": 0.79,
+    "dMinflt": 1008,
+    "toClang": {
+     "median": 3.1196,
+     "iqr": [
+      2.7356,
+      3.5616
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 2.5147,
+     "iqr": [
+      2.2594,
+      2.734
+     ]
+    }
+   }
+  }
+ },
+ "patch": {
+  "gateFailures": 0,
+  "variants": {
+   "clang": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 303.7915,
+     "iqr": [
+      287.474,
+      325.9613
+     ]
+    },
+    "dSysMs": 2.98,
+    "dMinflt": 2017.0,
+    "toClang": null,
+    "toWasmtimeDefault": {
+     "median": 0.8274,
+     "iqr": [
+      0.7576,
+      0.9143
+     ]
+    }
+   },
+   "node": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 278.527,
+     "iqr": [
+      247.9677,
+      330.5587
+     ]
+    },
+    "dSysMs": 3.73,
+    "dMinflt": 1006.0,
+    "toClang": {
+     "median": 0.9523,
+     "iqr": [
+      0.8202,
+      1.0964
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.7726,
+     "iqr": [
+      0.666,
+      0.893
+     ]
+    }
+   },
+   "wt-default": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 370.903,
+     "iqr": [
+      349.7317,
+      389.7843
+     ]
+    },
+    "dSysMs": 1.36,
+    "dMinflt": 1007.0,
+    "toClang": {
+     "median": 1.2086,
+     "iqr": [
+      1.0938,
+      1.32
+     ]
+    },
+    "toWasmtimeDefault": null
+   },
+   "wt-patch-all": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 296.025,
+     "iqr": [
+      273.0827,
+      320.5488
+     ]
+    },
+    "dSysMs": 1.51,
+    "dMinflt": 1008.0,
+    "toClang": {
+     "median": 0.9963,
+     "iqr": [
+      0.8298,
+      1.1247
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.7915,
+     "iqr": [
+      0.729,
+      0.8807
+     ]
+    }
+   },
+   "wt-patch-dlmalloc": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 288.5415,
+     "iqr": [
+      272.2032,
+      323.7448
+     ]
+    },
+    "dSysMs": 2.25,
+    "dMinflt": 1008.0,
+    "toClang": {
+     "median": 0.9565,
+     "iqr": [
+      0.8866,
+      1.0905
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.7781,
+     "iqr": [
+      0.7142,
+      0.9228
+     ]
+    }
+   },
+   "wt-patch-tree": {
+    "reps": 30,
+    "dUserMs": {
+     "median": 314.1945,
+     "iqr": [
+      284.3775,
+      370.9932
+     ]
+    },
+    "dSysMs": 2.06,
+    "dMinflt": 1008.0,
+    "toClang": {
+     "median": 1.0608,
+     "iqr": [
+      0.895,
+      1.1944
+     ]
+    },
+    "toWasmtimeDefault": {
+     "median": 0.8343,
+     "iqr": [
+      0.7864,
+      0.9846
+     ]
+    }
+   }
+  }
+ }
+}

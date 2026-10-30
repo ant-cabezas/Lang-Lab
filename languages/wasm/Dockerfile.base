@@ -1,0 +1,69 @@
+# WebAssembly side study: the shared toolchain image every wasm column builds on.
+# Build context is the repo root:
+#   docker build -f languages/_base/Dockerfile.qemu-insn -t lang-lab-qemu-insn .
+#   docker build -f languages/wasm/Dockerfile.base -t lang-lab-wasm-base .
+#
+# Contents, all version- and checksum-pinned:
+#   - qemu-user + the TCG insn plugin (the matrix backend, unchanged)
+#   - wasi-sdk (clang targeting wasm32-wasip1, with wasi-libc)
+#   - wasmtime (Cranelift), the headline runtime
+#   - Node.js (V8), the second runtime, driven by languages/wasm/run-node.mjs
+#   - the official LLVM release matching wasi-sdk's clang (same LLVM version), the native
+#     same-compiler control for the C column (/opt/llvm/bin/clang)
+# gcc:14 is the C image's base, pinned here by digest to the pull the published envelopes were measured on
+# (gcc 14.4.0, Debian 13). Built from the same pull, the gcc reference column counts bit-identically to the
+# matrix C cell (checked on all 18 benchmarks); the matrix uses the floating tag, so when its gcc:14 moves on,
+# bump GCC_DIGEST to keep the two in step. Each envelope records the toolchain the image actually had.
+# OUT OF THE RANKING: nothing here is in languages.json, the matrix or CI.
+ARG GCC_VERSION=14
+ARG GCC_DIGEST=sha256:435c3cbc2ad1c25fbc1684c367808ff0ca2035a1bed56734a40165ab5cd7e3bd
+FROM gcc:${GCC_VERSION}@${GCC_DIGEST}
+
+ARG WASI_SDK_VERSION=34
+ARG WASI_SDK_SHA256=f7e243dff54d60bcc576e94d6166b69f410f2500ae4a9ceef34315be10e77971
+ARG WASMTIME_VERSION=50.0.0
+ARG WASMTIME_SHA256=10f9ad1f8539d2e04e041cc622de6a270109ab1e43a6be1f69843c2082166832
+ARG NODE_VERSION=26.5.0
+ARG NODE_SHA256=036df0b49662ebb350eb56f1cac603699b1e9ed1e2603ee129fefda473479030
+# wasi-sdk 34 ships clang 23.1.0; the native control must be the same LLVM release.
+ARG LLVM_VERSION=23.1.0
+ARG LLVM_SHA256=cfb31bfc713ef453248bf5bd026312f838ad6c52c25623e987cb6a340f3050d4
+
+COPY --from=lang-lab-qemu-insn /plugin/qemu-aarch64 /opt/qi/qemu-aarch64
+COPY --from=lang-lab-qemu-insn /plugin/libinsn.so   /opt/qi/libinsn.so
+COPY --from=lang-lab-qemu-insn /plugin/lib          /opt/qi/lib
+
+RUN apt-get update -qq \
+ && apt-get install -y -qq --no-install-recommends jq xz-utils binutils >/dev/null \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; cd /tmp; \
+    curl -fsSLo wasi-sdk.tgz "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_SDK_VERSION}/wasi-sdk-${WASI_SDK_VERSION}.0-arm64-linux.tar.gz"; \
+    echo "${WASI_SDK_SHA256}  wasi-sdk.tgz" | sha256sum -c -; \
+    mkdir /opt/wasi-sdk && tar xzf wasi-sdk.tgz -C /opt/wasi-sdk --strip-components=1; \
+    curl -fsSLo wasmtime.txz "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-aarch64-linux.tar.xz"; \
+    echo "${WASMTIME_SHA256}  wasmtime.txz" | sha256sum -c -; \
+    mkdir /opt/wasmtime && tar xJf wasmtime.txz -C /opt/wasmtime --strip-components=1; \
+    ln -s /opt/wasmtime/wasmtime /usr/local/bin/wasmtime; \
+    curl -fsSLo node.txz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-arm64.tar.xz"; \
+    echo "${NODE_SHA256}  node.txz" | sha256sum -c -; \
+    mkdir /opt/node && tar xJf node.txz -C /opt/node --strip-components=1; \
+    ln -s /opt/node/bin/node /usr/local/bin/node; \
+    curl -fsSLo llvm.txz "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VERSION}/LLVM-${LLVM_VERSION}-Linux-ARM64.tar.xz"; \
+    echo "${LLVM_SHA256}  llvm.txz" | sha256sum -c -; \
+    mkdir /opt/llvm && tar xJf llvm.txz -C /opt/llvm --strip-components=1 --wildcards \
+      '*/bin/clang' '*/bin/clang-[0-9]*' '*/bin/lld' '*/bin/ld.lld' '*/bin/llvm-objdump' '*/lib/clang/*'; \
+    rm -f /tmp/*.tgz /tmp/*.txz
+
+ENV WASI_SDK_PATH=/opt/wasi-sdk \
+    WASI_SDK_VERSION=${WASI_SDK_VERSION} \
+    WASMTIME_VERSION=${WASMTIME_VERSION} \
+    LLVM_VERSION=${LLVM_VERSION} \
+    NODE_VERSION=${NODE_VERSION} \
+    UV_THREADPOOL_SIZE=1
+
+COPY languages/wasm/run-node.mjs /opt/wasm/run-node.mjs
+COPY languages/wasm/c/lp64.sh    /opt/wasm/lp64.sh
+COPY scripts/measure.sh /usr/local/bin/measure.sh
+RUN chmod +x /usr/local/bin/measure.sh /opt/wasm/lp64.sh
+WORKDIR /app

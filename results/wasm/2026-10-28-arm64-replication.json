@@ -1,0 +1,130 @@
+{
+ "study": "wasm-side-study",
+ "kind": "replication",
+ "date": "2026-10-28",
+ "isa": "arm64",
+ "description": "Independent re-measurement on 2026-10-28 of the lanes in `languages` (same images rebuilt from the same Dockerfiles, same driver) against the published 2026-10-27 envelopes.",
+ "meaning": "maxCellChangePct: largest |replica / baseline - 1| of a cell differential in that column, percent (lower is better; 0 = bit-identical); geomean: wasm / native ratios of both runs (lower is better)",
+ "languages": {
+  "c": {
+   "maxCellChangePct": {
+    "clang-lp64": {
+     "pct": 0.0,
+     "benchmark": "vm"
+    },
+    "gcc": {
+     "pct": 0.0,
+     "benchmark": "vm"
+    },
+    "native": {
+     "pct": 0.0,
+     "benchmark": "vm"
+    },
+    "node": {
+     "pct": 0.014,
+     "benchmark": "reverse-complement"
+    },
+    "wasmtime": {
+     "pct": 0.006,
+     "benchmark": "k-nucleotide"
+    }
+   },
+   "geomean": {
+    "wasmtime": {
+     "baseline": 1.5283,
+     "replica": 1.5283
+    },
+    "node": {
+     "baseline": 1.5614,
+     "replica": 1.5614
+    }
+   }
+  },
+  "csharp": {
+   "maxCellChangePct": {
+    "coreclr": {
+     "pct": 0.022,
+     "benchmark": "dijkstra"
+    },
+    "mono-jit": {
+     "pct": 0.117,
+     "benchmark": "mandelbrot"
+    },
+    "native": {
+     "pct": 0.0,
+     "benchmark": "mandelbrot"
+    },
+    "node": {
+     "pct": 0.0,
+     "benchmark": "mandelbrot"
+    },
+    "wasmtime": {
+     "pct": 0.0,
+     "benchmark": "reverse-complement"
+    }
+   },
+   "geomean": {
+    "wasmtime": {
+     "baseline": 2.0146,
+     "replica": 2.0146
+    },
+    "node": {
+     "baseline": 2.5521,
+     "replica": 2.5521
+    }
+   }
+  },
+  "go": {
+   "maxCellChangePct": {
+    "native": {
+     "pct": 2.299,
+     "benchmark": "k-nucleotide"
+    },
+    "node": {
+     "pct": 12.876,
+     "benchmark": "sha256"
+    },
+    "wasmtime": {
+     "pct": 0.719,
+     "benchmark": "k-nucleotide"
+    }
+   },
+   "geomean": {
+    "wasmtime": {
+     "baseline": 3.1152,
+     "replica": 3.1189
+    },
+    "node": {
+     "baseline": 4.0576,
+     "replica": 4.0041
+    }
+   }
+  },
+  "java": {
+   "maxCellChangePct": {
+    "native": {
+     "pct": 0.0,
+     "benchmark": "vm"
+    },
+    "node": {
+     "pct": 0.004,
+     "benchmark": "blur"
+    },
+    "wasmtime": {
+     "pct": 0.001,
+     "benchmark": "reverse-complement"
+    }
+   },
+   "geomean": {
+    "wasmtime": {
+     "baseline": 1.8807,
+     "replica": 1.8807
+    },
+    "node": {
+     "baseline": 2.0031,
+     "replica": 2.0031
+    }
+   }
+  }
+ }
+}

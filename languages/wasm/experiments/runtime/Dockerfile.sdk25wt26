@@ -1,0 +1,5 @@
+# WebAssembly side study, runtime experiment: the 2x2 factorial corner, wasi-sdk 25 modules precompiled
+# by wasmtime 26.0.1. Built by build-sdk25wt26.sh; the context holds w/<b>.wasm, the sdk25 modules.
+FROM lang-lab-wasm-runtime-wt26.0.1
+COPY w /app/sdk25wt26
+RUN for w in /app/sdk25wt26/*.wasm; do wasmtime compile "$w" -o "${w%.wasm}.cwasm"; done

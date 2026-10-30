@@ -1,0 +1,826 @@
+{
+ "study": "wasm-side-study",
+ "language": "rust",
+ "date": "2026-10-27",
+ "isa": "arm64",
+ "ranked": false,
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "ratioMeaning": "column differential / native differential, same language version and compiler family (lower is better; 1.00 = no overhead over native)",
+ "spreadMeaning": "maxSpreadPct: largest (max - min) / median of I(n1) or I(n2) over the runs, percent (lower is better; 0 = bit-exact)",
+ "lane": {
+  "language": "rust",
+  "nativeImage": "lang-lab-rust",
+  "nativeRun": "/app/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:rust",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+   "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+   "rustc": "1.88.0 (6b00bc388 2025-06-23), LLVM 20.1.5, same binary for native and wasm",
+   "nativeFlags": "rustc -O (matrix image languages/rust/Dockerfile, no other flags)",
+   "wasmFlags": "rustc -O --target wasm32-wasip1 -C link-arg=-zstack-size=8388608",
+   "wasmStd": "rust-std-1.88.0-wasm32-wasip1.tar.xz sha256 d8b9068daa681ad309f628254d0019b13f51690769d7e26d22469d97bde74248"
+  },
+  "transforms": [],
+  "asymmetries": [
+   "no target-cpu on either side; the wasm default feature set (bulk-memory, multivalue, mutable-globals, nontrapping-fptoint, reference-types, sign-ext) is rustc's baseline for the target, no simd128",
+   "native std links glibc (system malloc), wasm std ships its own dlmalloc",
+   "wasm shadow stack raised to 8 MiB to match the native 8 MiB main-thread stack",
+   "the native column is aarch64 machine code, so ratios mix ISA with wasm cost",
+   "panic strategy: rustc 1.88.0 builds wasm32-wasip1 with panic=abort (target default) and aarch64-unknown-linux-gnu with panic=unwind (verified with rustc --print cfg); the wasm code has no unwinding landing pads. Kept: forcing one strategy on both would move the native build away from the matrix binary",
+   "wasm32 is ILP32: usize and pointers are 32-bit (all 18 sources are correct unchanged)"
+  ],
+  "na": {},
+  "matrixPins": {
+   "rust": "1.88.0"
+  },
+  "columnRoles": {
+   "native": "control",
+   "wasmtime": "wasm",
+   "node": "wasm"
+  }
+ },
+ "toolchain": [
+  "rustc: 1.88.0",
+  "llvm: 20.1.5",
+  "wasm-rustflags: -O -C link-arg=-zstack-size=8388608",
+  "wasm-default-features: target_feature=\"bulk-memory\" target_feature=\"crt-static\" target_feature=\"multivalue\" target_feature=\"mutable-globals\" target_feature=\"nontrapping-fptoint\" target_feature=\"reference-types\" target_feature=\"sign-ext\" ",
+  "wasm-std-component-sha256: d8b9068daa681ad309f628254d0019b13f51690769d7e26d22469d97bde74248",
+  "wasmtime: wasmtime 50.0.0 (ebe5e8df1 2026-10-20)",
+  "node: v26.5.0",
+  "wasmtime-compile-flags:"
+ ],
+ "summary": {
+  "wasmtime": {
+   "measured": 18,
+   "geomeanRatioToNative": 1.461
+  },
+  "node": {
+   "measured": 18,
+   "geomeanRatioToNative": 1.4564
+  }
+ },
+ "results": [
+  {
+   "benchmark": "bigint",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 2258813,
+     "i_n2": 41193523,
+     "differential": 38934710,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 5584093,
+     "i_n2": 36270025,
+     "differential": 30685932,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00595
+    },
+    "node": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 299036955,
+     "i_n2": 347796454,
+     "differential": 48759499,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00098
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 0.7881,
+    "node": 1.2523
+   }
+  },
+  {
+   "benchmark": "binary-trees",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 40214477,
+     "i_n2": 949258669,
+     "differential": 909044192,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 57357518,
+     "i_n2": 1278796200,
+     "differential": 1221438682,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00056
+    },
+    "node": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 330751332,
+     "i_n2": 1419280366,
+     "differential": 1088529034,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00071
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.3437,
+    "node": 1.1974
+   }
+  },
+  {
+   "benchmark": "blur",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 5983949,
+     "i_n2": 23436199,
+     "differential": 17452250,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 10021584,
+     "i_n2": 28387863,
+     "differential": 18366279,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00705
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 334724268,
+     "i_n2": 352303221,
+     "differential": 17578953,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00067
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.0524,
+    "node": 1.0073
+   }
+  },
+  {
+   "benchmark": "dijkstra",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 11759294,
+     "i_n2": 48516167,
+     "differential": 36756873,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 19317998,
+     "i_n2": 68611950,
+     "differential": 49293952,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00178
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 330046799,
+     "i_n2": 379011503,
+     "differential": 48964704,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00069
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.3411,
+    "node": 1.3321
+   }
+  },
+  {
+   "benchmark": "fannkuch",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 1127650,
+     "i_n2": 95651678,
+     "differential": 94524028,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 5402459,
+     "i_n2": 154458328,
+     "differential": 149055869,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01449
+    },
+    "node": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 289389937,
+     "i_n2": 456905305,
+     "differential": 167515368,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00065
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5769,
+    "node": 1.7722
+   }
+  },
+  {
+   "benchmark": "gbdt",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 93400475,
+     "i_n2": 370345496,
+     "differential": 276945021,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 141824961,
+     "i_n2": 548632683,
+     "differential": 406807722,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00028
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 416289011,
+     "i_n2": 825856668,
+     "differential": 409567657,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00059
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4689,
+    "node": 1.4789
+   }
+  },
+  {
+   "benchmark": "gemm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 16338525,
+     "i_n2": 123574112,
+     "differential": 107235587,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 44768536,
+     "i_n2": 326757015,
+     "differential": 281988479,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00156
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 336798519,
+     "i_n2": 607638045,
+     "differential": 270839526,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0005
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.6296,
+    "node": 2.5256
+   }
+  },
+  {
+   "benchmark": "k-means",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 8869810,
+     "i_n2": 34951633,
+     "differential": 26081823,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 16968670,
+     "i_n2": 56132403,
+     "differential": 39163733,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00377
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 298692228,
+     "i_n2": 335821352,
+     "differential": 37129124,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0011
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5016,
+    "node": 1.4236
+   }
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 37444575,
+     "i_n2": 59951133,
+     "differential": 22506558,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.07008
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 63741124,
+     "i_n2": 100229497,
+     "differential": 36488373,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.02778
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 383597317,
+     "i_n2": 425275686,
+     "differential": 41678369,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01114
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.6212,
+    "node": 1.8518
+   }
+  },
+  {
+   "benchmark": "lz77",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 15500477,
+     "i_n2": 63224736,
+     "differential": 47724259,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 21185603,
+     "i_n2": 74979166,
+     "differential": 53793563,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00222
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 313386376,
+     "i_n2": 375239934,
+     "differential": 61853558,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00101
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.1272,
+    "node": 1.2961
+   }
+  },
+  {
+   "benchmark": "mandelbrot",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 5578802,
+     "i_n2": 21830119,
+     "differential": 16251317,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 11820679,
+     "i_n2": 35602813,
+     "differential": 23782134,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00527
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 287015913,
+     "i_n2": 306089111,
+     "differential": 19073198,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00113
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4634,
+    "node": 1.1736
+   }
+  },
+  {
+   "benchmark": "polymorphism",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 16705564,
+     "i_n2": 53717340,
+     "differential": 37011776,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 33894828,
+     "i_n2": 110899049,
+     "differential": 77004221,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00213
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 326867634,
+     "i_n2": 432373750,
+     "differential": 105506116,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00143
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.0805,
+    "node": 2.8506
+   }
+  },
+  {
+   "benchmark": "reverse-complement",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 3862795,
+     "i_n2": 14961974,
+     "differential": 11099179,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 10330477,
+     "i_n2": 29644323,
+     "differential": 19313846,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00419
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 289755771,
+     "i_n2": 304945434,
+     "differential": 15189663,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00103
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.7401,
+    "node": 1.3685
+   }
+  },
+  {
+   "benchmark": "sha256",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 7638987,
+     "i_n2": 30071512,
+     "differential": 22432525,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 15410994,
+     "i_n2": 49963647,
+     "differential": 34552653,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00325
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 289203336,
+     "i_n2": 321100013,
+     "differential": 31896677,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00079
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5403,
+    "node": 1.4219
+   }
+  },
+  {
+   "benchmark": "sort-search",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 20836698,
+     "i_n2": 91562734,
+     "differential": 70726036,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 34666965,
+     "i_n2": 139655692,
+     "differential": 104988727,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00135
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 328216991,
+     "i_n2": 419502968,
+     "differential": 91285977,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00038
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4844,
+    "node": 1.2907
+   }
+  },
+  {
+   "benchmark": "tak",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 1762585,
+     "i_n2": 62928756,
+     "differential": 61166171,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 5828631,
+     "i_n2": 79697621,
+     "differential": 73868990,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01481
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 275876399,
+     "i_n2": 328533923,
+     "differential": 52657524,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00117
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.2077,
+    "node": 0.8609
+   }
+  },
+  {
+   "benchmark": "viterbi",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 13326000,
+     "i_n2": 52805349,
+     "differential": 39479349,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 22579599,
+     "i_n2": 78612215,
+     "differential": 56032616,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00181
+    },
+    "node": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 306568144,
+     "i_n2": 363947306,
+     "differential": 57379162,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00108
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4193,
+    "node": 1.4534
+   }
+  },
+  {
+   "benchmark": "vm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 82962016,
+     "i_n2": 331362016,
+     "differential": 248400000,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 150703699,
+     "i_n2": 591103544,
+     "differential": 440399845,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00026
+    },
+    "node": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 417094332,
+     "i_n2": 868293832,
+     "differential": 451199500,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00016
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.7729,
+    "node": 1.8164
+   }
+  }
+ ]
+}

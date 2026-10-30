@@ -1,0 +1,15 @@
+diff --git a/Zend/zend_long.h b/Zend/zend_long.h
+--- a/Zend/zend_long.h
++++ b/Zend/zend_long.h
+@@ -23,8 +23,10 @@
+ #include <stdint.h>
+ 
+ /* This is the heart of the whole int64 enablement in zval. */
+-#if defined(__x86_64__) || defined(__LP64__) || defined(_LP64) || defined(_WIN64)
++/* Lang Lab wasm study: wasm32 has 32-bit pointers but the benchmarks need PHP's 64-bit integers
++ * (the matrix interpreter is LP64), so zend_long is forced to int64_t there. */
++#if defined(__x86_64__) || defined(__LP64__) || defined(_LP64) || defined(_WIN64) || defined(__wasm32__)
+ # define ZEND_ENABLE_ZVAL_LONG64 1
+ #endif
+ 
+ /* Integer types. */

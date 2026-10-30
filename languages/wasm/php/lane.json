@@ -1,0 +1,56 @@
+{
+  "language": "php",
+  "nativeImage": "lang-lab-wasm:php",
+  "nativeRun": "/app/php-native/php -n /app/{b}.php",
+  "nativeEnv": {},
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:php",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app /app/php-wasm/php.cwasm -n /app/{b}.php",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/php-wasm/php.wasm -n /app/{b}.php",
+  "wasmKind": "interp",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+    "matrix": {
+      "image": "lang-lab-php",
+      "run": "php /app/{b}.php",
+      "env": {},
+      "kind": "interp",
+      "role": "reference: the matrix image php:8.4.8-cli (gcc, HYBRID VM with global registers, opcache loaded but enable_cli=0, JIT disabled), run with the matrix template"
+    }
+  },
+  "versions": {
+    "php": "8.4.8",
+    "phpSourceSha256": "aa6a4d330b47eacd83e351658ba8c47747a1e4356456219cfb6d75e7838da091",
+    "nativeCompiler": "clang 23.1.0 (official LLVM release)",
+    "wasmCompiler": "clang 23.1.0 (wasi-sdk 34)",
+    "patches": "mpyw/gophper-wasm 3e1fa95fd74cac4b96c448aee948457cece09396 (MIT), generic WASI parts 0001-0003, 0005, 0006, 0007 (fnmatch hunk only), plus own 0008; pinned by languages/wasm/php/patches/SHA256SUMS",
+    "flags": "-O2 on both sides, identical configure flags (--disable-all --enable-cli --disable-opcache --disable-gcc-global-regs ...); wasm adds the WASI emulation defines, the sjlj/exnref flags and -Wl,-z,stack-size=8388608",
+    "ini": "no php.ini and no scan dir on every study column (php -n); opcache is not compiled in, so there is no opcache and no JIT to configure; memory_limit stays at the compiled default 128M everywhere"
+  },
+  "transforms": [
+    "patches/0008-zend-long-64bit-on-wasm32.patch: zend_long is forced to int64_t on __wasm32__ (wasm32 is ILP32 and PHP would otherwise be a 32-bit-integer build that overflows the 64-bit benchmarks to float). Dead code natively (aarch64 already defines ZEND_ENABLE_ZVAL_LONG64), and the native build is built from the same patched tree, so the no-op is by construction",
+    "patches 0001-0003, 0005, 0006 and the fnmatch hunk of 0007 (gophper-wasm, MIT; see versions.patches): configure for WASI, fiber stubs, zend_alloc via aligned_alloc, CSPRNG via random_get, getrusage fields, fnmatch; all guarded by __wasi__, so dead code in the native build from the same tree",
+    "wasm only: -include /compat/wasi-compat.h and -I/compat/include (declarations WASI headers lack), EXTRA_LIBS=/build/wasi-stubs.o (failing stubs for users, sockets, popen, syslog, dlopen, getaddrinfo, madvise; none is reached by the benchmarks), and the setjmp lowering flags -mllvm -wasm-enable-sjlj -mllvm -wasm-use-legacy-eh=false with -lsetjmp"
+  ],
+  "asymmetries": [
+    "zend_alloc: the wasm build gets 2 MiB chunks from aligned_alloc() plus a memset (patch 0003), the native build from mmap; chunk allocation is rare but not free, and wasi-libc malloc (dlmalloc) differs from glibc",
+    "64-bit zend_long on a 32-bit address space (size_t is 4 bytes on wasm) is a configuration php-src does not target; observed: all 36 gate checks pass",
+    "native-same-build and wasm use the CALL VM dispatch (--disable-gcc-global-regs, impossible on wasm); the matrix PHP uses HYBRID, so the matrix reference column is expected to count fewer instructions than the same-build native",
+    "the matrix image is built by gcc with -fstack-protector-strong -fpie and loads Zend OPcache (inert in the CLI: enable_cli=0, jit disabled) and pcntl and sodium; the study builds have only the core extension set",
+    "libc differs: glibc (native) vs wasi-libc (wasm) for memcpy/strtod/snprintf and math; php-config.diff in the image lists the 136 configure-time differences (mostly absent POSIX functions)",
+    "wasm setjmp/longjmp (zend_try) runs through wasm exception handling (exnref); native uses the C library setjmp",
+    "the node column runs the same module under V8's TurboFan tier (--no-liftoff, compiled lazily on first call); compilation cancels in the differential"
+  ],
+  "na": {},
+  "matrixPins": {
+    "php": "8.4.8"
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm",
+    "matrix": "reference"
+  }
+}
