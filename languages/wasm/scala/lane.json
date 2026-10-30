@@ -1,0 +1,47 @@
+{
+  "language": "scala",
+  "dockerfile": "languages/wasm/scala/Dockerfile",
+  "nativeImage": "lang-lab-wasm:scala",
+  "nativeRun": "/app/scala/native/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:scala",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/scala/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/scala/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "runtimeLabel": "TeaVM 0.13.1 (frozen release; its WASI backend was removed in 0.14.0). NOT the JVM: not comparable to the matrix Scala cells",
+    "teavm": "0.13.1 (teavm-cli sha256 eb31af75aaab678acaf01722bcf3c1f8b16de8dee488fc3e480272bc1a8afee1; full closure in languages/wasm/teavm/jars.lock)",
+    "frontEnd": "Scala 3.6.2 dotc (scala3-library_3 3.6.2 + scala-library 2.13.15 on the TeaVM classpath)",
+    "nativeBackend": "TeaVM -t C -O 3 --min-heap 32 --max-heap 512, all.c compiled by /opt/llvm/bin/clang 23.1.0 -O2 -lm",
+    "wasmBackend": "TeaVM -t wasi -O 3 --min-heap 32 --max-heap 512, wasmtime 50.0.0 compile (AOT) / Node 26.5.0"
+  },
+  "transforms": [
+    "none on the sources; the same class files (one front-end compile per benchmark) feed both TeaVM backends"
+  ],
+  "asymmetries": [
+    "primary: the native column is TeaVM's C backend + LLVM clang -O2; the wasm column is TeaVM's own wasm emitter (no LLVM, no binaryen pass) + Cranelift, so the ratio mixes backend quality with the wasm cost",
+    "TeaVM runtime and GC differ per backend: the C backend uses its C runtime (memory.c, glibc) and the wasi backend its own Java-written/wasm runtime with linear memory sized by --min-heap/--max-heap; same heap flags on both",
+    "the wasm backend runs without wasm exception-handling instructions (--wasm-use-exceptions not set); the C backend uses its own mechanism",
+    "front end is Scala 3.6.2 (dotty.tools.dotc.Main), not the matrix build line, and TeaVM replaces the JDK class library with its own classlib: no HotSpot, no JIT, no JVM GC anywhere",
+    "TeaVM 0.13.1 output is not byte-reproducible: two builds of the same Dockerfile gave identical tak.wasm but a different bigint.wasm of the same size (cause not investigated)"
+  ],
+  "na": {
+    "fannkuch": "TeaVM 0.13.1 cannot build it with either backend: 'ERROR: Method java.lang.Class.initializeImpl()V is native but has no org.teavm.interop.Import annotation on it' (reached via Array.tabulate -> ClassTag.apply -> scala.runtime.ClassValueCompat.<clinit> -> Class.initialize); fixing it needs a source or library change"
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm"
+  },
+  "diagnostics": {
+    "v8SessionDrift": {
+      "finding": "dijkstra on V8 moves with how the process is launched (2026-10-27: 65,550,712; eight measurements on 2026-10-29: 65,251,892 to 65,407,630 instructions; ratio 1.871 to 1.879 over all nine) while identical invocations agree to within about 1,700 instructions; changing the driver's file name, its text or the container launch moves it by 34,000 to 149,000; the module imports no random_get, wasmtime reproduces to 194 instructions, a fixed clock_time_get changes nothing",
+      "measured": "2026-10-29, qemu insn differentials",
+      "cause": "the timing of V8's young-generation scavenges: with a 64 MB young generation (--min-semi-space-size=64) every variant (with and without the random_get override, two file names, two launch shapes) gives 65,296,144 to 65,297,064 instructions; the exact 2026-10-27 value was not reproduced (the pre-fix driver file is not kept); the published cell keeps the flags every V8 cell uses"
+    }
+  }
+}

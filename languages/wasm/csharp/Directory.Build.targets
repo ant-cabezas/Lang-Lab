@@ -1,0 +1,10 @@
+<Project>
+  <!-- The .NET 9 SDK ships the wasi-experimental workload (runtime pack, AOT cross compiler, build
+       tasks, all 9.0.22) but its manifest registers a target that aborts every build with RID
+       wasi-wasm ("The 'wasi-experimental' workload is not supported in .NET 9."). Redefining the
+       target as a no-op is the only change: the packs and the MSBuild logic behind the guard are
+       the shipped ones. This route is therefore OFFICIALLY UNSUPPORTED; it is used here because
+       it is the only way to run Mono on WASI at the matrix's .NET major (9.0). Only the wasm build
+       tree (/build/wasm) sees this file; the native CoreCLR and Mono builds do not. -->
+  <Target Name="FailBuild" />
+</Project>

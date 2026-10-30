@@ -1,0 +1,7 @@
+0adb86c1509e56f6d1786fcffce2a59d06ad858e71657aec32a491329629c458  0001-configure-wasi.patch
+873829de3d6290aa05f118ee3c49b62113be0c4336c989714fa414f755d82df0  0002-zend-fibers-unsupported-on-wasi.patch
+84b77e5dd49a5bdad53de9eab849b912f37e31ac909e1bd330a34a393bfa2e9f  0003-zend-alloc-aligned-alloc-on-wasi.patch
+bc5517f7f7751bd374355dc6d4ecd2986f3027bbdfa65eada2be9d9f3311d37d  0005-random-from-wasi-random-get.patch
+b7116272b00ce42fd54137a3e8f2c2d32016d355861e8c557e9d9ad8da231aee  0006-getrusage-fields-on-wasi.patch
+56aa4cc70b71510cd92cbacbf4ac809b92e00ce097258bbe077b51ec7a87f47a  0007-fnmatch-on-wasi.patch
+22b0b5b3a16b93999397bad54e18dc2bca381e414400dce7e9d9bc691e7515c0  0008-zend-long-64bit-on-wasm32.patch

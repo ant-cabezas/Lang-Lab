@@ -1,0 +1,887 @@
+{
+ "study": "wasm-side-study",
+ "language": "java",
+ "date": "2026-10-29",
+ "isa": "arm64",
+ "ranked": false,
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "ratioMeaning": "column differential / native differential, same language version and compiler family (lower is better; 1.00 = no overhead over native)",
+ "spreadMeaning": "maxSpreadPct: largest (max - min) / median of I(n1) or I(n2) over the runs, percent (lower is better; 0 = bit-exact)",
+ "lane": {
+  "language": "java",
+  "dockerfile": "languages/wasm/java/Dockerfile",
+  "nativeImage": "lang-lab-wasm:java",
+  "nativeRun": "/app/java/native/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:java",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/java/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/java/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+   "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+   "runtimeLabel": "TeaVM 0.13.1 (frozen release; its WASI backend was removed in 0.14.0). NOT the JVM: not comparable to the matrix Java cells",
+   "teavm": "0.13.1 (teavm-cli sha256 eb31af75aaab678acaf01722bcf3c1f8b16de8dee488fc3e480272bc1a8afee1; full closure in languages/wasm/teavm/jars.lock)",
+   "frontEnd": "javac --release 25 (JDK 25.0.4.1, Debian openjdk-25-jdk-headless; TeaVM 0.13.1 rejects class file major version 70, so the matrix Java 26 cannot be used)",
+   "nativeBackend": "TeaVM -t C -O 3 --min-heap 32 --max-heap 512, all.c compiled by /opt/llvm/bin/clang 23.1.0 -O2 -lm",
+   "wasmBackend": "TeaVM -t wasi -O 3 --min-heap 32 --max-heap 512, wasmtime 50.0.0 compile (AOT) / Node 26.5.0"
+  },
+  "transforms": [
+   "none on the sources; the same class files (one front-end compile per benchmark) feed both TeaVM backends"
+  ],
+  "asymmetries": [
+   "primary: the native column is TeaVM's C backend + LLVM clang -O2; the wasm column is TeaVM's own wasm emitter (no LLVM, no binaryen pass) + Cranelift, so the ratio mixes backend quality with the wasm cost",
+   "TeaVM runtime and GC differ per backend: the C backend uses its C runtime (memory.c, glibc) and the wasi backend its own Java-written/wasm runtime with linear memory sized by --min-heap/--max-heap; same heap flags on both",
+   "the wasm backend runs without wasm exception-handling instructions (--wasm-use-exceptions not set); the C backend uses its own mechanism",
+   "front end is javac 25 not the matrix Java 26, and TeaVM replaces the JDK class library with its own classlib: no HotSpot, no JIT, no JVM GC anywhere",
+   "TeaVM 0.13.1 output is not byte-reproducible: two builds of the same Dockerfile gave identical tak.wasm but a different bigint.wasm of the same size (cause not investigated)"
+  ],
+  "na": {},
+  "columnRoles": {
+   "native": "control",
+   "wasmtime": "wasm",
+   "node": "wasm"
+  },
+  "diagnostics": {
+   "teavmOptionSensitivity": {
+    "how": "Java only, 6 benchmarks, same TeaVM options on both backends (teavm -t C then clang 23.1.0 -O2; teavm -t wasi then wasmtime 50), qemu insn differentials, every cell gated",
+    "geomeanWasmtimeOverNative": {
+     "O3 heap 32/512 (shipped)": 1.897,
+     "O2 heap 32/512": 2.477,
+     "O1 heap 32/512": 2.275,
+     "O3 heap 64/1024": 1.875
+    },
+    "perBenchmark": {
+     "fannkuch": [
+      1.851,
+      1.932,
+      1.864,
+      1.851
+     ],
+     "binary-trees": [
+      1.928,
+      1.941,
+      2.293,
+      1.797
+     ],
+     "polymorphism": [
+      1.99,
+      1.936,
+      2.046,
+      1.99
+     ],
+     "k-nucleotide": [
+      2.644,
+      4.896,
+      2.432,
+      2.644
+     ],
+     "sha256": [
+      1.641,
+      3.657,
+      3.67,
+      1.641
+     ],
+     "gbdt": [
+      1.512,
+      1.777,
+      1.777,
+      1.512
+     ]
+    },
+    "perBenchmarkOrder": [
+     "O3 shipped",
+     "O2",
+     "O1",
+     "O3 heap 64/1024"
+    ],
+    "reading": "the heap size barely matters (-1.2%, binary-trees only); a lower -O raises the ratio by 20 to 31%, almost all through k-nucleotide and sha256, so the shipped -O 3 is the setting most favourable to wasm among those tested"
+   }
+  }
+ },
+ "toolchain": [
+  "javac: javac 25.0.4.1 (--release 25)",
+  "kotlinc: info: kotlinc-jvm 2.1.0 (JRE 21.0.12.1+1-1-deb13u1-Debian)",
+  "scala: 3.6.2 (dotty.tools.dotc.Main)",
+  "teavm: 0.13.1 (-t C and -t wasi, -O 3, --min-heap 32 --max-heap 512)",
+  "clang: clang version 23.1.0 (https://github.com/llvm/llvm-project ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (-O2 -lm on TeaVM all.c)",
+  "wasmtime: wasmtime 50.0.0 (ebe5e8df1 2026-10-20)",
+  "node: v26.5.0"
+ ],
+ "summary": {
+  "wasmtime": {
+   "measured": 18,
+   "geomeanRatioToNative": 1.8807
+  },
+  "node": {
+   "measured": 18,
+   "geomeanRatioToNative": 2.0031
+  }
+ },
+ "results": [
+  {
+   "benchmark": "bigint",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 3539208,
+     "i_n2": 64657082,
+     "differential": 61117874,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 9245047,
+     "i_n2": 103723507,
+     "differential": 94478460,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00244
+    },
+    "node": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 604081273,
+     "i_n2": 704103646,
+     "differential": 100022373,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00023
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5458,
+    "node": 1.6365
+   }
+  },
+  {
+   "benchmark": "binary-trees",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 11426256,
+     "i_n2": 308963045,
+     "differential": 297536789,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 27197747,
+     "i_n2": 600881279,
+     "differential": 573683532,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00503
+    },
+    "node": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 1125927835,
+     "i_n2": 1833771513,
+     "differential": 707843678,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00022
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9281,
+    "node": 2.379
+   }
+  },
+  {
+   "benchmark": "blur",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 10054977,
+     "i_n2": 39394113,
+     "differential": 29339136,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 26642964,
+     "i_n2": 94017445,
+     "differential": 67374481,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00136
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 621230734,
+     "i_n2": 679041902,
+     "differential": 57811168,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00045
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.2964,
+    "node": 1.9704
+   }
+  },
+  {
+   "benchmark": "dijkstra",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 10904448,
+     "i_n2": 45593578,
+     "differential": 34689130,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 22068000,
+     "i_n2": 79896282,
+     "differential": 57828282,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00282
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 642216185,
+     "i_n2": 697352633,
+     "differential": 55136448,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00039
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.667,
+    "node": 1.5894
+   }
+  },
+  {
+   "benchmark": "fannkuch",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 2040175,
+     "i_n2": 163951693,
+     "differential": 161911518,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 7750604,
+     "i_n2": 307415748,
+     "differential": 299665144,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00507
+    },
+    "node": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 592240385,
+     "i_n2": 896709656,
+     "differential": 304469271,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0004
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.8508,
+    "node": 1.8805
+   }
+  },
+  {
+   "benchmark": "gbdt",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 217473350,
+     "i_n2": 864041676,
+     "differential": 646568326,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 334237035,
+     "i_n2": 1311832738,
+     "differential": 977595703,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00018
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 1099381267,
+     "i_n2": 2572658327,
+     "differential": 1473277060,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00026
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.512,
+    "node": 2.2786
+   }
+  },
+  {
+   "benchmark": "gemm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 28268417,
+     "i_n2": 221316353,
+     "differential": 193047936,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 64604457,
+     "i_n2": 480752943,
+     "differential": 416148486,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00037
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 673207305,
+     "i_n2": 1163657536,
+     "differential": 490450231,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00038
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1557,
+    "node": 2.5406
+   }
+  },
+  {
+   "benchmark": "k-means",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 17785327,
+     "i_n2": 70308202,
+     "differential": 52522875,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 56791612,
+     "i_n2": 214537728,
+     "differential": 157746116,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00181
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 670985079,
+     "i_n2": 855640771,
+     "differential": 184655692,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00031
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.0034,
+    "node": 3.5157
+   }
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 82783649,
+     "i_n2": 158339807,
+     "differential": 75556158,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 210071793,
+     "i_n2": 409838455,
+     "differential": 199766662,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00044
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 863171716,
+     "i_n2": 1042711690,
+     "differential": 179539974,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00032
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.6439,
+    "node": 2.3762
+   }
+  },
+  {
+   "benchmark": "lz77",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 19097312,
+     "i_n2": 77690889,
+     "differential": 58593577,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 26893012,
+     "i_n2": 97552894,
+     "differential": 70659882,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0017
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 623931991,
+     "i_n2": 702147781,
+     "differential": 78215790,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00048
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.2059,
+    "node": 1.3349
+   }
+  },
+  {
+   "benchmark": "mandelbrot",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 5683698,
+     "i_n2": 21935184,
+     "differential": 16251486,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 11865598,
+     "i_n2": 34919260,
+     "differential": 23053662,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00455
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 596775650,
+     "i_n2": 616864839,
+     "differential": 20089189,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0004
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.4186,
+    "node": 1.2361
+   }
+  },
+  {
+   "benchmark": "polymorphism",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 19133661,
+     "i_n2": 72645873,
+     "differential": 53512212,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 41728776,
+     "i_n2": 148239248,
+     "differential": 106510472,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00164
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 649045461,
+     "i_n2": 791554283,
+     "differential": 142508822,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00129
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.9904,
+    "node": 2.6631
+   }
+  },
+  {
+   "benchmark": "reverse-complement",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 4056401,
+     "i_n2": 15413446,
+     "differential": 11357045,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 13408703,
+     "i_n2": 41085655,
+     "differential": 27676952,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00524
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 609174881,
+     "i_n2": 639161458,
+     "differential": 29986577,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00054
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.437,
+    "node": 2.6404
+   }
+  },
+  {
+   "benchmark": "sha256",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 15448680,
+     "i_n2": 60989319,
+     "differential": 45540639,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 29091618,
+     "i_n2": 103814616,
+     "differential": 74722998,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00102
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 647419113,
+     "i_n2": 717342434,
+     "differential": 69923321,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00043
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.6408,
+    "node": 1.5354
+   }
+  },
+  {
+   "benchmark": "sort-search",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 22852494,
+     "i_n2": 98712730,
+     "differential": 75860236,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 52205130,
+     "i_n2": 213348919,
+     "differential": 161143789,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00229
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 656703625,
+     "i_n2": 804948208,
+     "differential": 148244583,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0003
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1242,
+    "node": 1.9542
+   }
+  },
+  {
+   "benchmark": "tak",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 2214500,
+     "i_n2": 75359502,
+     "differential": 73145002,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 7174698,
+     "i_n2": 119191043,
+     "differential": 112016345,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01126
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 1413373728,
+     "i_n2": 1506979839,
+     "differential": 93606111,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00022
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.5314,
+    "node": 1.2797
+   }
+  },
+  {
+   "benchmark": "viterbi",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 23073423,
+     "i_n2": 91481110,
+     "differential": 68407687,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 52360825,
+     "i_n2": 196878866,
+     "differential": 144518041,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00088
+    },
+    "node": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 668338809,
+     "i_n2": 846291643,
+     "differential": 177952834,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00024
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 2.1126,
+    "node": 2.6014
+   }
+  },
+  {
+   "benchmark": "vm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 98869638,
+     "i_n2": 394669638,
+     "differential": 295800000,
+     "runs": 2,
+     "determinism": "exact",
+     "maxSpreadPct": 0.0
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 171180159,
+     "i_n2": 672179896,
+     "differential": 500999737,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00053
+    },
+    "node": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 815801045,
+     "i_n2": 1436201427,
+     "differential": 620400382,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00023
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 1.6937,
+    "node": 2.0974
+   }
+  }
+ ],
+ "provenance": {
+  "assembledAt": "2026-10-29T15:00:00Z",
+  "imageDigests": {
+   "lang-lab-wasm:java": "sha256:dec576d62ba0c3888d46f9e1e2453855633bcc3521aeb0608d065a4145eb193b"
+  }
+ }
+}

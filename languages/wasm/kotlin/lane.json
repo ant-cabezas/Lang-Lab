@@ -1,0 +1,38 @@
+{
+  "language": "kotlin",
+  "dockerfile": "languages/wasm/kotlin/Dockerfile",
+  "nativeImage": "lang-lab-wasm:kotlin",
+  "nativeRun": "/app/kotlin/native/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:kotlin",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/kotlin/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/kotlin/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "runtimeLabel": "TeaVM 0.13.1 (frozen release; its WASI backend was removed in 0.14.0). NOT the JVM: not comparable to the matrix Kotlin cells",
+    "teavm": "0.13.1 (teavm-cli sha256 eb31af75aaab678acaf01722bcf3c1f8b16de8dee488fc3e480272bc1a8afee1; full closure in languages/wasm/teavm/jars.lock)",
+    "frontEnd": "kotlinc 2.1.0 (JVM target default, kotlin-stdlib 2.1.0 compiled in via TeaVM classpath), run on JRE 21",
+    "nativeBackend": "TeaVM -t C -O 3 --min-heap 32 --max-heap 512, all.c compiled by /opt/llvm/bin/clang 23.1.0 -O2 -lm",
+    "wasmBackend": "TeaVM -t wasi -O 3 --min-heap 32 --max-heap 512, wasmtime 50.0.0 compile (AOT) / Node 26.5.0"
+  },
+  "transforms": [
+    "none on the sources; the same class files (one front-end compile per benchmark) feed both TeaVM backends"
+  ],
+  "asymmetries": [
+    "primary: the native column is TeaVM's C backend + LLVM clang -O2; the wasm column is TeaVM's own wasm emitter (no LLVM, no binaryen pass) + Cranelift, so the ratio mixes backend quality with the wasm cost",
+    "TeaVM runtime and GC differ per backend: the C backend uses its C runtime (memory.c, glibc) and the wasi backend its own Java-written/wasm runtime with linear memory sized by --min-heap/--max-heap; same heap flags on both",
+    "the wasm backend runs without wasm exception-handling instructions (--wasm-use-exceptions not set); the C backend uses its own mechanism",
+    "front end is kotlinc 2.1.0 (on JRE 21), not the matrix build line, and TeaVM replaces the JDK class library with its own classlib: no HotSpot, no JIT, no JVM GC anywhere",
+    "TeaVM 0.13.1 output is not byte-reproducible: two builds of the same Dockerfile gave identical tak.wasm but a different bigint.wasm of the same size (cause not investigated)"
+  ],
+  "na": {},
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "language": "go",
+  "nativeImage": "lang-lab-go",
+  "nativeRun": "/app/{b}",
+  "nativeEnv": {
+    "GOMAXPROCS": "1",
+    "GODEBUG": "asyncpreemptoff=1"
+  },
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:go",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "versions": {
+    "go": "1.24.4",
+    "wasmtime": "50.0.0",
+    "node": "26.5.0",
+    "goTarballSha256Arm64": "d5501ee5aca0f258d5fe9bfaed401958445014495dc115f202d43d5210b45241"
+  },
+  "transforms": [],
+  "asymmetries": [
+    "GOOS=wasip1 GOARCH=wasm is single-threaded: one P, no sysmon thread, no parallel GC workers, no signal-based async preemption, cooperative scheduling only. Native Go under qemu counts instructions of those threads; the wasm build has none.",
+    "GOMAXPROCS and GODEBUG=asyncpreemptoff=1 are inert on wasip1 (one thread, no sysmon, no signal preemption), so wasmEnv carries only the study's TOKIO_WORKER_THREADS; GC stays on in every column",
+    "Heap grows through memory.grow with no scavenger returning memory to the OS; clocks and randomness go through WASI.",
+    "GOARCH=wasm int is 64-bit (same as native arm64): no source transform needed.",
+    "native column is lang-lab-go (golang:1.24.4-bookworm image); the wasm lane builds with the official go1.24.4 tarball on Debian trixie. /app/native/<b> in the lane image is a development cross-check of that difference, not a measured column",
+    "Go wasm modules are large (about 2.46 MB .wasm, 5.45 MB .cwasm) and carry the whole Go runtime; startup and V8's lazy TurboFan compilation cancel in the differential",
+    "TinyGo column not done: different compiler (LLVM), would need its own version and sha256 pin; headline is gc.",
+    "randomness: the V8 column gets a fixed random_get byte stream from run-node.mjs (Go seeds its runtime from it; with OS randomness the V8 count moved by about 9.5M instructions between seeds), while wasmtime has no option to fix it and passes OS randomness (Go on wasmtime moved at most 0.7% between runs)"
+  ],
+  "na": {},
+  "matrixPins": {
+    "go": "1.24.4"
+  },
+  "diagnostics": {
+    "envInertOnWasmtime": {
+      "how": "wasmtime run with --env GOMAXPROCS=1 --env GODEBUG=asyncpreemptoff=1 vs without, differential",
+      "fannkuch": [
+        373241217,
+        373250103
+      ],
+      "tak": [
+        205310030,
+        205313452
+      ],
+      "binary-trees": [
+        4693602850,
+        4688121487
+      ]
+    },
+    "nativeJitter": "native Go (matrix env) moves run to run by up to 5.4% (k-nucleotide, final run; 2.3% on binary-trees and k-nucleotide in the lane's first run) and about 2% on dijkstra: the main thread varies (garbage-collector pacing); the other guest threads are about 0.03% of I(n2)",
+    "v8Seed": {
+      "finding": "Go reads WASI random_get once at startup; the seed moves the V8 process count by about 9.5M (sha256) to 9.8M (tak) instructions in discrete levels; I(n1) and I(n2) drew independent seeds",
+      "modulesIdenticalAcrossBuilds": true,
+      "fixedSeedDifferentialTakN8minusN6": {
+        "fill 90": 271523511,
+        "fill 1": 271523523
+      }
+    }
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm"
+  }
+}

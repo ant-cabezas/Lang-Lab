@@ -1,0 +1,1471 @@
+{
+ "study": "wasm-side-study",
+ "language": "ruby",
+ "date": "2026-10-29",
+ "isa": "arm64",
+ "ranked": false,
+ "metric": "differential instructions I(n2)-I(n1), qemu-user + TCG insn plugin",
+ "ratioMeaning": "column differential / native differential, same language version and compiler family (lower is better; 1.00 = no overhead over native)",
+ "spreadMeaning": "maxSpreadPct: largest (max - min) / median of I(n1) or I(n2) over the runs, percent (lower is better; 0 = bit-exact)",
+ "lane": {
+  "language": "ruby",
+  "nativeImage": "lang-lab-wasm:ruby",
+  "nativeRun": "/app/rb-native/bin/ruby /app/{b}.rb",
+  "nativeEnv": {},
+  "nativeKind": "interp",
+  "wasmImage": "lang-lab-wasm:ruby",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled --dir /app::/app /app/rb-wasm/bin/ruby.cwasm /app/{b}.rb",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/rb-wasm/bin/ruby /app/{b}.rb",
+  "wasmKind": "interp",
+  "wasmEnv": {
+   "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+   "matrix": {
+    "image": "lang-lab-ruby",
+    "run": "ruby /app/{b}.rb",
+    "env": {},
+    "kind": "interp",
+    "role": "reference: the matrix Ruby cell (ruby:3.3-slim = CRuby 3.3.13, gcc -O3, --enable-shared, YJIT compiled in but not enabled), built from languages/ruby/Dockerfile with RUBY_VERSION=3.3, measured with the languages.json run template"
+   }
+  },
+  "versions": {
+   "ruby": "3.3.13 (cache.ruby-lang.org ruby-3.3.13.tar.gz, sha256 4cae72e971bd1cdb20ca87d299111182417c5276c162de8ead0ab0531426cd61, matches the official index); the matrix image reports ruby 3.3.13 (2026-10-23 revision af48f08f21) [aarch64-linux]",
+   "nativeCompiler": "clang 23.1.0 (official LLVM release, /opt/llvm/bin/clang)",
+   "wasmCompiler": "clang 23.1.0 (wasi-sdk 34), target wasm32-wasi (wasi preview1)",
+   "binaryen": "version_133 (binaryen-version_133-aarch64-linux.tar.gz, sha256 89c07ea56faf38d0fbecf36ca8ec0721756716185f265b568e133d427f299bf8)",
+   "wasmtime": "50.0.0",
+   "node": "26.5.0",
+   "configureCommon": "--disable-install-doc --disable-shared --with-static-linked-ext --with-ext=ripper,monitor --disable-yjit --disable-rjit --disable-fortify-source stack_protector=no debugflags= (optflags default -O3 -fno-fast-math on both)",
+   "configureNativeOnly": "CC=/opt/llvm/bin/clang; -mbranch-protection=pac-ret removed from the generated Makefile",
+   "configureWasmOnly": "--host=wasm32-unknown-wasi --with-baseruby=/app/rb-native/bin/ruby CPPFLAGS=-Dmprotect=rb_wasm_mprotect_stub LDFLAGS=-Wl,-z,stack-size=16777216; configure adds -D_WASI_EMULATED_{SIGNAL,MMAN,GETPID,PROCESS_CLOCKS} with the matching wasi-emulated libraries, coroutine_type=asyncify, and POSTLINK = wasm-opt --asyncify -O3 --pass-arg=asyncify-ignore-imports",
+   "wasmtimeCompileFlags": "none (wasmtime compile with defaults)",
+   "wasmtimeRunFlags": "-C cache=n, TOKIO_WORKER_THREADS=1 (the study's binding runtime flags, docs/wasm-study.md)",
+   "nodeFlags": "--predictable --single-threaded --single-threaded-gc --no-liftoff (the study's binding runtime flags); UV_THREADPOOL_SIZE=1 comes from the base image environment"
+  },
+  "transforms": [
+   "No benchmark source is transformed: the canonical languages/ruby/*.rb run unchanged in every column.",
+   "Interpreter build, wasm only: CPPFLAGS=-Dmprotect=rb_wasm_mprotect_stub. CRuby 3.3 wasm/missing.c defines a weak no-op mprotect; wasi-sdk 34's libwasi-emulated-mman.a, linked for mmap, now also defines a strong mprotect that returns EINVAL for the unaligned fiber-pool guard page, so fiber_pool_expand raised FiberError inside Init_Cont, ruby_setup returned state 6 and ruby exited 1 with no output for every program (evidence: wasm backtrace fiber_pool_expand <- Init_Cont <- rb_call_inits <- ruby_setup; a standalone wasi-sdk 34 test of mmap + mprotect(PROT_NONE) returns EINVAL). The rename sends every CRuby call to CRuby's own stub, the behaviour upstream intends; the native build does not use it."
+  ],
+  "asymmetries": [
+   "wasm32 VALUE is 32 bits: Integer#size is 4 on wasm vs 8 natively, so Fixnum covers 31 bits instead of 63 and there are no flonums. Every Float result and every integer outside +-2^30 (poly-hash products near 3.1e10, LCG states, sha256/vm 32-bit words, packed heap keys, bigint limbs) is a heap object on wasm. Measured: 1000 float adds allocate 1003 objects on wasm vs 3 natively; 1000 steps of h=(h*31+i)%1000000007 allocate 4848 vs 1. Heap objects per run at n2 for every benchmark are in diagnostics.heapObjectsPerRunAtN2",
+   "Asyncify: setjmp/longjmp (every Ruby exception and tag), fibers and the GC's machine-register scan are implemented by unwinding/rewinding the wasm stack, and wasm-opt --asyncify instruments the whole module (asyncify-ignore-imports) with save/restore checks on every call path. Natively these are a libc setjmp and a register spill.",
+   "wasm-opt --asyncify -O3 is a post-link optimisation pass with no native counterpart; the native build gets only clang -O3.",
+   "Allocator and libc: native links glibc (ptmalloc, static libruby, dynamic glibc); wasm links wasi-libc (dlmalloc) with the _WASI_EMULATED_{SIGNAL,MMAN,GETPID,PROCESS_CLOCKS} emulations; mmap is emulated by malloc.",
+   "wasi-sdk 34's clang 23.1.0 and the official LLVM 23.1.0 release are built from different commits of the same release.",
+   "Residual hardening: after removing pac-ret from the CRuby objects, 4 paciasp instructions remain in the native binary (from the toolchain's crt/libc objects), none on wasm.",
+   "Stdlib reachability: the native column loads its stdlib from /app/rb-native/lib/ruby, the wasm columns from /app/rb-wasm/lib/ruby through the /app preopen (wasmtime --dir /app::/app, run-node.mjs preopens /app). Both load the same 53 features at startup (rubygems, did_you_mean, error_highlight, syntax_suggest, monitor, encdb, transdb); the matrix image also loads 53 from /usr/local/lib/ruby.",
+   "YJIT: off in every column. Lane builds are configured --disable-yjit (defined?(RubyVM::YJIT) is nil); the matrix image has YJIT compiled in but not enabled (RubyVM::YJIT.enabled? is false; no --yjit flag, no RUBY_YJIT_ENABLE). The wasm build has no JIT of any kind.",
+   "Matrix reference vs native-same-build: gcc vs clang 23.1.0; --enable-shared (libruby.so, -fPIC) vs static; extensions as shared objects vs statically linked ripper+monitor; -ggdb3 vs no debug info; fortify, stack protector and pac-ret present vs removed; YJIT compiled in (off) vs compiled out.",
+   "Hash seeds: CRuby seeds its hash function from the OS (getrandom natively, WASI random_get on wasm), in every column; any run-to-run jitter in Hash-heavy benchmarks comes from that and is reported as measured.",
+   "stack: the wasm interpreter links with -Wl,-z,stack-size=16777216 (16 MiB, CRuby's wasm recipe), native has the 8 MiB process stack"
+  ],
+  "na": {},
+  "matrixPins": {
+   "ruby": "3.3"
+  },
+  "diagnostics": {
+   "heapObjectsPerRunAtN2": {
+    "how": "languages/wasm/ruby/alloc.rb, unmodified sources, run outside qemu, native -> wasm",
+    "bigint": [
+     53604,
+     25162724
+    ],
+    "mandelbrot": [
+     70606,
+     13154154
+    ],
+    "polymorphism": [
+     63796,
+     10940056
+    ],
+    "sha256": [
+     83813,
+     40113460
+    ],
+    "vm": [
+     53665,
+     5323786
+    ],
+    "dijkstra": [
+     270997,
+     2774549
+    ],
+    "reverse-complement": [
+     53636,
+     1989464
+    ],
+    "sort-search": [
+     1000036,
+     3672129
+    ],
+    "gbdt": [
+     53949,
+     1741777
+    ],
+    "gemm": [
+     53657,
+     1031016
+    ],
+    "viterbi": [
+     53800,
+     923238
+    ],
+    "blur": [
+     1102257,
+     1751996
+    ],
+    "k-means": [
+     53881,
+     258374
+    ],
+    "lz77": [
+     53672,
+     248137
+    ],
+    "binary-trees": [
+     3275852,
+     3281572
+    ],
+    "fannkuch": [
+     1142299,
+     1148012
+    ],
+    "k-nucleotide": [
+     731674,
+     737386
+    ],
+    "tak": [
+     53533,
+     59251
+    ]
+   }
+  },
+  "columnRoles": {
+   "native": "control",
+   "wasmtime": "wasm",
+   "node": "wasm",
+   "matrix": "reference"
+  }
+ },
+ "toolchain": [
+  "cruby: 3.3.13 (sha256 4cae72e971bd1cdb20ca87d299111182417c5276c162de8ead0ab0531426cd61)",
+  "native: ruby 3.3.13 (2026-10-23 revision af48f08f21) [aarch64-linux]",
+  "native cc: clang version 23.1.0 (https://github.com/llvm/llvm-project ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)",
+  "wasm cc: clang version 23.1.0-wasi-sdk (https://github.com/llvm/llvm-project 895aa2c896ada719451be2e3673c83da8ddf1141) (wasi-sdk 34)",
+  "binaryen: wasm-opt version 133 (version_133) (sha256 89c07ea56faf38d0fbecf36ca8ec0721756716185f265b568e133d427f299bf8)",
+  "wasmtime: wasmtime 50.0.0 (ebe5e8df1 2026-10-20)",
+  "wasmtime-compile-flags: ",
+  "node: v26.5.0",
+  "serial make retry: none",
+  "--- native flags",
+  "CC = /opt/llvm/bin/clang",
+  "optflags = -O3 -fno-fast-math",
+  "debugflags = ",
+  "warnflags = -Wall -Wextra -Wextra-tokens -Wdeprecated-declarations -Wdivision-by-zero -Wdiv-by-zero -Wimplicit-function-declaration -Wimplicit-int -Wpointer-arith -Wshorten-64-to-32 -Wwrite-strings -Wold-style-definition -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wunused-variable -Wmisleading-indentation -Wundef ",
+  "XCFLAGS = -fno-strict-overflow -fvisibility=hidden -fexcess-precision=standard -DRUBY_EXPORT $(INCFLAGS) $(_RUBY_DEVEL_enabled:yes=-DRUBY_DEVEL=1)",
+  "CPPFLAGS =  $(DEFS) ${cppflags} $(USE_RUBYGEMS_:no=-DDISABLE_RUBYGEMS=1)",
+  "LDFLAGS =  $(CFLAGS) -L.  -rdynamic -Wl,-export-dynamic",
+  "XLDFLAGS =  $(EXTLDFLAGS)",
+  "LIBS = -lm -lpthread  $(EXTLIBS)",
+  "MAINLIBS = -lz -lrt -lrt -lgmp -ldl -lcrypt -lm -lpthread ",
+  "configure_args =  '--prefix=/app/rb-native' '--disable-install-doc' '--disable-shared' '--with-static-linked-ext' '--with-ext=ripper,monitor' '--disable-yjit' '--disable-rjit' '--disable-fortify-source' 'stack_protector=no' 'debugflags=' 'CC=/opt/llvm/bin/clang'",
+  "--- wasm flags",
+  "CC = $(CC_WRAPPER) /opt/wasi-sdk/bin/clang",
+  "optflags = -O3 -fno-fast-math",
+  "debugflags = ",
+  "warnflags = -Wall -Wextra -Wextra-tokens -Wdeprecated-declarations -Wdivision-by-zero -Wdiv-by-zero -Wimplicit-function-declaration -Wimplicit-int -Wpointer-arith -Wshorten-64-to-32 -Wwrite-strings -Wold-style-definition -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wunused-variable -Wmisleading-indentation -Wundef ",
+  "XCFLAGS = -fno-strict-overflow -fvisibility=hidden -fexcess-precision=standard -DRUBY_EXPORT $(INCFLAGS) $(_RUBY_DEVEL_enabled:yes=-DRUBY_DEVEL=1)",
+  "CPPFLAGS = -Dmprotect=rb_wasm_mprotect_stub -D_WASI_EMULATED_SIGNAL -D_WASI_EMULATED_MMAN -D_WASI_EMULATED_GETPID -D_WASI_EMULATED_PROCESS_CLOCKS $(DEFS) ${cppflags} $(USE_RUBYGEMS_:no=-DDISABLE_RUBYGEMS=1)",
+  "LDFLAGS =  $(CFLAGS) -L. -Wl,-z,stack-size=16777216",
+  "XLDFLAGS =  $(EXTLDFLAGS)",
+  "LIBS = -lm -lwasi-emulated-mman -lwasi-emulated-signal -lwasi-emulated-getpid -lwasi-emulated-process-clocks  $(EXTLIBS)",
+  "MAINLIBS = -ldl -lcrypt -lm -lwasi-emulated-mman -lwasi-emulated-signal -lwasi-emulated-getpid -lwasi-emulated-process-clocks ",
+  "POSTLINK = $(WASMOPT) --asyncify $(wasmoptflags) --pass-arg=asyncify-ignore-imports -o $@ $@; :",
+  "configure_args =  '--host=wasm32-unknown-wasi' '--build=aarch64-unknown-linux-gnu' '--prefix=/app/rb-wasm' '--with-baseruby=/app/rb-native/bin/ruby' '--disable-install-doc' '--disable-shared' '--with-static-linked-ext' '--with-ext=ripper,monitor' '--disable-yjit' '--disable-rjit' '--disable-fortify-source' 'stack_protector=no' 'debugflags=' 'CPPFLAGS=-Dmprotect=rb_wasm_mprotect_stub' 'LDFLAGS=-Wl,-z,stack-size=16777216' 'build_alias=aarch64-unknown-linux-gnu' 'host_alias=wasm32-unknown-wasi'",
+  "--- config.h diff (native vs wasm)",
+  "34,39c34,35",
+  "< #define HAVE_PTHREAD_H 1",
+  "< #define _REENTRANT 1",
+  "< #define _THREAD_SAFE 1",
+  "< #define HAVE_LIBPTHREAD 1",
+  "< #define THREAD_IMPL_H \"thread_pthread.h\"",
+  "< #define THREAD_IMPL_SRC \"thread_pthread.c\"",
+  "---",
+  "> #define THREAD_IMPL_H \"thread_none.h\"",
+  "> #define THREAD_IMPL_SRC \"thread_none.c\"",
+  "45,46d40",
+  "< #define HAVE_SYS_WAIT_H 1",
+  "< #define HAVE_GRP_H 1",
+  "53,55d46",
+  "< #define HAVE_PWD_H 1",
+  "< #define HAVE_SANITIZER_ASAN_INTERFACE_H 1",
+  "< #define HAVE_SANITIZER_MSAN_INTERFACE_H 1",
+  "63d53",
+  "< #define HAVE_SYS_PRCTL_H 1",
+  "67d56",
+  "< #define HAVE_SYS_SENDFILE_H 1",
+  "70d58",
+  "< #define HAVE_SYS_SYSMACROS_H 1",
+  "76d63",
+  "< #define HAVE_UCONTEXT_H 1",
+  "78d64",
+  "< #define HAVE_SYS_EPOLL_H 1",
+  "80,82d65",
+  "< #define HAVE_GMP_H 1",
+  "< #define HAVE_LIBGMP 1",
+  "< #define __CHAR_UNSIGNED__ 1",
+  "89c72",
+  "< #define SIZEOF_LONG 8",
+  "---",
+  "> #define SIZEOF_LONG 4",
+  "94c77",
+  "< #define SIZEOF_VOIDP 8",
+  "---",
+  "> #define SIZEOF_VOIDP 4",
+  "124,126c107,109",
+  "< #define TIMET2NUM(v) LONG2NUM(v)",
+  "< #define NUM2TIMET(v) NUM2LONG(v)",
+  "< #define PRI_TIMET_PREFIX PRI_LONG_PREFIX",
+  "---",
+  "> #define TIMET2NUM(v) LL2NUM(v)",
+  "> #define NUM2TIMET(v) NUM2LL(v)",
+  "> #define PRI_TIMET_PREFIX PRI_LL_PREFIX",
+  "130,132c113,115",
+  "< #define DEVT2NUM(v) ULONG2NUM(v)",
+  "< #define NUM2DEVT(v) NUM2ULONG(v)",
+  "< #define PRI_DEVT_PREFIX PRI_LONG_PREFIX",
+  "---",
+  "> #define DEVT2NUM(v) ULL2NUM(v)",
+  "> #define NUM2DEVT(v) NUM2ULL(v)",
+  "> #define PRI_DEVT_PREFIX PRI_LL_PREFIX",
+  "139,143c122,125",
+  "< #define HAVE_RLIM_T 1",
+  "< #define rb_rlim_t rlim_t",
+  "< #define SIGNEDNESS_OF_RLIM_T +1",
+  "< #define RLIM2NUM(v) ULONG2NUM(v)",
+  "< #define NUM2RLIM(v) NUM2ULONG(v)",
+  "---",
+  "> #define rb_rlim_t long",
+  "> #define SIGNEDNESS_OF_RLIM_T -1",
+  "> #define RLIM2NUM(v) LONG2NUM(v)",
+  "> #define NUM2RLIM(v) NUM2LONG(v)",
+  "148,150c130,132",
+  "< #define OFFT2NUM(v) LONG2NUM(v)",
+  "< #define NUM2OFFT(v) NUM2LONG(v)",
+  "< #define PRI_OFFT_PREFIX PRI_LONG_PREFIX",
+  "---",
+  "> #define OFFT2NUM(v) LL2NUM(v)",
+  "> #define NUM2OFFT(v) NUM2LL(v)",
+  "> #define PRI_OFFT_PREFIX PRI_LL_PREFIX",
+  "153,156d134",
+  "< #define SIGNEDNESS_OF_CLOCKID_T -1",
+  "< #define CLOCKID2NUM(v) INT2NUM(v)",
+  "< #define NUM2CLOCKID(v) NUM2INT(v)",
+  "< #define PRI_CLOCKID_PREFIX PRI_INT_PREFIX",
+  "190,191c168,169",
+  "< #define SIZEOF_SIZE_T 8",
+  "< #define SIZEOF_PTRDIFF_T 8",
+  "---",
+  "> #define SIZEOF_SIZE_T 4",
+  "> #define SIZEOF_PTRDIFF_T 4",
+  "200c178",
+  "< #define SIZEOF_STRUCT_STAT_ST_INO SIZEOF_LONG",
+  "---",
+  "> #define SIZEOF_STRUCT_STAT_ST_INO SIZEOF_LONG_LONG",
+  "206d183",
+  "< #define HAVE_STRUCT_STATX_STX_BTIME 1",
+  "211d187",
+  "< #define HAVE_RB_FD_INIT 1",
+  "235c211",
+  "< #define SIZEOF_INTPTR_T 8",
+  "---",
+  "> #define SIZEOF_INTPTR_T 4",
+  "237c213",
+  "< #define SIZEOF_UINTPTR_T 8",
+  "---",
+  "> #define SIZEOF_UINTPTR_T 4",
+  "239,241c215,216",
+  "< #define SIZEOF_SSIZE_T 8",
+  "< #define STACK_END_ADDRESS __libc_stack_end",
+  "< #define GETGROUPS_T gid_t",
+  "---",
+  "> #define SIZEOF_SSIZE_T 4",
+  "> #define GETGROUPS_T int",
+  "244,245d218",
+  "< #define HAVE_DUP 1",
+  "< #define HAVE_DUP2 1",
+  "252d224",
+  "< #define HAVE_FLOCK 1",
+  "265d236",
+  "< #define SPT_TYPE SPT_REUSEARGV",
+  "267,271c238",
+  "< #define HAVE_FORK 1",
+  "< #define HAVE_VFORK 1",
+  "< #define HAVE_WORKING_VFORK 1",
+  "< #define HAVE_WORKING_FORK 1",
+  "< #define HAVE__LONGJMP 1",
+  "---",
+  "> #define vfork fork",
+  "277,278d243",
+  "< #define HAVE_CHOWN 1",
+  "< #define HAVE_CHROOT 1",
+  "280d244",
+  "< #define HAVE_COPY_FILE_RANGE 1",
+  "284d247",
+  "< #define HAVE_DL_ITERATE_PHDR 1",
+  "286d248",
+  "< #define HAVE_DLADDR 1",
+  "288,295d249",
+  "< #define HAVE_EACCESS 1",
+  "< #define HAVE_ENDGRENT 1",
+  "< #define HAVE_EVENTFD 1",
+  "< #define HAVE_EXECL 1",
+  "< #define HAVE_EXECLE 1",
+  "< #define HAVE_EXECV 1",
+  "< #define HAVE_EXECVE 1",
+  "< #define HAVE_FCHDIR 1",
+  "297d250",
+  "< #define HAVE_FCHOWN 1",
+  "305d257",
+  "< #define HAVE_FTRUNCATE64 1",
+  "307d258",
+  "< #define HAVE_GETEGID 1",
+  "309,328d259",
+  "< #define HAVE_GETEUID 1",
+  "< #define HAVE_GETGID 1",
+  "< #define HAVE_GETGRNAM 1",
+  "< #define HAVE_GETGRNAM_R 1",
+  "< #define HAVE_GETGROUPS 1",
+  "< #define HAVE_GETLOGIN 1",
+  "< #define HAVE_GETLOGIN_R 1",
+  "< #define HAVE_GETPGID 1",
+  "< #define HAVE_GETPGRP 1",
+  "< #define HAVE_GETPPID 1",
+  "< #define HAVE_GETPRIORITY 1",
+  "< #define HAVE_GETPWNAM 1",
+  "< #define HAVE_GETPWNAM_R 1",
+  "< #define HAVE_GETPWUID 1",
+  "< #define HAVE_GETPWUID_R 1",
+  "< #define HAVE_GETRANDOM 1",
+  "< #define HAVE_GETRESGID 1",
+  "< #define HAVE_GETRESUID 1",
+  "< #define HAVE_GETRLIMIT 1",
+  "< #define HAVE_GETSID 1",
+  "330d260",
+  "< #define HAVE_GETUID 1",
+  "332,333d261",
+  "< #define HAVE_GRANTPT 1",
+  "< #define HAVE_INITGROUPS 1",
+  "335,338d262",
+  "< #define HAVE_KILL 1",
+  "< #define HAVE_KILLPG 1",
+  "< #define HAVE_LCHMOD 1",
+  "< #define HAVE_LCHOWN 1",
+  "341d264",
+  "< #define HAVE_LOCKF 1",
+  "344d266",
+  "< #define HAVE_LUTIMES 1",
+  "346d267",
+  "< #define HAVE_MALLOC_TRIM 1",
+  "348d268",
+  "< #define HAVE_MEMALIGN 1",
+  "352,353d271",
+  "< #define HAVE_MKFIFO 1",
+  "< #define HAVE_MKNOD 1",
+  "356d273",
+  "< #define HAVE_MREMAP 1",
+  "358d274",
+  "< #define HAVE_PCLOSE 1",
+  "362d277",
+  "< #define HAVE_POPEN 1",
+  "364d278",
+  "< #define HAVE_POSIX_MADVISE 1",
+  "373d286",
+  "< #define HAVE_SCHED_GETAFFINITY 1",
+  "375,376d287",
+  "< #define HAVE_SENDFILE 1",
+  "< #define HAVE_SETEGID 1",
+  "378,393d288",
+  "< #define HAVE_SETEUID 1",
+  "< #define HAVE_SETGID 1",
+  "< #define HAVE_SETGROUPS 1",
+  "< #define HAVE_SETPGID 1",
+  "< #define HAVE_SETPGRP 1",
+  "< #define HAVE_SETREGID 1",
+  "< #define HAVE_SETRESGID 1",
+  "< #define HAVE_SETRESUID 1",
+  "< #define HAVE_SETREUID 1",
+  "< #define HAVE_SETRLIMIT 1",
+  "< #define HAVE_SETSID 1",
+  "< #define HAVE_SETUID 1",
+  "< #define HAVE_SHUTDOWN 1",
+  "< #define HAVE_SIGACTION 1",
+  "< #define HAVE_SIGALTSTACK 1",
+  "< #define HAVE_SIGPROCMASK 1",
+  "397d291",
+  "< #define HAVE_SYSCALL 1",
+  "399d292",
+  "< #define HAVE_SYSTEM 1",
+  "405,407d297",
+  "< #define HAVE_TRUNCATE64 1",
+  "< #define HAVE_TZSET 1",
+  "< #define HAVE_UMASK 1",
+  "411,413c301",
+  "< #define HAVE_WAIT4 1",
+  "< #define HAVE_WAITPID 1",
+  "< #define HAVE_STATX 1",
+  "---",
+  "> #define NO_GETCWD_MALLOC 1",
+  "438d325",
+  "< #define HAVE_GNU_QSORT_R 1",
+  "441,444d327",
+  "< #define HAVE_LIBRT 1",
+  "< #define HAVE_LIBRT 1",
+  "< #define HAVE_TIMER_CREATE 1",
+  "< #define HAVE_TIMER_SETTIME 1",
+  "448d330",
+  "< #define HAVE_DAYLIGHT 1",
+  "450c332",
+  "< #define POSIX_SIGNAL 1",
+  "---",
+  "> #define LOCALTIME_OVERFLOW_PROBLEM 1",
+  "451a334",
+  "> #define GETPGRP_VOID 1",
+  "453d335",
+  "< #define USE_COPY_FILE_RANGE 1",
+  "455,471c337,338",
+  "< #define STACK_GROW_DIRECTION -1",
+  "< #define COROUTINE_H \"coroutine/arm64/Context.h\"",
+  "< #define HAVE_SCHED_YIELD 1",
+  "< #define HAVE_PTHREAD_ATTR_SETINHERITSCHED 1",
+  "< #define HAVE_PTHREAD_ATTR_GETSTACK 1",
+  "< #define HAVE_PTHREAD_ATTR_GETGUARDSIZE 1",
+  "< #define HAVE_PTHREAD_CONDATTR_SETCLOCK 1",
+  "< #define HAVE_PTHREAD_SETNAME_NP 1",
+  "< #define HAVE_PTHREAD_SIGMASK 1",
+  "< #define HAVE_PTHREAD_GETATTR_NP 1",
+  "< #define SET_CURRENT_THREAD_NAME(name) pthread_setname_np(pthread_self(), name)",
+  "< #define SET_ANOTHER_THREAD_NAME(thid,name) pthread_setname_np(thid, name)",
+  "< #define RB_THREAD_LOCAL_SPECIFIER _Thread_local",
+  "< #define DEFINE_MCONTEXT_PTR(mc, uc) mcontext_t *mc = &(uc)->uc_mcontext",
+  "< #define HAVE_GETCONTEXT 1",
+  "< #define HAVE_SETCONTEXT 1",
+  "< #define HAVE_SYS_USER_H 1",
+  "---",
+  "> #define STACK_GROW_DIRECTION 0",
+  "> #define COROUTINE_H \"coroutine/asyncify/Context.h\"",
+  "475,477d341",
+  "< #define USE_ELF 1",
+  "< #define HAVE_ELF_H 1",
+  "< #define HAVE_LIBZ 1",
+  "479d342",
+  "< #define HAVE_BACKTRACE 1",
+  "482,484c345,347",
+  "< #define HAVE__SETJMP 1",
+  "< #define RUBY_SETJMP(env) _setjmp((env))",
+  "< #define RUBY_LONGJMP(env,val) _longjmp((env),val)",
+  "---",
+  "> #define CROSS_COMPILING 1",
+  "> #define RUBY_SETJMP(env) setjmp((env))",
+  "> #define RUBY_LONGJMP(env,val) longjmp((env),val)",
+  "488c351",
+  "< #define RUBY_PLATFORM \"aarch64-linux\"",
+  "---",
+  "> #define RUBY_PLATFORM \"wasm32-wasi\""
+ ],
+ "summary": {
+  "wasmtime": {
+   "measured": 18,
+   "geomeanRatioToNative": 7.1855
+  },
+  "node": {
+   "measured": 18,
+   "geomeanRatioToNative": 8.7171
+  },
+  "matrix": {
+   "measured": 18,
+   "geomeanRatioToNative": 1.4134
+  }
+ },
+ "results": [
+  {
+   "benchmark": "bigint",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 391401924,
+     "i_n2": 3836136691,
+     "differential": 3444734767,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0116
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 5681731978,
+     "i_n2": 102139587945,
+     "differential": 96457855967,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00226
+    },
+    "node": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 44391630879,
+     "i_n2": 149272815399,
+     "differential": 104881184520,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 1500,
+     "n2": 6000,
+     "i_n1": 537900005,
+     "i_n2": 5447332019,
+     "differential": 4909432014,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01645
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 28.0015,
+    "node": 30.4468,
+    "matrix": 1.4252
+   }
+  },
+  {
+   "benchmark": "binary-trees",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 474120504,
+     "i_n2": 6451527396,
+     "differential": 5977406892,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01675
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 1770802912,
+     "i_n2": 22776992456,
+     "differential": 21006189544,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.85465
+    },
+    "node": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 39955506345,
+     "i_n2": 64982398880,
+     "differential": 25026892535,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 10,
+     "n2": 14,
+     "i_n1": 626139697,
+     "i_n2": 8552269369,
+     "differential": 7926129672,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.021
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.5143,
+    "node": 4.1869,
+    "matrix": 1.326
+   }
+  },
+  {
+   "benchmark": "blur",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 1275862541,
+     "i_n2": 4467758890,
+     "differential": 3191896349,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00187
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 5444446271,
+     "i_n2": 19246538594,
+     "differential": 13802092323,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.19905
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 44687224741,
+     "i_n2": 61678606917,
+     "differential": 16991382176,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 1679935954,
+     "i_n2": 5876020694,
+     "differential": 4196084740,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00571
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.3241,
+    "node": 5.3233,
+    "matrix": 1.3146
+   }
+  },
+  {
+   "benchmark": "dijkstra",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 500472799,
+     "i_n2": 1396172801,
+     "differential": 895700002,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00816
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 4085887431,
+     "i_n2": 14012589593,
+     "differential": 9926702162,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00802
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 42834759468,
+     "i_n2": 54166497907,
+     "differential": 11331738439,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 690581892,
+     "i_n2": 1970923014,
+     "differential": 1280341122,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00728
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 11.0826,
+    "node": 12.6513,
+    "matrix": 1.4294
+   }
+  },
+  {
+   "benchmark": "fannkuch",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 273893772,
+     "i_n2": 6185328813,
+     "differential": 5911435041,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01389
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 1078954158,
+     "i_n2": 23333420669,
+     "differential": 22254466511,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01553
+    },
+    "node": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 39325274011,
+     "i_n2": 69856465581,
+     "differential": 30531191570,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 7,
+     "n2": 9,
+     "i_n1": 369681025,
+     "i_n2": 9038899878,
+     "differential": 8669218853,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01893
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.7646,
+    "node": 5.1648,
+    "matrix": 1.4665
+   }
+  },
+  {
+   "benchmark": "gbdt",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 7649263958,
+     "i_n2": 29689684789,
+     "differential": 22040420831,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0003
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 30783453983,
+     "i_n2": 111882310943,
+     "differential": 81098856960,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00042
+    },
+    "node": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 78125408683,
+     "i_n2": 185809776731,
+     "differential": 107684368048,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 5000,
+     "n2": 20000,
+     "i_n1": 10623465955,
+     "i_n2": 41277083712,
+     "differential": 30653617757,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00054
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.6796,
+    "node": 4.8858,
+    "matrix": 1.3908
+   }
+  },
+  {
+   "benchmark": "gemm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 1237896009,
+     "i_n2": 8296952156,
+     "differential": 7059056147,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00222
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 5563953630,
+     "i_n2": 34901465897,
+     "differential": 29337512267,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0014
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 45370678014,
+     "i_n2": 85467413540,
+     "differential": 40096735526,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 1747948141,
+     "i_n2": 11835624099,
+     "differential": 10087675958,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00253
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.156,
+    "node": 5.6802,
+    "matrix": 1.429
+   }
+  },
+  {
+   "benchmark": "k-means",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 1127826490,
+     "i_n2": 3879752166,
+     "differential": 2751925676,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00155
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 4611988124,
+     "i_n2": 15893744387,
+     "differential": 11281756263,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01029
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 44185693504,
+     "i_n2": 59528116391,
+     "differential": 15342422887,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 2000,
+     "n2": 8000,
+     "i_n1": 1619188410,
+     "i_n2": 5637291007,
+     "differential": 4018102597,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00498
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.0996,
+    "node": 5.5752,
+    "matrix": 1.4601
+   }
+  },
+  {
+   "benchmark": "k-nucleotide",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 1163625599,
+     "i_n2": 1529167134,
+     "differential": 365541535,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00488
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 4390304288,
+     "i_n2": 5709502560,
+     "differential": 1319198272,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00289
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 42988851742,
+     "i_n2": 44519795960,
+     "differential": 1530944218,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 9e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 200000,
+     "i_n1": 1451036043,
+     "i_n2": 1915332272,
+     "differential": 464296229,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00655
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 3.6089,
+    "node": 4.1882,
+    "matrix": 1.2702
+   }
+  },
+  {
+   "benchmark": "lz77",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 627375827,
+     "i_n2": 1933566374,
+     "differential": 1306190547,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00286
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 2762566111,
+     "i_n2": 8708635555,
+     "differential": 5946069444,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0112
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 41659407948,
+     "i_n2": 49712709250,
+     "differential": 8053301302,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 6000,
+     "n2": 24000,
+     "i_n1": 908387606,
+     "i_n2": 2874243004,
+     "differential": 1965855398,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00238
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.5522,
+    "node": 6.1655,
+    "matrix": 1.505
+   }
+  },
+  {
+   "benchmark": "mandelbrot",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 588126949,
+     "i_n2": 1719639545,
+     "differential": 1131512596,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00479
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 10679566583,
+     "i_n2": 40219136585,
+     "differential": 29539570002,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0225
+    },
+    "node": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 49279253933,
+     "i_n2": 80535622437,
+     "differential": 31256368504,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 128,
+     "n2": 256,
+     "i_n1": 826139741,
+     "i_n2": 2457575545,
+     "differential": 1631435804,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01275
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 26.1063,
+    "node": 27.6235,
+    "matrix": 1.4418
+   }
+  },
+  {
+   "benchmark": "polymorphism",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 673413862,
+     "i_n2": 1949892045,
+     "differential": 1276478183,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01225
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 11550347210,
+     "i_n2": 41178527532,
+     "differential": 29628180322,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0006
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 50508682919,
+     "i_n2": 82104326028,
+     "differential": 31595643109,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 50,
+     "n2": 200,
+     "i_n1": 856799670,
+     "i_n2": 2438981280,
+     "differential": 1582181610,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00527
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 23.2109,
+    "node": 24.7522,
+    "matrix": 1.2395
+   }
+  },
+  {
+   "benchmark": "reverse-complement",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 351443346,
+     "i_n2": 783604477,
+     "differential": 432161131,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01894
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 2885915022,
+     "i_n2": 8999299998,
+     "differential": 6113384976,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.04912
+    },
+    "node": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 41223020016,
+     "i_n2": 48129037637,
+     "differential": 6906017621,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 100000,
+     "n2": 400000,
+     "i_n1": 489565860,
+     "i_n2": 1131710126,
+     "differential": 642144266,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.02065
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 14.1461,
+    "node": 15.9802,
+    "matrix": 1.4859
+   }
+  },
+  {
+   "benchmark": "sha256",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 1957159128,
+     "i_n2": 7196199751,
+     "differential": 5239040623,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00163
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 41270844308,
+     "i_n2": 162969159684,
+     "differential": 121698315376,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00043
+    },
+    "node": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 83383800257,
+     "i_n2": 215693316817,
+     "differential": 132309516560,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 2500,
+     "n2": 10000,
+     "i_n1": 2591105706,
+     "i_n2": 9529333615,
+     "differential": 6938227909,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00143
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 23.2291,
+    "node": 25.2545,
+    "matrix": 1.3243
+   }
+  },
+  {
+   "benchmark": "sort-search",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 1067976847,
+     "i_n2": 3977741759,
+     "differential": 2909764912,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00342
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 7348332347,
+     "i_n2": 28551072006,
+     "differential": 21202739659,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00091
+    },
+    "node": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 46923318208,
+     "i_n2": 72624166948,
+     "differential": 25700848740,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 50000,
+     "n2": 200000,
+     "i_n1": 1520083292,
+     "i_n2": 5730911611,
+     "differential": 4210828319,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00287
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 7.2868,
+    "node": 8.8326,
+    "matrix": 1.4471
+   }
+  },
+  {
+   "benchmark": "tak",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 235841342,
+     "i_n2": 1339545900,
+     "differential": 1103704558,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01537
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 936692540,
+     "i_n2": 5429317629,
+     "differential": 4492625089,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.01552
+    },
+    "node": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 38976364126,
+     "i_n2": 44750032207,
+     "differential": 5773668081,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 1e-05
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 6,
+     "n2": 8,
+     "i_n1": 327320953,
+     "i_n2": 2325166980,
+     "differential": 1997846027,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00972
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.0705,
+    "node": 5.2312,
+    "matrix": 1.8101
+   }
+  },
+  {
+   "benchmark": "viterbi",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 1030649587,
+     "i_n2": 3492745587,
+     "differential": 2462096000,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00217
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 4776487161,
+     "i_n2": 16560390391,
+     "differential": 11783903230,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00689
+    },
+    "node": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 44131100411,
+     "i_n2": 59447109460,
+     "differential": 15316009049,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 20000,
+     "n2": 80000,
+     "i_n1": 1469592541,
+     "i_n2": 5041246794,
+     "differential": 3571654253,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.08636
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 4.7861,
+    "node": 6.2207,
+    "matrix": 1.4507
+   }
+  },
+  {
+   "benchmark": "vm",
+   "columns": {
+    "native": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 3741133461,
+     "i_n2": 14339535210,
+     "differential": 10598401749,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0006
+    },
+    "wasmtime": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 18454867772,
+     "i_n2": 71923613732,
+     "differential": 53468745960,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.00913
+    },
+    "node": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 60079404899,
+     "i_n2": 123792239006,
+     "differential": 63712834107,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0
+    },
+    "matrix": {
+     "status": "ok",
+     "n1": 200000,
+     "n2": 800000,
+     "i_n1": 4916194019,
+     "i_n2": 18835018731,
+     "differential": 13918824712,
+     "runs": 5,
+     "determinism": "jitter",
+     "maxSpreadPct": 0.0013
+    }
+   },
+   "ratioToNative": {
+    "wasmtime": 5.045,
+    "node": 6.0116,
+    "matrix": 1.3133
+   }
+  }
+ ],
+ "provenance": {
+  "assembledAt": "2026-10-29T12:36:26Z",
+  "imageDigests": {
+   "lang-lab-wasm:ruby": "sha256:172dfde3259a8a0ce4a5917910f8c8ddc899a089c6a93ab7e1d49b38a4b7f27e"
+  }
+ }
+}

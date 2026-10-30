@@ -1,0 +1,81 @@
+{
+  "language": "c",
+  "nativeImage": "lang-lab-wasm:c",
+  "nativeRun": "/app/clang/{b}",
+  "nativeEnv": {},
+  "nativeKind": "native",
+  "wasmImage": "lang-lab-wasm:c",
+  "wasmtimeRun": "/usr/local/bin/wasmtime run -C cache=n --allow-precompiled /app/wasm/{b}.cwasm",
+  "nodeRun": "/usr/local/bin/node --predictable --single-threaded --single-threaded-gc --no-liftoff /opt/wasm/run-node.mjs /app/wasm/{b}.wasm",
+  "wasmKind": "native",
+  "wasmEnv": {
+    "TOKIO_WORKER_THREADS": "1"
+  },
+  "extraColumns": {
+    "gcc": {
+      "image": "lang-lab-wasm:c",
+      "run": "/app/gcc/{b}",
+      "env": {},
+      "kind": "native",
+      "role": "reference: the matrix C baseline (gcc 14 -O2, the same gcc:14 image as languages/c)"
+    },
+    "clang-lp64": {
+      "image": "lang-lab-wasm:c",
+      "run": "/app/clang-lp64/{b}",
+      "env": {},
+      "kind": "native",
+      "role": "check: the lp64.sh-transformed source compiled natively; identical machine code except the printf format string, so it must count like the native column to within a few instructions"
+    }
+  },
+  "versions": {
+    "nativeCompiler": "clang 23.1.0 (official LLVM release)",
+    "wasmCompiler": "clang 23.1.0 (wasi-sdk 34)",
+    "flags": "-O2 on both sides; wasm adds -Wl,-z,stack-size=8388608"
+  },
+  "transforms": [
+    "languages/wasm/c/lp64.sh on every wasm build: long -> long long, %ld/%lu/%li -> %lld/%llu/%lli, L/UL literal suffixes -> LL/ULL (wasm32 is ILP32)"
+  ],
+  "asymmetries": [
+    "wasi-sdk's clang 23.1.0 and the official LLVM 23.1.0 release are built from different commits of the same release",
+    "the native binary links glibc, the wasm module links wasi-libc (malloc: glibc ptmalloc vs wasi-libc dlmalloc)",
+    "vector code: native clang -O2 emits NEON vector instructions in main for sha256 (46 static), fannkuch (16), polymorphism (8), k-means (3), dijkstra and blur (1 each), none in gemm; the wasm build has no simd128 (wasi-sdk 34 default). Enabling -msimd128 moves only gemm, k-means, sha256 and fannkuch, by 0.6 to 6% (codegen experiment)",
+    "wasm32 is ILP32 even after lp64.sh: pointers and size_t are 32-bit, so pointer-holding structs (binary-trees' nodes) are smaller and every address is a 32-bit offset zero-extended into the 64-bit heap base"
+  ],
+  "na": {},
+  "diagnostics": {
+    "unchangedSourcesOnWasm32": {
+      "how": "canonical languages/c/<b>.c compiled with wasi-sdk 34 clang -O2 (no lp64.sh), run on wasmtime 50 at n1, output compared with spec.json",
+      "correct": [
+        "binary-trees",
+        "fannkuch",
+        "k-nucleotide",
+        "mandelbrot",
+        "tak"
+      ],
+      "wrongChecksum": [
+        "bigint",
+        "blur",
+        "gbdt",
+        "gemm",
+        "k-means",
+        "lz77",
+        "polymorphism",
+        "reverse-complement",
+        "sha256",
+        "sort-search",
+        "viterbi",
+        "vm"
+      ],
+      "trap": [
+        "dijkstra"
+      ]
+    }
+  },
+  "columnRoles": {
+    "native": "control",
+    "wasmtime": "wasm",
+    "node": "wasm",
+    "gcc": "reference",
+    "clang-lp64": "check"
+  }
+}

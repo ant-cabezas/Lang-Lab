@@ -1,0 +1,16 @@
+# WebAssembly side study, runtime experiment: the wasmtime version swap image.
+# lang-lab-wasm:c with /opt/wasmtime replaced by another wasmtime release (built by build-wt.sh, one tag
+# per release: lang-lab-wasm-runtime-wt<version>). The .wasm modules (wasi-sdk 34, /app/wasm) are untouched;
+# each is precompiled with THIS wasmtime into /app/wt/<b>.cwasm, because a cwasm is only loadable by the
+# wasmtime version that produced it. No build context files are needed.
+FROM lang-lab-wasm:c
+ARG WT_VERSION
+ARG WT_SHA256
+RUN set -eux; cd /tmp; \
+    curl -fsSLo wt.txz "https://github.com/bytecodealliance/wasmtime/releases/download/v${WT_VERSION}/wasmtime-v${WT_VERSION}-aarch64-linux.tar.xz"; \
+    echo "${WT_SHA256}  wt.txz" | sha256sum -c -; \
+    rm -rf /opt/wasmtime; mkdir /opt/wasmtime; tar xJf wt.txz -C /opt/wasmtime --strip-components=1; rm -f wt.txz; \
+    wasmtime --version; mkdir -p /app/wt; \
+    for w in /app/wasm/*.wasm; do b=$(basename "$w" .wasm); wasmtime compile "$w" -o "/app/wt/$b.cwasm"; done; \
+    echo "wasmtime-swapped: $(wasmtime --version)" >> /app/TOOLCHAIN
+ENV WASMTIME_VERSION=${WT_VERSION}
