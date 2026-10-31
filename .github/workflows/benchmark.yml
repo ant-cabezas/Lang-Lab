@@ -10,6 +10,7 @@ on:
       - "versions.lock.json"
       - "languages.json"
       - "languages/**"
+      - "!languages/wasm/**"
       - "benchmarks/**"
       - "scripts/measure.sh"
   workflow_dispatch:

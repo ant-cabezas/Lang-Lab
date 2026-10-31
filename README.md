@@ -154,6 +154,15 @@ ranking: two compilers on the 15 benchmarks that need no hand-rolled machinery, 
 same sizes (instructions vs C, lower is better). Natural COBOL costs 25x to about 7,000x C; a restricted subset on GCC's gcobol reaches about
 5x to 7x C on integer loops. See [docs/cobol-study.md](docs/cobol-study.md).
 
+WebAssembly is not in the matrix either. A side study measures what compiling each language to WebAssembly
+(WASI preview 1) costs that same language: wasm instructions over native instructions for the same source, on
+wasmtime 50 and on V8's TurboFan tier, for 13 languages on arm64 (lower is better, 1.00x = no overhead). On
+wasmtime the geomean goes from 1.46x for Rust and 1.53x for C to 7.19x for Ruby; Java, Kotlin and Scala, compiled
+ahead of time with TeaVM, sit at 1.85x to 1.88x. Each ratio compares a language with itself, never with another
+language. See [docs/wasm-study.md](docs/wasm-study.md), with how the ratios are read in
+[docs/wasm-rigor.md](docs/wasm-rigor.md) and the fairness audit in
+[docs/wasm-fairness-audit.md](docs/wasm-fairness-audit.md).
+
 ## The measurement engine
 
 Measuring instructions **uniformly and comparably** across all those runtimes was the core
@@ -354,6 +363,9 @@ docs/concurrency-study.md        cross-track concurrency study (per language)
 docs/metric-validity.md          empirical validity of the instruction metric (calibration + cross-ISA)
 docs/cobol-study.md              COBOL side study (two compilers, outside the ranking)
 results/cobol/                   COBOL side-study results
+docs/wasm-study.md               WebAssembly side study (wasm vs native per language, outside the ranking)
+languages/wasm/                  WebAssembly side study: one lane per language
+results/wasm/                    WebAssembly side-study results
 ```
 
 ## Status
